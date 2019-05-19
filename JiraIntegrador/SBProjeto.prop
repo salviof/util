@@ -1,0 +1,10 @@
+VERSAO=1.0.0-RC-SNAPSHOT
+NOME_PROJETO=modelRegras
+NOME_SOCIAL=Jira_IntegradorModel
+#PODE SER BIBLIOTECA, MOBILE, DESKTOP, OU WEB
+TIPO_PROJETO=jar
+ENDERECO_WEB=http://demonstracaoRequisito.suberbits.org
+NOME_CLIENTE=coletivoJava
+GRUPO_PROJETO=JiraIntegrador
+NOME_BANCO=Jira_IntegradorModel
+DIRETORIO_BASE=fw/util

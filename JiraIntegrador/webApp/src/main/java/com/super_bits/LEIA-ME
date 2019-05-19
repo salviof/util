@@ -1,0 +1,61 @@
+
+
+
+*******************************************************************************
+
+
+O SUPER-BITS FRAMEWORK NASCEU OPEN-SOURCE, POR ACREDITAR NA FILOSOFIA DO TRABALHO
+COLETIVO, PARTICIPE DA COMUNIDADE, AJUDE-NOS A CRESCER, FAÇA SISTEMAS MAIS RÁPIDO
+QUE A EMPRESA QUE VOCÊ TRABALHA UTILIZANDO AS MARAVILHAS DO MUNTO OPEN-SOURCE.
+
+Mais informações em: https://github.com/salviof/SuperBits_FrameWork
+
+
+
+********************************************************************************
+
+
+Conceitos básicos:
+
+Toda aplicação do framework  possui 4 projetos: Model, WebApp, Android e WebService
+
+                    WebAPP
+
+O modulo WebAPP é o modulo para criação de interfaces visuais do seu sistema.
+
+Para utiliza-lo é nescessário entender os escopos @ViewEscoped, @SessionEscoped, @applicationEscoped
+
+Uma série de composite componentes foram criados, e se encontram na pasta SBComp
+
+Dentre eles se destaca o SBComp:input, que exibe um input de dados de acordo com a anotação InfoCampo
+
+
+
+
+Além do WebApp os outros projetos importam esta camada e tem  as respectivas funções:
+
+Model -> Regras de negocio e Modelagem do sistema
+Android -> Aplicativo Android
+WebService -> Framework Restfull  que utiliza as ações do sistema criadas no pacote Model
+
+
+Estamos precisando de Ajuda na documentação, (como você pode ver),
+mas por enquanto temos este exemplo, que permite você iniciar uma aplicação nova Utilizando o framework,
+
+
+Todos as classes do projeto foram comentadas com explicações seguindo o padrão JAVADOC,
+boa sorte para criar sua primeira solução com o SuperBits Framework
+
+*Recomendamos o Netbeans com Tomcat8 para trabalhar neste módulo
+
+
+
+
+
+
+
+
+
+
+
+

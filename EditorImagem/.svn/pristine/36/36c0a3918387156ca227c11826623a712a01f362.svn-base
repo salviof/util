@@ -1,0 +1,274 @@
+//Sistema desenvolvido sob encomenda para processamento de placas veiculares em tempo real pela Super Bits Sistemas sob encomnda da Sphera Secucurity
+package com.super_bits.editorImagem.util;
+
+import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
+import com.super_bits.modulosSB.SBCore.TratamentoDeErros.ErroSB;
+import ij.ImagePlus;
+import ij.process.ImageProcessor;
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import javax.imageio.ImageIO;
+import org.opencv.core.Core;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfRect;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.highgui.Highgui;
+import org.opencv.imgproc.Imgproc;
+import org.opencv.objdetect.CascadeClassifier;
+
+/**
+ *
+ * Classe com métodos estaticos para executar algorítimos mais relevantes sobre
+ * imágens
+ *
+ * @author Sálvio Furbino <salviof@gmail.com>
+ * @since 29/05/2014
+ *
+ */
+public abstract class UtilSBImagemEdicao {
+
+    public static void redimencionaImagem() {
+
+    }
+
+    public static BufferedImage redimencionaImagem(BufferedImage originalImage, int porcent) {
+        int altura = originalImage.getHeight(null);
+        int largura = originalImage.getWidth(null);
+        altura = altura / 100 * porcent;
+        largura = largura / 100 * porcent;
+        try {
+
+            return ImageIO.read(redimencionaImagem(originalImage, altura, largura));
+        } catch (IOException ex) {
+            SBCore.RelatarErro(ErroSB.TIPO_ERRO.ALERTA_PROGRAMADOR, "Erro redimencinando imagens", ex);
+        }
+        return originalImage;
+
+    }
+
+    public static InputStream reduzImagemTamanhoEspecifico(Image originalImage, int pLargurapx, int pAlturaPx) {
+        int largura = originalImage.getHeight(null);
+        int altura = originalImage.getWidth(null);
+        if (pAlturaPx < altura) {
+            altura = pAlturaPx;
+        }
+        if (pLargurapx < largura) {
+            largura = pLargurapx;
+        }
+        System.out.println("Altura:" + altura + "Largura:" + largura);
+
+        return redimencionaImagem(originalImage, largura, altura);
+    }
+
+    public static InputStream redimencionaImagem(Image originalImage,
+            int pLarguraPx, int pAlturaPx) {
+        System.out.println("resizing...");
+        // preserve image true
+        @SuppressWarnings("unused")
+        int imageType = true ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
+        BufferedImage scaledBI = new BufferedImage(pLarguraPx, pAlturaPx, imageType);
+        Graphics2D g = scaledBI.createGraphics();
+        // preservando o Alpha
+        g.setComposite(AlphaComposite.Src);
+
+        g.drawImage(originalImage, 0, 0, pLarguraPx, pAlturaPx, null);
+        g.dispose();
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(scaledBI, "jpg", os);
+        } catch (IOException e) {
+
+            SBCore.RelatarErro(ErroSB.TIPO_ERRO.ALERTA_PROGRAMADOR, "Erro redimencionando imagem", e);
+        }
+        InputStream fis = new ByteArrayInputStream(os.toByteArray());
+
+        return fis;
+
+    }
+
+    public static BufferedImage aplicarBlur(BufferedImage pImagem, int pIntensidade) {
+        try {
+            ImagePlus img = new ImagePlus("teste", pImagem);
+            ImageProcessor proc = img.getProcessor();
+            proc.blurGaussian(pIntensidade);
+            return proc.getBufferedImage();
+        } catch (Exception e) {
+            SBCore.RelatarErro(ErroSB.TIPO_ERRO.ALERTA_PROGRAMADOR, "Erro aplicando blur em imagem", e);
+            return pImagem;
+        }
+
+    }
+
+    public static BufferedImage aplicarGama(BufferedImage pImagem, int intensidade) {
+        try {
+            System.out.println("aplicando Subtract" + intensidade);
+            ImagePlus img = new ImagePlus("teste", pImagem);
+            ImageProcessor proc = img.getProcessor();
+            //   proc.subtract(intensidade);
+            RescaleOp rescaleOp = new RescaleOp(1.2f, 15, null);
+            rescaleOp.filter(pImagem, pImagem);
+            return proc.getBufferedImage();
+        } catch (Exception e) {
+            SBCore.RelatarErro(ErroSB.TIPO_ERRO.ALERTA_PROGRAMADOR, "Erro aplicando blur em imagem", e);
+            return pImagem;
+        }
+    }
+
+    public static BufferedImage subtractBackground(BufferedImage pImagem, int intensidade) {
+        try {
+            ImagePlus img = new ImagePlus("teste", pImagem);
+            ImageProcessor proc = img.getProcessor();
+            proc.subtract(intensidade);
+            return proc.getBufferedImage();
+        } catch (Exception e) {
+            SBCore.RelatarErro(ErroSB.TIPO_ERRO.ALERTA_PROGRAMADOR, "Erro aplicando blur em imagem", e);
+            return pImagem;
+        }
+    }
+
+    public static BufferedImage matTOImg(Mat in) {
+        BufferedImage out;
+        byte[] data = new byte[320 * 240 * (int) in.elemSize()];
+        int type;
+        in.get(0, 0, data);
+
+        if (in.channels() == 1) {
+            type = BufferedImage.TYPE_BYTE_GRAY;
+        } else {
+            type = BufferedImage.TYPE_3BYTE_BGR;
+        }
+
+        out = new BufferedImage(320, 240, type);
+
+        out.getRaster().setDataElements(0, 0, 320, 240, data);
+        return out;
+    }
+
+    /**
+     *
+     * Localiza uma face na imagem, e desenha um retangulo em volta
+     *
+     * @param pImage
+     * @return
+     */
+    public static BufferedImage contornarFace(BufferedImage pImage) {
+        System.out.println("\nRunning DetectFaceDemo");
+
+        // Create a face detector from the cascade file in the resources
+        // directory.
+        int rows = pImage.getWidth();
+        int cols = pImage.getHeight();
+        int type = CvType.CV_16UC1;
+        Mat image = new Mat(rows, cols, type);
+
+        // Detect faces in the image.
+        // MatOfRect is a special container class for Rect
+        CascadeClassifier faceDetector = new CascadeClassifier();
+        MatOfRect faceDetections = new MatOfRect();
+        faceDetector.detectMultiScale(image, faceDetections);
+
+        System.out.println(String.format("Detected %s faces", faceDetections.toArray().length));
+
+        Rect[] facesArray = faceDetections.toArray();
+        for (int i = 0; i < facesArray.length; i++) {
+            Core.rectangle(image, facesArray[i].tl(), facesArray[i].br(), new Scalar(200, 200, 200), 3);
+        }
+        return matTOImg(image);
+
+    }
+
+    private static BufferedImage convert(Mat m) {
+        Mat image_tmp = m;
+
+        MatOfByte matOfByte = new MatOfByte();
+
+        Highgui.imencode(".JPG", image_tmp, matOfByte);
+
+        byte[] byteArray = matOfByte.toArray();
+        BufferedImage bufImage = null;
+
+        try {
+
+            InputStream in = new ByteArrayInputStream(byteArray);
+            bufImage = ImageIO.read(in);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return bufImage;
+        }
+    }
+
+    /**
+     *
+     * Localiza retangulos na imagem os desenha na imagem
+     *
+     * @param pImage
+     * @return
+     */
+    public static BufferedImage localizarRetangulo(BufferedImage pImage) {
+        int rows = pImage.getWidth();
+        int cols = pImage.getHeight();
+        int type = CvType.CV_16UC1;
+
+        Mat image = new Mat(rows, cols, type);
+        Mat hierarchy = new Mat();
+        Mat gray = null;
+        Imgproc.cvtColor(image, gray, Imgproc.COLOR_GRAY2BGR);
+        Imgproc.Canny(gray, gray, 100, 200, 3, false);
+        List<MatOfPoint> contornos = new ArrayList<>();
+
+        Imgproc.findContours(gray, contornos, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
+        /// Draw contours
+        Mat drawing = new Mat();
+
+        for (int i = 0; i < contornos.size(); i++) {
+            Scalar color = new Scalar(200);
+            Imgproc.drawContours(drawing, contornos, i, color, 2, 8, hierarchy, 0, new Point());
+        }
+        return convert(drawing);
+
+    }
+
+    public static BufferedImage rotacionarParaEsquerda(BufferedImage pImagem, Integer graus) {
+        try {
+            ImagePlus img = new ImagePlus("teste", pImagem);
+            ImageProcessor proc = img.getProcessor();
+            proc.rotate(graus * -1);
+
+            return proc.getBufferedImage();
+        } catch (Exception e) {
+            SBCore.RelatarErro(ErroSB.TIPO_ERRO.ALERTA_PROGRAMADOR, "Erro aplicando blur em imagem", e);
+            return pImagem;
+        }
+    }
+
+    public static BufferedImage rotacionarParaDireita(BufferedImage pImagem, Integer graus) {
+        try {
+            ImagePlus img = new ImagePlus("teste", pImagem);
+            ImageProcessor proc = img.getProcessor();
+            proc.rotate(graus);
+
+            return proc.getBufferedImage();
+        } catch (Exception e) {
+            SBCore.RelatarErro(ErroSB.TIPO_ERRO.ALERTA_PROGRAMADOR, "Erro aplicando blur em imagem", e);
+            return pImagem;
+        }
+    }
+
+}

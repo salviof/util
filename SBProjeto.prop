@@ -1,0 +1,11 @@
+VERSAO=1.0.0-RC-SNAPSHOT
+NOME_PROJETO=SBTarefaAgendada
+NOME_SOCIAL=SB Util Agendador de Tarefas
+#PODE SER BIBLIOTECA, MOBILE, DESKTOP, OU WEB
+TIPO_PROJETO=jar
+ENDERECO_WEB=agendador.utilitarios.coletivojava.com.br
+ENDERECO_WEB_REQUISITO=requisito.agendador.utilitarios.coletivojava.com.br
+NOME_CLIENTE=coletivoJava
+GRUPO_PROJETO=util
+NOME_BANCO=SBTarefaAgendadaModel
+DIRETORIO_BASE=fw

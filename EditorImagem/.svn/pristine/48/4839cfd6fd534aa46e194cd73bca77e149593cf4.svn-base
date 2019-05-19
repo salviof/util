@@ -1,0 +1,79 @@
+/*
+ *  Super-Bits.com CODE CNPJ 20.019.971/0001-90
+
+ */
+package com.super_bits.editorImagem;
+
+import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
+import com.super_bits.modulosSB.SBCore.Mensagens.ItfCentralMensagens;
+import java.awt.image.BufferedImage;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ * O Editor de imagem permite aplicar uma sequencia de efeitos em uma imágem.
+ *
+ *
+ * @author <a href="mailto:salviof@gmail.com">Salvio Furbino</a>
+ * @since 02/03/2015
+ * @version 1.0
+ */
+public class EditorImagem implements Serializable {
+
+    private List<EfeitoImagem> efeitos;
+    private BufferedImage imagem;
+
+    public EditorImagem() {
+        efeitos = new ArrayList<>();
+    }
+
+    public EditorImagem(BufferedImage pImagem) {
+        efeitos = new ArrayList<>();
+        imagem = pImagem;
+    }
+
+    public void adcionarEfeitos(EfeitoImagem pEfeito) {
+        if (pEfeito.getParametros().size() > 0) {
+            for (EfeitoImagem.PARAMETRO_EFEITO pr : pEfeito.getParametros().keySet()) {
+                if (pEfeito.getParametros().get(pr).equals("0")) {
+                    SBCore.getCentralDeMensagens().enviaMensagemUsuario("Parametro obrigatório: '" + pr + "' do efeito " + pEfeito.getTipoEfeito().toString() + " não foi configurado", ItfCentralMensagens.TP_MENSAGEM.AVISO);
+                } else {
+                    efeitos.add(pEfeito);
+                }
+            }
+        } else {
+            efeitos.add(pEfeito);
+        }
+
+    }
+
+    public void processarImagem() {
+        for (EfeitoImagem efeito : efeitos) {
+            try {
+                imagem = efeito.processarImagem(imagem);
+            } catch (Throwable e) {
+                SBCore.getCentralDeMensagens().enviaMensagemUsuario("Erro aplicando efeito" + efeito.getNomeCurto(), ItfCentralMensagens.TP_MENSAGEM.ERRO);
+            }
+
+        }
+    }
+
+    public List<EfeitoImagem> getEfeitos() {
+        return efeitos;
+    }
+
+    public void setEfeitos(List<EfeitoImagem> efeitos) {
+        this.efeitos = efeitos;
+    }
+
+    public BufferedImage getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(BufferedImage imagem) {
+        this.imagem = imagem;
+    }
+
+}

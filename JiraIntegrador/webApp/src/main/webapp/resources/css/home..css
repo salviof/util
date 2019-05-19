@@ -1,0 +1,221 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 10/07/2015, 13:06:07
+    Author     : Salvio
+*/
+@charset "utf-8";
+/* CSS Document */
+
+*{margin:0; padding:0; }
+html{ height:100%; }
+body{ font-family:"Trebuchet MS", "Arial Narrow", Arial, Verdana; font-size:13px; color: #666; background:url(../img/bg_topo.png) repeat-x top; height:100%}
+a{ font-size:inherit; color: inherit; text-decoration: none }
+a:hover{text-decoration:underline;}
+img{ border:0; }
+#cabecalho #barra_superior{width:805px; margin:0 auto; padding-left:195px; _padding-left:290px; _width:710px; height:34px; *height:32px; }
+#cabecalho .user_logged{font-style:italic; color:#0341AB; font-size:13px}
+#cabecalho #barra_superior form{ margin-top:-5px; }
+#cabecalho #barra_superior form input{ width:119px; position:relative; top:3px; *top:1px; padding-left:3px; height:21px; padding-top:4px; border:1px solid #FFE140; margin-left:7px; *margin-top:8px; }
+#cabecalho #barra_superior form #ClientLoginEmail{ background:url(../img/txt_email.gif) no-repeat #FFF; }
+#cabecalho #barra_superior form #ClientLoginPassword{ background:url(../img/txt_senha.gif) no-repeat #FFF; }
+#cabecalho #barra_superior form a img{ position:relative; top:11px; left:7px; *top:4px; }
+#cabecalho #barra_superior form.login a img{ top:10px; *top:10px; }
+#cabecalho #barra_superior form img.text{ position:relative; top:3px; *top:-3px; }
+#cabecalho #barra_superior form input.btn_entrar{ height:25px; width:85px; border:0; background:url(../img/btn_entrar.jpg) no-repeat; position:relative; top:6px; *top:0px; }
+
+#barra_inferior{ width:1000px; margin:0 auto; display:block; /*position:relative; left:7px;*/}
+#cabecalho #barra_inferior{ width:1000px; margin:0 auto;}
+#cabecalho #barra_inferior #logo{background:url(../img/logo_vip.png) no-repeat top left; width:182px; height:133px; float:left; margin-top:-8px; *margin-top:-11px; position: relative;}
+#cabecalho .logo_desc_hide{ visibility: hidden; width: 182px; height:133px; }
+#cabecalho #barra_inferior #menu_superior{ width:818px; height:121px; float:left; padding-top:12px; *padding-top:9px; }
+
+#meio{ width: 1000px; margin:0 auto; height:100%; /*position:relative; left:7px;*/ height: auto;}
+#meio #menu_lateral{ background:url(../img/bg_menu.jpg) repeat-x bottom center; background-color:#F7F8FA; width:170px; height:100%; float:left; position:relative; top:-8px; }
+#meio #menu_lateral ul{ margin-top:8px; width:170px; list-style:none; }
+#meio #menu_lateral ul li a{ color:#0341AB; text-decoration:none; }
+#meio #menu_lateral ul li a:hover{ color:#0341FF; }
+#meio #menu_lateral ul li{height:31px; padding-top:10px; padding-bottom:10px;  border-bottom:1px dotted #A2B6C4; list-style:none; display:table; clear:both; width:165px; text-align:center; font-size:14px; font-weight:bold}
+
+#meio #menu_banners { background: url("../img/bg_menu.jpg") repeat-x scroll center bottom #F7F8FA; float: left; height: 100%; position: relative; top: -8px; width: 170px;}
+#meio #menu_banners .bnn-lateral{margin-bottom:10px;}
+
+#meio #menu_lateral_produto{ background:url(../img/bg_menu.jpg) repeat-x bottom center; background-color:#F7F8FA; width:170px; height:100%; float:left; position:relative; top:-8px; }
+#meio #menu_lateral_produto ul{ margin-top:8px; width:170px; list-style:none; }
+#meio #menu_lateral_produto ul li a{ color:#0341AB; text-decoration:none; font-style: italic; }
+#meio #menu_lateral_produto ul li a:hover{ color:#0341FF; }
+#meio #menu_lateral_produto ul li{ cursor:pointer; background:url(../img/mais.gif) 6px 8px no-repeat; padding-top:6px; padding-bottom:6px;  border-bottom:1px dotted #A2B6C4; list-style:none; display:table; clear:both; width:148px; text-align:left; font-size:14px; font-weight:bold; padding-left: 21px;}
+#meio #menu_lateral_produto ul li ul{ margin-top:8px; width:150px; list-style-type:disc; }
+#meio #menu_lateral_produto ul li ul li{ background: none; height:15px; padding-top:5px; list-style:none; border-bottom: none; display:table; clear:both; width:124px; text-align:left; font-size:12px; font-weight:bold; padding-left: 20px;}
+#meio #menu_lateral_produto .center{ width: 100%; text-align: center; margin-top: 20px; }
+
+/*div{border:1px solid red; }*/
+#meio #conteudo { display:table; width:633px; float:left; background: url(../img/bg_home_meio.gif) repeat-y; margin-top:-20px; height: auto; }
+#meio #vip, #meio #busca{ width:628px; }
+#meio #vip{border-top:1px dotted #A2B6C4; text-align:center; float:top; position: relative; _position:static;*position:static;}
+#meio #vip table td{ width:150px; text-align:center; vertical-align:top; padding-bottom:22px; border-right:1px dotted #FF9900; border-bottom:1px dotted #FF9900; }
+#meio #conteudo #busca{ width:590px; position: relative; margin:0 auto; height:25px; margin-top:20px; }
+#meio #conteudo #busca div {color:red;font-weight:bold;}
+#meio #conteudo #busca form{ position:relative; top:-20px; }
+#meio #conteudo #busca .check{ position:relative; top: 10px; }
+#meio #conteudo #busca .text{ width: 383px; height:21px; padding-top:4px; border:1px solid #0341AB; position:relative; top:-2px; *top:6px; }
+
+#meio #vip-interna{padding-left:4px; border-top:1px dotted #A2B6C4; float:top; position: relative; _position:static;*position:static;}
+
+#meio #carrinho{ /*display:table;*/ width:194px; float:left; height:100%; background:url(../img/bg_degrade.jpg) repeat-x; padding-top:5px; margin-top:-21px; text-align:center}
+#meio #carrinho #itens-add{ width:194px; padding-top:2px; }
+#meio #carrinho #itens-add #total-itens{ width:81px; height:27px; padding-top:7px; border:1px solid #FFF57A; float:left; margin-left:2px  }
+#meio #carrinho #itens-add #total-valor{ width:103px; height:29px; padding-top:7px; background: #FFF57A; float:left; margin-left:2px }
+#meio #carrinho #ultimos-itens{ background:#FFFFD6; display:block; clear:both; padding-left:2px; width:188px;}
+#meio #carrinho table td{ text-align:left; padding:4px 2px 0px 2px; padding-bottom:4px; border-bottom:1px dotted #FFA82A }
+#meio #carrinho a{ font-size:9px; color:#990000; text-decoration:none; }
+#meio #carrinho a:hover{ font-size:9px; color:#990000; text-decoration:underline; }
+#meio #carrinho #rodape_carrinho{ width:190px; height:30px; background:url(../img/bg_carrinho.jpg) repeat-x top left; }
+
+#rodape{ width:100%; display:block; clear:both;  border-top:1px dotted #A2B6C4; border-bottom:1px dotted #A2B6C4; *position:relative;  _position:relative; _margin-top:0px;}
+#rodape #links{ width:1000px; margin:0 auto; /*height:78px;*/ height:110px; padding-top:12px; }
+#rodape #links ul{ list-style:none; }
+#rodape #links ul li{ font-size:10px; *height:12px; *margin-top:-4px}
+#rodape #links ul li a{ text-decoration:none; color:#666 }
+#rodape #links #certificado{ width:170px; text-align:center; float:left; }
+#rodape #links #certificado form{ display:inline; }
+#rodape #links #certificado a{ float:left; margin-left:3px; margin-bottom: 3px; margin-top: 3px; }
+#rodape #links #links-esquerda{ width:130px; text-align:left; float:left; color:#999; }
+#rodape #links #banner-rodape{ width:347px; text-align:center; float:left; height:60px; margin-left:20px; }
+#rodape #links #links-direita{ width:130px;  text-align:right; float:left; color:#999; }
+#rodape #links #sav{ width:200px; float:right; text-align:center;  }
+
+abbr{ text-decoration:none }
+#creditos{ width:1000px; margin:0 auto; }
+#rodape #sav a{ text-decoration:none; }
+#creditos{ font-size:10px; padding-top:10px; }
+/*#creditos #vip{ width: 760px; text-align:left; padding-left:110px; float:left; color:#999;}*/
+#creditos #vip{ width: 95%; text-align:center; float:left; color:#999;}
+#creditos #criasol{ width:94px; text-align:right; float:left; color:#999;}
+
+/*fontes*/
+.red{ color:#CC0000; }
+.blue{ color:#0341AB; }
+.blue-twitter{ padding-top:3px; }
+.green{ color:#009900; }
+.cinza{ color:#666666; }
+.orange{ color:#CC6600; }
+.bold{ font-weight:bold; }
+.normal{ font-weight:normal; }
+.italico10{ font-size:10px; font-style:italic; }
+.italico13{ font-size:13px; font-style:italic; }
+.italico14{ font-size:14px; font-style:italic; }
+.italico16{ font-size:16px; font-style:italic; }
+.italico20{ font-size:20px; font-style:italic; }
+.italico28{ font-size:28px; font-style:italic; }
+.italico32{ font-size:31px; font-style:italic; }
+.normal-11{ font-size:11px; font-weight:normal; }
+.normal-18{ font-size:18px; }
+
+.cesta .spinbutton{ width:22px; height:20px !important; padding-top:3px; border:1px solid orange; text-align:right }
+.cesta .comprar{ position:relative; top:7px; *top:3px; cursor:pointer; height:23px }
+.descricao_produto{ height:180px; display:block }
+.descricao_destaque{ display:block; height:80px; margin:0 auto; width:148px; }
+.noborder-right{ border-right:0px !important; }
+.noborder-bottom{ border-bottom:0px !important; }
+
+.esquerda { width: 50%; float: left; }
+.direita { width: 50%; float: left; }
+
+/*
+	FORMS messages
+*/
+#flashMessage{
+	background-color:#FFFFD6;
+	border:1px solid #FFE140;
+	color:#990000;
+	font-size:14px;
+	font-weight:bold;
+	margin-bottom:20px;
+	padding:12px;
+	text-align:center;
+	margin:0 auto;
+	width:90%;
+	margin-bottom:15px;
+}
+
+.error-message{
+	color:#900;
+	font-size:11px;
+}
+
+#ClientBornDateDay{
+	width:55px !important;
+} 
+#ClientBornDateYear{
+	width:65px !important;
+}
+#ClientBornDateMonth{
+	width:100px !important;
+}
+
+#menu_bottom{ *margin-top:-4px; }
+
+#outro_cep { display: inline; }
+
+table.produtos a,div.produtos div.texto div.descricao_destaque a,div.produto div.texto div.descricao_destaque a,div.produto div.texto div.descricao_produto a
+{
+	color:#666;
+	text-decoration:none;
+}
+table.produtos a:hover,div.produtos div.texto div.descricao_destaque a:hover,div.produto div.texto div.descricao_destaque a:hover, div.produto div.texto div.descricao_produto a:hover
+{
+	text-decoration:underline;
+}
+
+.is_vip {
+	background: #F9FB9A;
+}
+.is_vip_tr {
+	background: #F9FB9A;
+}
+
+.img_is_vip {
+	width:140px;
+	height:40px;
+	position:absolute;
+	background: url('../img/preco_vip.png') transparent;
+	margin:0;
+	margin-left:8px;
+	padding:0;
+	*margin-left:-72px;
+}
+
+.preco-vip {
+	margin-top:5px;
+}
+
+.navs {
+width:100%;
+height:22px;
+}
+
+.navs .nav {
+width:15px;
+height:20px;
+float:left;
+margin-left:5px;
+padding: 0 3px;
+border:1px solid #A2B6C4;
+border-top:0;
+}
+.navs .nav a{
+color:#666666;
+}
+.navs .nav.selected {
+background:#A2B6C4;
+color:#FFFFFF;
+}
+.navs .nav.selected a{
+color:#FFFFFF;
+}
+
+

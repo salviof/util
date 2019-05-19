@@ -1,0 +1,69 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.super_bits.editorImagem;
+
+import com.super_bits.modulosSB.SBCore.ConfigGeral.ConfigCoreDeveloper;
+import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
+import com.super_bits.modulosSB.SBCore.TratamentoDeErros.ErroSB;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import org.junit.Before;
+import org.junit.Test;
+import org.opencv.core.Core;
+
+/**
+ *
+ * @author <a href="mailto:salviof@gmail.com">Salvio Furbino</a>
+ */
+public class EditorImagemTest {
+
+    public EditorImagemTest() {
+    }
+
+    @Before
+    public void setUp() {
+        SBCore.configurar(new ConfigCoreDeveloper());
+    }
+
+    /**
+     * Test of adcionarEfeitos method, of class EditorImagem.
+     */
+    @Test
+    public void testeEdicoes() {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+
+        EditorImagem editor = new EditorImagem();
+        //List<EfeitoImagem> efeitos =  (List<EfeitoImagem>) UtilSBPersistencia.getListaTodos(EfeitoImagem.class);
+        EfeitoImagem girarEsquerda = new EfeitoImagem(EfeitoImagem.TIPO_EFEITO.GIRAR_ESQUERDA);
+        girarEsquerda.getParametros().put(EfeitoImagem.PARAMETRO_EFEITO.VALOR, "40");
+        EfeitoImagem blur = new EfeitoImagem(EfeitoImagem.TIPO_EFEITO.BLUR);
+        blur.getParametros().put(EfeitoImagem.PARAMETRO_EFEITO.VALOR, "3");
+        EfeitoImagem marcarRetangolos = new EfeitoImagem(EfeitoImagem.TIPO_EFEITO.RETANGULOSIMAGEM);
+        EfeitoImagem marcarFace = new EfeitoImagem(EfeitoImagem.TIPO_EFEITO.RETANGULO_FACE);
+
+        editor.adcionarEfeitos(marcarFace);
+        //editor.adcionarEfeitos(marcarRetangolos);
+        // editor.adcionarEfeitos(blur);
+        String caminhoImagem = "C:/home/testeEditor/face.jpg";
+        //String caminhoImagem = "C:/home/projetos/source/SuperBits/OCR/exemplos/motion/0_16-28-0004.jpg";
+        File imagemTeste = new File(caminhoImagem);
+
+        try {
+            BufferedImage imagem = ImageIO.read(imagemTeste);
+            editor.setImagem(imagem);
+            editor.processarImagem();
+
+            File saida = new File("/home/testeEditor/saida.jpg");
+            ImageIO.write(editor.getImagem(), "jpg", saida);
+        } catch (IOException ex) {
+            SBCore.RelatarErro(ErroSB.TIPO_ERRO.ALERTA_PROGRAMADOR, "Erro editando Imagem", ex);
+        }
+
+    }
+
+}
