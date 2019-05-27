@@ -4,6 +4,7 @@ import br.org.coletivoJava.comunicaca.transporte.util.ConexaoSMSAmazon;
 import br.org.coletivoJava.comunicaca.transporte.util.FabIntegracaoSMS;
 import com.super_bits.modulosSB.SBCore.modulos.comunicacao.ItfComunicacao;
 import br.org.coletivoJava.fw.api.erp.transportecomunicacao.MsgDisparoSms;
+import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 
 @MsgDisparoSms
 public class MsgDisparoSmsimpl
@@ -12,7 +13,11 @@ public class MsgDisparoSmsimpl
 
     @Override
     public void dispararInicioComunicacao(ItfComunicacao itfComunicacao) {
-        System.out.println(new ConexaoSMSAmazon(FabIntegracaoSMS.ENVIAR_MENSAGEM, "+5531971125577", "Olá Mundo !!! ").getRespostaTexto());
+        if (SBCore.isEmModoProducao()) {
+            System.out.println(new ConexaoSMSAmazon(FabIntegracaoSMS.ENVIAR_MENSAGEM, "+5531971125577", "Olá Mundo !!! ").getRespostaTexto());
+        } else {
+            System.out.println("Simulação sms enviado para" + itfComunicacao.getDestinatario().getUsuario() + "" + itfComunicacao.getNome());
+        }
     }
 
     @Override
