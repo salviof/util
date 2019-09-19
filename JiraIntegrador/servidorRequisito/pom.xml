@@ -19,7 +19,7 @@
 
         <dependency>
             <groupId>br.org.coletivoJava.fw.modulos.jiraIntegrador</groupId>
-            <artifactId>modelRegras</artifactId>
+            <artifactId>modelRegrasIntegradorJira</artifactId>
             <version>1.0.0-RC-SNAPSHOT</version>
         </dependency>
         <dependency>

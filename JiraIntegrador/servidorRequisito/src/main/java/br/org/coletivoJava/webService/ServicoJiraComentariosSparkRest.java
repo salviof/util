@@ -13,6 +13,7 @@ import com.super_bits.modulosSB.SBCore.UtilGeral.MapaAcoesSistema;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.ItfResposta;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ItfAcaoDoSistema;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.WS.RespostaWebService;
+import com.super_bits.modulosSB.SBCore.modulos.Controller.WS.RespostaWebServiceAcaoDoSistema;
 import com.super_bits.modulosSB.SBCore.modulos.requisito.ComentarioRequisito;
 import com.super_bits.modulosSB.SBCore.modulos.requisito.ComentarioRequisitoEnvioNovo;
 import com.super_bits.modulosSB.SBCore.modulos.requisito.ItfServiceComentariosJira;
@@ -39,7 +40,7 @@ public class ServicoJiraComentariosSparkRest implements ItfServiceComentariosJir
         TarefaSuperBits tr = MapaTarefasProjeto.getTarefaDaAcao(acao);
         testeOFicialProjeto.adicionarComentario(tr, coment.getComentario());
 
-        return (RespostaWebService) new RespostaWebService(ComentarioRequisito.class, FabAcaoServidorRequisito.COMENTARIO_CTR_CADASTRAR_COMENTARIO.getRegistro()).setRetorno(coment);
+        return (RespostaWebService) new RespostaWebServiceAcaoDoSistema(ComentarioRequisito.class, FabAcaoServidorRequisito.COMENTARIO_CTR_CADASTRAR_COMENTARIO.getRegistro()).setRetorno(coment);
     }
 
     @Override
@@ -59,7 +60,7 @@ public class ServicoJiraComentariosSparkRest implements ItfServiceComentariosJir
                     = new ComentarioRequisito(coment.getBody(), coment.getAuthor().getDisplayName());
             req.getComentarios().add(comentario);
         }
-        RespostaWebService resp = new RespostaWebService(Requisito.class, FabAcaoServidorRequisito.COMENTARIO_CTR_CADASTRAR_COMENTARIO.getRegistro());
+        RespostaWebServiceAcaoDoSistema resp = new RespostaWebServiceAcaoDoSistema(Requisito.class, FabAcaoServidorRequisito.COMENTARIO_CTR_CADASTRAR_COMENTARIO.getRegistro());
         resp.setRetorno(req);
         return resp;
     }
