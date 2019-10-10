@@ -15,6 +15,7 @@ import com.amazonaws.services.sns.model.PublishRequest;
 import com.amazonaws.services.sns.model.PublishResult;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.arquivosConfiguracao.ConfigModulo;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringValidador;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.WS.conexaoWebServiceClient.ConexaoClienteWebServiceBasico;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.WS.conexaoWebServiceClient.InfoConsumoRestService;
 import java.util.HashMap;
@@ -39,13 +40,17 @@ public class ConexaoSMSAmazon extends ConexaoClienteWebServiceBasico {
 
     private String sendSMSMessage(AmazonSNS snsClient, String message,
             String phoneNumber, Map<String, MessageAttributeValue> smsAttributes) {
-        PublishResult result = snsClient.publish(new PublishRequest()
-                .withMessage(message)
-                .withPhoneNumber(phoneNumber)
-                .withMessageAttributes(smsAttributes));
-        System.out.println(result); // Prints the message ID.
+        if (!UtilSBCoreStringValidador.isNuloOuEmbranco(phoneNumber)) {
+            PublishResult result = snsClient.publish(new PublishRequest()
+                    .withMessage(message)
+                    .withPhoneNumber(phoneNumber)
+                    .withMessageAttributes(smsAttributes));
+            System.out.println(result); // Prints the message ID.
 
-        return result.toString();
+            return result.toString();
+        } else {
+            return null;
+        }
     }
 
     @Override
