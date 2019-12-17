@@ -106,7 +106,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.2.1-atlassian-2</version>
+            <version>4.3.6</version>
         </dependency>
         <dependency>
             <!-- Caused by: java.lang.ClassNotFoundException: com.atlassian.httpclient.spi.ThreadLocalContextManagers -->
