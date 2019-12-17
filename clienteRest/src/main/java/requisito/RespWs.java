@@ -7,8 +7,10 @@ package requisito;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.RespostaWebService;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.ItfResposta;
-import com.super_bits.modulosSB.SBCore.modulos.Controller.WS.RespostaWebService;
+import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.ItfResposta.Resultado;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -21,7 +23,7 @@ public class RespWs extends RespostaWebService {
     @Expose()
     private String retornoJson;
     @Expose
-    private Resultado resultadoWS = Resultado.SUCESSO;
+    private ItfResposta.Resultado resultadoWS = Resultado.SUCESSO;
 
     @Deprecated
     public RespWs() {

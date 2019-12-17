@@ -5,8 +5,9 @@
 package requisito;
 
 import com.google.gson.Gson;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.RespostaWebService;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.ItfResposta;
-import com.super_bits.modulosSB.SBCore.modulos.Controller.WS.RespostaWebService;
+
 import com.super_bits.modulosSB.SBCore.modulos.requisito.ComentarioRequisitoEnvioNovo;
 import com.super_bits.modulosSB.SBCore.modulos.requisito.Requisito;
 import org.junit.Test;

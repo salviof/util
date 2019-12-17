@@ -4,7 +4,6 @@
  */
 package requisito;
 
-import com.google.common.util.concurrent.Futures;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,8 +14,8 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.LoggingFilter;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.arquivosConfiguracao.ConfigModulo;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.RespostaWebService;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.ItfResposta;
-import com.super_bits.modulosSB.SBCore.modulos.Controller.WS.RespostaWebService;
 
 import com.super_bits.modulosSB.SBCore.modulos.requisito.ComentarioRequisitoEnvioNovo;
 import com.super_bits.modulosSB.SBCore.modulos.requisito.FabConfigModuloJiraRequisitos;
@@ -58,6 +57,7 @@ public class ClienteComentarioRequisito implements ItfServiceComentariosJira {
 
         String texto = new Gson().toJson(novoComentario);
         try {
+
             RespostaWebService resp = service.path("addComentario").post(RespostaWebService.class, texto);
             return resp;
         } catch (Throwable t) {
