@@ -4,9 +4,6 @@
  */
 package br.org.coletivoJava.comunicaca.transporte.util;
 
-import com.super_bits.modulosSB.SBCore.modulos.Controller.WS.ItfFabricaIntegracaoRestBasico;
-import com.super_bits.modulosSB.SBCore.modulos.Controller.WS.conexaoWebServiceClient.InfoConsumoRestService;
-
 /**
  *
  * @author desenvolvedor
