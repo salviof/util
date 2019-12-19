@@ -12,8 +12,6 @@ import com.super_bits.modulosSB.SBCore.ConfigGeral.arquivosConfiguracao.ConfigMo
 import com.super_bits.modulosSB.SBCore.UtilGeral.MapaAcoesSistema;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.ItfResposta;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ItfAcaoDoSistema;
-import com.super_bits.modulosSB.SBCore.modulos.Controller.WS.RespostaWebService;
-import com.super_bits.modulosSB.SBCore.modulos.Controller.WS.RespostaWebServiceAcaoDoSistema;
 import com.super_bits.modulosSB.SBCore.modulos.requisito.ComentarioRequisito;
 import com.super_bits.modulosSB.SBCore.modulos.requisito.ComentarioRequisitoEnvioNovo;
 import com.super_bits.modulosSB.SBCore.modulos.requisito.ItfServiceComentariosJira;

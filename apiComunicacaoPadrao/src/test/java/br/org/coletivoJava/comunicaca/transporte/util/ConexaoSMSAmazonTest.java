@@ -6,6 +6,7 @@
 package br.org.coletivoJava.comunicaca.transporte.util;
 
 import br.org.coletivoJava.fw.erp.implementacao.transportecomunicacao.TestesComunicacaoVip;
+import br.org.coletivoJava.integracoes.amazonSMS.FabIntegracaoSMS;
 import org.junit.Test;
 
 /**
@@ -19,7 +20,7 @@ public class ConexaoSMSAmazonTest extends TestesComunicacaoVip {
 
     @Test
     public void testGetRespostaComoObjetoJson() {
-        new ConexaoSMSAmazon(FabIntegracaoSMS.ENVIAR_MENSAGEM, "+5531971125577", "Olá Mundo !!! ").getRespostaTexto();
+        System.out.println(FabIntegracaoSMS.ENVIAR_MENSAGEM.getAcao("+5531971125577", "Olá Mundo !!! ").getResposta().getRespostaTexto());
     }
 
     @Test
