@@ -1,0 +1,106 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package br.org.coletivojava.fw.utils.servico.ServicoRepositorioDeArquivos.model;
+
+import com.super_bits.modulosSB.Persistencia.registro.persistidos.EntidadeSimples;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoObjetoSB;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoPreparacaoObjeto;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campoInstanciado.ItfCampoInstanciado;
+import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.SqlResultSetMapping;
+import javax.persistence.Table;
+import org.coletivojava.fw.api.tratamentoErros.ErroPreparandoObjeto;
+
+/**
+ *
+ * @author sfurbino
+ */
+@SqlResultSetMapping(name = "QrArquivoDeEntidadeComHash", classes = {
+    @ConstructorResult(targetClass = ArquivoDeEntidadeComHash.class,
+            columns = {
+                @ColumnResult(name = "id"),
+                @ColumnResult(name = "nome"),
+                @ColumnResult(name = "identificacaoHash")
+            })
+})
+@Entity
+@InfoObjetoSB(tags = "Hash de Arquivo", plural = "Hashs de arquivos")
+@Table(indexes = {
+    @Index(name = "HashDeArquivo", columnList = "hashCalculado")})
+public class HashsDeArquivoDeEntidade extends EntidadeSimples {
+
+    @Id
+    @GeneratedValue
+    private int id;
+
+    @Column(nullable = false)
+    private String hashCalculado;
+    @Column(nullable = false)
+    private String entidade;
+    @Column(nullable = false)
+    private String atributo;
+    @Column(nullable = false)
+    private int idEntidade;
+
+    @Override
+    @InfoPreparacaoObjeto(classesPrConstructorPrincipal = ItfCampoInstanciado.class)
+    public void prepararNovoObjeto(Object... parametros) throws ErroPreparandoObjeto {
+
+        ItfCampoInstanciado campoinstanciado = (ItfCampoInstanciado) parametros[0];
+        entidade = campoinstanciado.getObjetoDoAtributo().getClass().getSimpleName();
+        atributo = campoinstanciado.getNomeCamponaClasse();
+        idEntidade = campoinstanciado.getObjetoDoAtributo().getId();
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getHashCalculado() {
+        return hashCalculado;
+    }
+
+    public void setHashCalculado(String hashCalculado) {
+        this.hashCalculado = hashCalculado;
+    }
+
+    public String getEntidade() {
+        return entidade;
+    }
+
+    public void setEntidade(String entidade) {
+        this.entidade = entidade;
+    }
+
+    public String getAtributo() {
+        return atributo;
+    }
+
+    public void setAtributo(String atributo) {
+        this.atributo = atributo;
+    }
+
+    public int getIdEntidade() {
+        return idEntidade;
+    }
+
+    public void setIdEntidade(int idEntidade) {
+        this.idEntidade = idEntidade;
+    }
+
+}

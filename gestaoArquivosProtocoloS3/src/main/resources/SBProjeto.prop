@@ -1,0 +1,11 @@
+VERSAO=${pom.version}
+NOME_PROJETO=${pom.artifactId}
+NOME_SOCIAL=${pom.name}
+#PODE SER BIBLIOTECA, MOBILE, DESKTOP, OU WEB
+TIPO_PROJETO=${pom.packaging}
+ENDERECO_WEB=agendador.utilitarios.coletivojava.com.br
+ENDERECO_WEB_REQUISITO=requisito.agendador.utilitarios.coletivojava.com.br
+NOME_CLIENTE=${projetoSB.cliente}
+GRUPO_PROJETO=${projetoSB.grupoProjeto}
+NOME_BANCO=${projetoSB.nomeBanco}
+DIRETORIO_BASE=fw
