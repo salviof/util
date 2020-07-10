@@ -91,7 +91,7 @@ public class SalvarArquivoS3Hash extends Thread {
 
             return true;
         } catch (Throwable t) {
-            SBCore.RelatarErro(FabErro.SOLICITAR_REPARO, "Erro salvando arquivo no s3", t);
+            SBCore.RelatarErro(FabErro.SOLICITAR_REPARO, "Erro salvando arquivo [" + pNomeArquivo + "] no s3", t);
             return false;
         }
 
@@ -120,8 +120,8 @@ public class SalvarArquivoS3Hash extends Thread {
                     } else {
                         hashatualizado = UtilSBPersistencia.loadEntidade(pHashAtualizado, emAtualizacao);
                         hashatualizado.setHashCalculado(pHashAtualizado.getHashCalculado());
-                        hashatualizado.setNome(pHashAtualizado.getNome());
-                        hashatualizado = UtilSBPersistencia.mergeRegistro(emAtualizacao);
+                        //     hashatualizado.setNome(pHashAtualizado.getNome());
+                        hashatualizado = UtilSBPersistencia.mergeRegistro(hashatualizado);
 
                     }
                 } finally {
@@ -167,8 +167,7 @@ public class SalvarArquivoS3Hash extends Thread {
                             }
                         } else {
 
-                            // Apenas atualiza o nome do aruqivo
-                            arquivoHashAnterior.setNome(nomeArquivo);
+                            // Apenas atualiza o  hash do arquivo
                             arquivoHashAnterior.setHashCalculado(identificadorHAshArquivo);
 
                             if (getControleDeArquivosDeEntidade(nomeArquivo, nomeArquivo, nomeArquivo, acaoControleHashDeArquivo.ATUALIZAR, arquivoHashAnterior) != null) {

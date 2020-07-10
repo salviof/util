@@ -6,8 +6,10 @@
 package br.org.coletivojava.fw.utils.servico.ServicoRepositorioDeArquivos.model;
 
 import com.super_bits.modulosSB.Persistencia.registro.persistidos.EntidadeSimples;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoCampo;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoObjetoSB;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoPreparacaoObjeto;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campo.FabTipoAtributoObjeto;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campoInstanciado.ItfCampoInstanciado;
 import javax.persistence.Column;
 import javax.persistence.ColumnResult;
@@ -33,16 +35,18 @@ import org.coletivojava.fw.api.tratamentoErros.ErroPreparandoObjeto;
             })
 })
 @Entity
-@InfoObjetoSB(tags = "Hash de Arquivo", plural = "Hashs de arquivos")
 @Table(indexes = {
     @Index(name = "HashDeArquivo", columnList = "hashCalculado")})
+@InfoObjetoSB(tags = "Hash de Arquivo", plural = "Hashs de arquivos")
 public class HashsDeArquivoDeEntidade extends EntidadeSimples {
 
     @Id
     @GeneratedValue
+    @InfoCampo(tipo = FabTipoAtributoObjeto.ID)
     private int id;
 
     @Column(nullable = false)
+    @InfoCampo(tipo = FabTipoAtributoObjeto.AAA_NOME)
     private String hashCalculado;
     @Column(nullable = false)
     private String entidade;
