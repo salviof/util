@@ -23,6 +23,7 @@ import br.org.coletivojava.fw.utils.servico.ServicoRepositorioDeArquivos.Servico
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.google.common.collect.Lists;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -50,7 +51,6 @@ public class SalvarArquivoS3Hash extends Thread {
     private final ConfigModulo configModuloArquivosEnts3;
     private final String nomeClasseEntidade;
     private final int idEntidade;
-    private static final List<String> ultimosArquivosSalvos = new ArrayList<String>();
 
     private enum acaoControleHashDeArquivo {
         CONSULTAR, ATUALIZAR
@@ -67,16 +67,16 @@ public class SalvarArquivoS3Hash extends Thread {
 
     }
 
-    public static synchronized boolean salvarArquivoS3(byte[] arquivo, String pNomeArquivo, String pChavePublica, String pChavePrivada, String bucket, String phashIdentificadorArquivo) {
+    public boolean salvarArquivoS3(byte[] arquivo, String pNomeArquivo, String pChavePublica, String pChavePrivada, String bucket, String phashIdentificadorArquivo) {
         try {
 
-            if (ultimosArquivosSalvos.contains(phashIdentificadorArquivo)) {
+            if (ServicoDeArquivosWebAppS3.ultimosArquivosSalvos.contains(phashIdentificadorArquivo)) {
                 return true;
             }
-            if (ultimosArquivosSalvos.size() > 10) {
-                ultimosArquivosSalvos.remove(0);
+            if (ServicoDeArquivosWebAppS3.ultimosArquivosSalvos.size() > 10) {
+                ServicoDeArquivosWebAppS3.ultimosArquivosSalvos.remove(0);
             }
-            ultimosArquivosSalvos.add(phashIdentificadorArquivo);
+            ServicoDeArquivosWebAppS3.ultimosArquivosSalvos.add(phashIdentificadorArquivo);
 
             String extencao = UtilSBCoreStringNomeArquivosEDiretorios.getExtencaoNomeArquivoSemPonto(pNomeArquivo);
             AWSCredentials credentials = new BasicAWSCredentials(pChavePublica, pChavePrivada);
@@ -87,7 +87,8 @@ public class SalvarArquivoS3Hash extends Thread {
             //metadata.setUserMetadata(userMetadata);
             PutObjectResult putResult = s3client.putObject(new PutObjectRequest(bucket,
                     phashIdentificadorArquivo,
-                    UtilSBCoreBytes.geraInputStreamByByteArray(arquivo), metadata).withCannedAcl(CannedAccessControlList.PublicRead));
+                    new ByteArrayInputStream(arquivo), metadata).
+                    withCannedAcl(CannedAccessControlList.PublicRead));
 
             return true;
         } catch (Throwable t) {
@@ -97,11 +98,11 @@ public class SalvarArquivoS3Hash extends Thread {
 
     }
 
-    public static synchronized HashsDeArquivoDeEntidade getControleDeArquivosDeEntidade(String pEntid, String pCampo, String pID, acaoControleHashDeArquivo pTIpoAcao, HashsDeArquivoDeEntidade pHashAtualizado) {
+    public synchronized HashsDeArquivoDeEntidade getControleDeArquivosDeEntidade(String pEntid, String pCampo, String pID, acaoControleHashDeArquivo pTIpoAcao, HashsDeArquivoDeEntidade pHashAtualizado) {
 
         switch (pTIpoAcao) {
             case CONSULTAR:
-                String jpaQl = ServicoDeArquivosWebAppS3.getHSQLPesquisaHashDaEntidade(pEntid, pCampo, pID);
+                String jpaQl = ServicoDeArquivosWebAppS3.getHSQLPesquisaHashsDeArquivoDeEntidade(pEntid, pCampo, pID);
                 EntityManager em = UtilSBPersistencia.getEntyManagerPadraoNovo();
 
                 HashsDeArquivoDeEntidade arquivoHashAnterior = (HashsDeArquivoDeEntidade) UtilSBPersistencia.getRegistroByJPQL(jpaQl,
@@ -140,56 +141,58 @@ public class SalvarArquivoS3Hash extends Thread {
     public void run() {
 
         try {
+            String extencaoDoArquivp = UtilSBCoreStringNomeArquivosEDiretorios.getExtencaoNomeArquivo(nomeArquivo).replace(".", "");
+            String identificadorHAshArquivo = ServicoDeArquivosWebAppS3.getIdentificadorArquivo(arquivo, extencaoDoArquivp);
+            HashsDeArquivoDeEntidade arquivoHashAnterior = getControleDeArquivosDeEntidade(nomeClasseEntidade, campoReferencia, String.valueOf(idEntidade), acaoControleHashDeArquivo.CONSULTAR, null);
+            if (arquivoHashAnterior != null && arquivoHashAnterior.getHashCalculado().equals(identificadorHAshArquivo)) {
+                trabalhoConcluidoComsucesso = true;
+                trabalhoRealizado = true;
+                return;
+            } else {
 
-            try {
-                String extencaoDoArquivp = UtilSBCoreStringNomeArquivosEDiretorios.getExtencaoNomeArquivo(nomeArquivo).replace(".", "");
-                String identificadorHAshArquivo = ServicoDeArquivosWebAppS3.getIdentificadorArquivo(arquivo, extencaoDoArquivp);
-                HashsDeArquivoDeEntidade arquivoHashAnterior = getControleDeArquivosDeEntidade(nomeClasseEntidade, campoReferencia, String.valueOf(idEntidade), acaoControleHashDeArquivo.CONSULTAR, null);
-                if (arquivoHashAnterior != null && arquivoHashAnterior.getHashCalculado().equals(identificadorHAshArquivo)) {
-                    trabalhoConcluidoComsucesso = true;
-                } else {
+                try {
+                    if (!salvarArquivoS3(arquivo, nomeArquivo, configModuloArquivosEnts3.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_CHAVE_PUBLICA), configModuloArquivosEnts3.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_CHAVE_SECRETA),
+                            configModuloArquivosEnts3.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_BUCKET), identificadorHAshArquivo)) {
+                        throw new UnsupportedOperationException("Falha salvando arquivo no serviço S3");
+                    }
+                    if (arquivoHashAnterior == null) {
 
-                    try {
-                        if (!salvarArquivoS3(arquivo, nomeArquivo, configModuloArquivosEnts3.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_CHAVE_PUBLICA), configModuloArquivosEnts3.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_CHAVE_SECRETA),
-                                configModuloArquivosEnts3.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_BUCKET), identificadorHAshArquivo)) {
-                            throw new UnsupportedOperationException("Falha salvando arquivo no serviço S3");
+                        HashsDeArquivoDeEntidade novoarquivoHas = new HashsDeArquivoDeEntidade();
+                        novoarquivoHas.setEntidade(nomeClasseEntidade);
+                        novoarquivoHas.setAtributo(campoReferencia);
+                        novoarquivoHas.setIdEntidade(idEntidade);
+                        novoarquivoHas.setHashCalculado(identificadorHAshArquivo);
+
+                        if (getControleDeArquivosDeEntidade(nomeClasseEntidade, campoReferencia, String.valueOf(idEntidade), acaoControleHashDeArquivo.ATUALIZAR, novoarquivoHas) != null) {
+                            trabalhoConcluidoComsucesso = true;
+                            trabalhoRealizado = true;
+                            return;
                         }
-                        if (arquivoHashAnterior == null) {
+                    } else {
 
-                            HashsDeArquivoDeEntidade novoarquivoHas = new HashsDeArquivoDeEntidade();
-                            novoarquivoHas.setEntidade(nomeClasseEntidade);
-                            novoarquivoHas.setAtributo(campoReferencia);
-                            novoarquivoHas.setIdEntidade(idEntidade);
-                            novoarquivoHas.setHashCalculado(identificadorHAshArquivo);
+                        // Apenas atualiza o  hash do arquivo
+                        arquivoHashAnterior.setHashCalculado(identificadorHAshArquivo);
 
-                            if (getControleDeArquivosDeEntidade(nomeArquivo, nomeArquivo, nomeArquivo, acaoControleHashDeArquivo.ATUALIZAR, novoarquivoHas) != null) {
-                                trabalhoConcluidoComsucesso = true;
-                            }
-                        } else {
-
-                            // Apenas atualiza o  hash do arquivo
-                            arquivoHashAnterior.setHashCalculado(identificadorHAshArquivo);
-
-                            if (getControleDeArquivosDeEntidade(nomeArquivo, nomeArquivo, nomeArquivo, acaoControleHashDeArquivo.ATUALIZAR, arquivoHashAnterior) != null) {
-                                trabalhoConcluidoComsucesso = true;
-                            }
-
+                        if (getControleDeArquivosDeEntidade(campoReferencia, campoReferencia, String.valueOf(idEntidade), acaoControleHashDeArquivo.ATUALIZAR, arquivoHashAnterior) != null) {
+                            trabalhoConcluidoComsucesso = true;
+                            trabalhoRealizado = true;
+                            return;
                         }
 
-                    } catch (Throwable t) {
-                        SBCore.RelatarErroAoUsuario(FabErro.SOLICITAR_REPARO, "Erro atualizando arquivo no S3", t);
-                        trabalhoConcluidoComsucesso = false;
                     }
 
+                } catch (Throwable t) {
+                    SBCore.RelatarErroAoUsuario(FabErro.SOLICITAR_REPARO, "Erro atualizando arquivo no S3", t);
+                    trabalhoConcluidoComsucesso = false;
+                    trabalhoRealizado = true;
+                    return;
                 }
 
-            } catch (Throwable t) {
-                trabalhoConcluidoComsucesso = false;
             }
 
-        } finally {
+        } catch (Throwable t) {
+            trabalhoConcluidoComsucesso = false;
             trabalhoRealizado = true;
-
         }
 
     }

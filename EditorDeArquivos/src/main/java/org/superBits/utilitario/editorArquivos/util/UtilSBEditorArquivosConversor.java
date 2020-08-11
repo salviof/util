@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import org.docx4j.Docx4J;
 
 import org.docx4j.fonts.IdentityPlusMapper;
+import org.docx4j.fonts.PhysicalFonts;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.w3c.dom.Document;
@@ -54,7 +55,9 @@ public class UtilSBEditorArquivosConversor {
     }
 
     public static boolean converterWordEmPDF(String arquivoOrigem, String pArquivoDestino) {
+        String regex = ".*(Courier New|Arial|Times New Roman|Comic Sans|Georgia|Impact|Lucida Console|Lucida Sans Unicode|Palatino Linotype|Tahoma|Trebuchet|Verdana|Symbol|Webdings|Wingdings|MS Sans Serif|MS Serif).*";
 
+        //    PhysicalFonts.setRegex(regex);
         WordprocessingMLPackage wordMLPackage;
         try {
             wordMLPackage = WordprocessingMLPackage.load(new File(arquivoOrigem));

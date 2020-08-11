@@ -78,6 +78,9 @@ public abstract class UtilSBImagemEdicao {
     }
 
     public static BufferedImage reduzirProporcionalAlturaMaxima(BufferedImage originalImage, int pMaximoAltura, String extencao) {
+        if (extencao == null || extencao.isEmpty()) {
+            extencao = "jpg";
+        }
         int alturaOriginal = originalImage.getHeight();
 
         if (alturaOriginal <= pMaximoAltura) {

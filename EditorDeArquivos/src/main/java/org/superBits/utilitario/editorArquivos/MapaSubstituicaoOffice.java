@@ -7,8 +7,11 @@ package org.superBits.utilitario.editorArquivos;
 
 import com.google.common.collect.Lists;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UTilSBCoreInputs;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreOutputs;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringBuscaTrecho;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringFiltros;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringNomeArquivosEDiretorios;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringVariaveisEmTexto;
 
 import com.super_bits.modulosSB.SBCore.UtilGeral.stringSubstituicao.MapaSubstituicaoArquivo;
@@ -398,13 +401,24 @@ public class MapaSubstituicaoOffice extends MapaSubstituicaoArquivo {
                             break;
                         case IMAGEM:
                             Tc coluna = textoSub.getCooluna();
-                            P paragraphWithImage = createInlineImageToParagraph(createInlineImage(new File(mapaSubstituicaoImagem.get(textoSub.getTexto())), mlp));
-
+                            String caminhoArquivo = mapaSubstituicaoImagem.get(textoSub.getTexto());
+                            P paragraphWithImage = null;
+                            if (caminhoArquivo.startsWith("http")) {
+                                String imagemTempLocal = SBCore.getServicoSessao().getSessaoAtual().getPastaTempDeSessao() + "/" + UtilSBCoreStringNomeArquivosEDiretorios.getNomeArquivo(caminhoArquivo + ".jpg");
+                                UtilSBCoreOutputs.salvarArquivoInput(UTilSBCoreInputs.getStreamBuffredByURL(caminhoArquivo), imagemTempLocal);
+                                paragraphWithImage = createInlineImageToParagraph(createInlineImage(new File(imagemTempLocal), mlp));
+                            } else {
+                                coluna.getContent().removeAll(coluna.getContent());
+                                paragraphWithImage = createInlineImageToParagraph(createInlineImage(new File(caminhoArquivo), mlp));
+                            }
+                            if (paragraphWithImage != null) {
+                                coluna.getContent().removeAll(coluna.getContent());
+                                coluna.getContent().add(paragraphWithImage);
+                            }
                             if (coluna == null) {
                                 throw new UnsupportedOperationException("A Imagem deve estar dentro de uma coluna");
                             }
-                            coluna.getContent().removeAll(coluna.getContent());
-                            coluna.getContent().add(paragraphWithImage);
+
                             break;
                         case LISTAGEM:
 
@@ -415,50 +429,51 @@ public class MapaSubstituicaoOffice extends MapaSubstituicaoArquivo {
                             Map<String, String> valores = mapaSubstituicaoListas.get(chaveLista);
                             //List<Integer> lista = gerarLinhasSubLista(valores);
                             Map<Integer, List<String>> estruturaTabela = ordemMapaSubstituicaoListas.get(chaveLista);
+                            if (estruturaTabela != null) {
 
-                            List<Integer> listaOrdenada = Lists.newArrayList(estruturaTabela.keySet());
-                            Collections.sort(listaOrdenada);
-                            if (!controleListasSubstituidas.contains(chaveLista)) {
-                                for (Integer linha : listaOrdenada) {
+                                List<Integer> listaOrdenada = Lists.newArrayList(estruturaTabela.keySet());
+                                Collections.sort(listaOrdenada);
+                                if (!controleListasSubstituidas.contains(chaveLista)) {
+                                    for (Integer linha : listaOrdenada) {
 
-                                    controleListasSubstituidas.add(chaveLista);
+                                        controleListasSubstituidas.add(chaveLista);
 
-                                    Tr copia = (Tr) XmlUtils.deepCopy(textoSub.getLinha());
-                                    for (Object campoLinha : copia.getContent()) {
-                                        if (campoLinha instanceof JAXBElement) {
-                                            JAXBElement elemento = (JAXBElement) campoLinha;
+                                        Tr copia = (Tr) XmlUtils.deepCopy(textoSub.getLinha());
+                                        for (Object campoLinha : copia.getContent()) {
+                                            if (campoLinha instanceof JAXBElement) {
+                                                JAXBElement elemento = (JAXBElement) campoLinha;
 
-                                            Object valorElemento = elemento.getValue();
-                                            if (valorElemento instanceof Tc) {
-                                                //valores.get(colunaDaLinha);
+                                                Object valorElemento = elemento.getValue();
+                                                if (valorElemento instanceof Tc) {
+                                                    //valores.get(colunaDaLinha);
 
-                                                Tc col = (Tc) valorElemento;
+                                                    Tc col = (Tc) valorElemento;
 
-                                                Text texto = getTextoDaColuna(col);
-                                                if (texto
-                                                        != null) {
-                                                    texto.setSpace("preserve");
-                                                    System.out.println("Valor Antigo="
-                                                            + texto.getValue());
-                                                    String valorCompleto = texto.getValue();
-                                                    String restante = UtilSBCoreStringBuscaTrecho.getStringAPartirDisto(valorCompleto, "[]");
+                                                    Text texto = getTextoDaColuna(col);
+                                                    if (texto
+                                                            != null) {
+                                                        texto.setSpace("preserve");
+                                                        System.out.println("Valor Antigo="
+                                                                + texto.getValue());
+                                                        String valorCompleto = texto.getValue();
+                                                        String restante = UtilSBCoreStringBuscaTrecho.getStringAPartirDisto(valorCompleto, "[]");
 
-                                                    String chaveValorNovo = chaveLista + "[" + linha + restante;
-                                                    String novoValor = mapaSubstituicaoListas.get(chaveLista).get(chaveValorNovo);
-                                                    texto.setValue(novoValor);
+                                                        String chaveValorNovo = chaveLista + "[" + linha + restante;
+                                                        String novoValor = mapaSubstituicaoListas.get(chaveLista).get(chaveValorNovo);
+                                                        texto.setValue(novoValor);
+                                                    }
                                                 }
+
                                             }
 
+                                            System.out.println(campoLinha.getClass().getSimpleName());
+                                            System.out.println(campoLinha.toString());
                                         }
 
-                                        System.out.println(campoLinha.getClass().getSimpleName());
-                                        System.out.println(campoLinha.toString());
+                                        tabela.getContent().add(copia);
                                     }
-
-                                    tabela.getContent().add(copia);
                                 }
                             }
-
                             /**
                              * if
                              * (!controleListasSubstituidas.contains(chaveLista))
