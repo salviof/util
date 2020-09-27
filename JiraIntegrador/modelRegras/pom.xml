@@ -187,7 +187,7 @@
 
         <repository>
             <id>spring-milestones</id>
-            <url>http://repo.spring.io/libs-milestone/</url>
+            <url>https://repo.spring.io/libs-milestone/</url>
         </repository>
         <repository>
             <id>unknown-jars-temp-repo</id>
