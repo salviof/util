@@ -77,11 +77,15 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
             SalvarArquivoS3Hash tarefaSalvarNoS3 = new SalvarArquivoS3Hash(configModulo, UtilSBCoreReflexaoObjeto.getClassExtraindoProxy(entidade.getClass().getSimpleName()),
                     entidade.getId(), pCategoria, arqivo, pNome);
             tarefaSalvarNoS3.start();
-            if (!tarefaSalvarNoS3.aguardarFinalizacao()) {
+            boolean salvouComSucessoS3 = tarefaSalvarNoS3.aguardarFinalizacao();
+
+            if (salvouComSucessoS3) {
+                ((ItfBeanSimples) entidade).getCampoInstanciadoByNomeOuAnotacao(pCategoria).setValor(pNome);
+                return true;
+            } else {
                 return centralGenerica.salvarArquivo(entidade, arqivo, pCategoria, pNome);
             }
 
-            return tarefaSalvarNoS3.aguardarFinalizacao();
             ///Qualquer problema, salva no HD
         } catch (Throwable ex) {
             return centralGenerica.salvarArquivo(entidade, arqivo, pCategoria, pNome);
