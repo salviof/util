@@ -13,7 +13,9 @@ import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.arquivosConfiguracao.ConfigModulo;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreBytes;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreReflexaoObjeto;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringFiltros;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringNomeArquivosEDiretorios;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringSlugs;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringValidador;
 import com.super_bits.modulosSB.SBCore.UtilGeral.stringSubstituicao.MapaSubstituicao;
 import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.CentralDeArquivosAbstrata;
@@ -80,9 +82,11 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
             boolean salvouComSucessoS3 = tarefaSalvarNoS3.aguardarFinalizacao();
 
             if (salvouComSucessoS3) {
-                ((ItfBeanSimples) entidade).getCampoInstanciadoByNomeOuAnotacao(pCategoria).setValor(pNome);
+
+                ((ItfBeanSimples) entidade).getCampoInstanciadoByNomeOuAnotacao(pCategoria).setValor(UtilSBCoreStringSlugs.gerarSlugSimples(pNome));
                 return true;
             } else {
+                System.out.println("Falha Salvando no S3, tentando salvar em arquivo local");
                 return centralGenerica.salvarArquivo(entidade, arqivo, pCategoria, pNome);
             }
 
@@ -142,11 +146,18 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
 
     public static String getIdentificadorArquivo(byte[] pArquivo, String pExtencaoArquivo) {
 
+        if (pArquivo == null) {
+            throw new UnsupportedOperationException("Os bytes não foram enviados para geração do hash");
+        }
+        if (pExtencaoArquivo == null || pExtencaoArquivo.isEmpty()) {
+            throw new UnsupportedOperationException("a extenção é obriatória " + pExtencaoArquivo);
+        }
         if (pExtencaoArquivo.length() > 4) {
             throw new UnsupportedOperationException("a extnção " + pExtencaoArquivo + " não é reconhecida");
 
         }
-        return UtilSBCoreArquivos.getHashDoByteArray(pArquivo) + pExtencaoArquivo;
+
+        return UtilSBCoreArquivos.getHashDoByteArray(pArquivo) + "." + pExtencaoArquivo;
     }
 
     protected static String getHSQLPesquisaHashsDeArquivoDeEntidade(String pNomeEntidade, String pCampo, String id) {
@@ -693,6 +704,20 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
             }
         } catch (Throwable t) {
             return false;
+        }
+
+    }
+
+    @Override
+    public String getHashArquivoDeEntidadeRegistrado(ItfCampoInstanciado pCampo) {
+        try {
+            String hql = getHSQLPesquisaHashsDeArquivoDeEntidade(UtilSBCoreReflexaoObjeto.getClassExtraindoProxy(pCampo.getObjetoDoAtributo().getClass().getSimpleName()).getSimpleName(),
+                    pCampo.getNomeCamponaClasse(), String.valueOf(pCampo.getObjetoDoAtributo().getId()));
+            String valor = (String) UtilSBPersistencia.getRegistroByJPQL("select hashCalculado " + hql);
+            return valor;
+        } catch (Throwable t) {
+            SBCore.RelatarErro(FabErro.SOLICITAR_REPARO, "Erro buscando identificador hash registrado de arquivo de entidade", t);
+            return null;
         }
 
     }

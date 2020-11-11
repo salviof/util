@@ -387,6 +387,7 @@ public class MapaSubstituicaoOffice extends MapaSubstituicaoArquivo {
 
         //  List<TextoOfficeSubstituivel> textoSubstituivel = getTodosElementosDesteTipoNoObjeto(mlp, Tex)
         try {
+            System.out.println("Processando" + arquivo.getAbsolutePath());
             mlp = WordprocessingMLPackage.load(arquivo);
 
             List<TextoOfficeSubstituivel> textosSubstituiveis = listaTextosSubstituiveis(mlp);
@@ -535,10 +536,12 @@ public class MapaSubstituicaoOffice extends MapaSubstituicaoArquivo {
         } catch (Docx4JException ex) {
             Logger.getLogger(MapaSubstituicaoOffice.class
                     .getName()).log(Level.SEVERE, null, ex);
+            SBCore.RelatarErro(FabErro.PARA_TUDO, "Falha processando " + Docx4JException.class.getSimpleName() + " " + arquivo.getAbsolutePath(), ex);
 
         } catch (Exception ex) {
             Logger.getLogger(MapaSubstituicaoOffice.class
                     .getName()).log(Level.SEVERE, null, ex);
+            SBCore.RelatarErro(FabErro.PARA_TUDO, "Ecessão processando " + arquivo.getAbsolutePath(), ex);
         }
 
     }

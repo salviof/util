@@ -112,15 +112,20 @@ public class SalvarArquivoS3Hash extends Thread {
 
             case ATUALIZAR:
                 HashsDeArquivoDeEntidade hashatualizado;
+                String novoHash = pHashAtualizado.getHashCalculado();
 
                 EntityManager emAtualizacao = UtilSBPersistencia.getEntyManagerPadraoNovo();
                 UtilSBPersistencia.iniciarTransacao(emAtualizacao);
                 try {
                     if (pHashAtualizado.getId() == 0) {
+                        System.out.println("registrando novo hash");
                         hashatualizado = UtilSBPersistencia.mergeRegistro(pHashAtualizado, emAtualizacao);
+                        System.out.println("criado" + hashatualizado.getId() + " com hash " + hashatualizado.getHashCalculado());
                     } else {
+
                         hashatualizado = UtilSBPersistencia.loadEntidade(pHashAtualizado, emAtualizacao);
-                        hashatualizado.setHashCalculado(pHashAtualizado.getHashCalculado());
+                        hashatualizado.setHashCalculado(novoHash);
+                        System.out.println("update" + hashatualizado.getId() + " com hash " + hashatualizado.getHashCalculado());
                         //     hashatualizado.setNome(pHashAtualizado.getNome());
                         hashatualizado = UtilSBPersistencia.mergeRegistro(hashatualizado);
 
@@ -156,7 +161,7 @@ public class SalvarArquivoS3Hash extends Thread {
                         throw new UnsupportedOperationException("Falha salvando arquivo no serviço S3");
                     }
                     if (arquivoHashAnterior == null) {
-
+                        System.out.println("criando HashDeEntidade do arquivo atualizado");
                         HashsDeArquivoDeEntidade novoarquivoHas = new HashsDeArquivoDeEntidade();
                         novoarquivoHas.setEntidade(nomeClasseEntidade);
                         novoarquivoHas.setAtributo(campoReferencia);
@@ -171,12 +176,15 @@ public class SalvarArquivoS3Hash extends Thread {
                     } else {
 
                         // Apenas atualiza o  hash do arquivo
+                        System.out.println("Atualizando HashDeEntidade do arquivo atualizado");
                         arquivoHashAnterior.setHashCalculado(identificadorHAshArquivo);
 
                         if (getControleDeArquivosDeEntidade(campoReferencia, campoReferencia, String.valueOf(idEntidade), acaoControleHashDeArquivo.ATUALIZAR, arquivoHashAnterior) != null) {
                             trabalhoConcluidoComsucesso = true;
                             trabalhoRealizado = true;
-                            return;
+
+                        } else {
+                            throw new UnsupportedOperationException("Falha Atualizando " + HashsDeArquivoDeEntidade.class.getSimpleName() + " ");
                         }
 
                     }
@@ -185,7 +193,7 @@ public class SalvarArquivoS3Hash extends Thread {
                     SBCore.RelatarErroAoUsuario(FabErro.SOLICITAR_REPARO, "Erro atualizando arquivo no S3", t);
                     trabalhoConcluidoComsucesso = false;
                     trabalhoRealizado = true;
-                    return;
+
                 }
 
             }
