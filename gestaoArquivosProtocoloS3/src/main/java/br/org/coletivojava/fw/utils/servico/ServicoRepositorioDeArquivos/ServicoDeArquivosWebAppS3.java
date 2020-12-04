@@ -627,7 +627,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
             }
         }
 
-        return centralGenerica.getEndrRemotoArquivoCampoInstanciadoBaixar(pCampo);
+        return urlAbrir;
 
     }
 
@@ -655,7 +655,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
             }
         }
 
-        return centralGenerica.getEndrRemotoArquivoCampoInstanciadoBaixar(pCampo);
+        return urlBaixar;
     }
 
     @Override
