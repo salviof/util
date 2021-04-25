@@ -13,11 +13,14 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jxl.Cell;
+import jxl.CellType;
+
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
@@ -34,18 +37,20 @@ public class ImportacaoExcel<T> implements Serializable {
 
     private final Class classeImportacao;
 
-    private final Map<String, Integer> mapaDeColunas;
+    private final Map<String, Integer> mapeamentoColunasPorNomeDoCampo;
     private List<T> registrosSucesso;
     private List<T> registrosErro;
     private final String caminhoArquivo;
     private List<String> listaDeErros;
     private String mensagemErro;
 
+    private Map<String, ProcessadorCampoPLanilhaLogicaPersonalizada> mapaprocessadoresPersonalizados = new HashMap<>();
+
     public ImportacaoExcel(String pCaminhoArquivo, Map<String, Integer> mapa, Class classe) {
 
         carregarArquivo(pCaminhoArquivo);
         classeImportacao = classe;
-        mapaDeColunas = mapa;
+        mapeamentoColunasPorNomeDoCampo = mapa;
         caminhoArquivo = pCaminhoArquivo;
 
     }
@@ -65,6 +70,10 @@ public class ImportacaoExcel<T> implements Serializable {
 
     public boolean isPlanilhaCarregada() {
         return planilha != null;
+    }
+
+    public void adicionarProcessadorPersonalizado(ProcessadorCampoPLanilhaLogicaPersonalizada pProcessador) {
+        mapaprocessadoresPersonalizados.put(pProcessador.getNomeColuna(), pProcessador);
     }
 
     public void processar() {
@@ -87,128 +96,140 @@ public class ImportacaoExcel<T> implements Serializable {
 
                     ItfBeanSimples novoRegistro = (ItfBeanSimples) classeImportacao.newInstance();
 
-                    for (String nomeCampo : mapaDeColunas.keySet()) {
+                    for (String nomeCampo : mapeamentoColunasPorNomeDoCampo.keySet()) {
 
-                        int coluna = mapaDeColunas.get(nomeCampo) - 1;
+                        int coluna = mapeamentoColunasPorNomeDoCampo.get(nomeCampo) - 1;
 
                         TIPO_PRIMITIVO tipoPrimitivo = novoRegistro.getCampoByNomeOuAnotacao(nomeCampo).getTipoPrimitivoDoValor();
 
-                        Cell valorCampo = aba.getCell(coluna, i);
+                        Cell celulaExecelValorCampo = aba.getCell(coluna, i);
 
                         try {
+                            if (mapaprocessadoresPersonalizados.containsKey(nomeCampo)) {
+                                ProcessadorCampoPLanilhaLogicaPersonalizada processador = mapaprocessadoresPersonalizados.get(nomeCampo);
+                                novoRegistro.getCPinst(nomeCampo).setValor(processador.processarValor(celulaExecelValorCampo));
+                            } else {
+                                if (celulaExecelValorCampo != null) {
 
-                            if (valorCampo != null) {
+                                    switch (tipoPrimitivo) {
 
-                                switch (tipoPrimitivo) {
+                                        case INTEIRO:
 
-                                    case INTEIRO:
+                                            if (!celulaExecelValorCampo.getContents().equals("")) {
 
-                                        if (!valorCampo.getContents().equals("")) {
+                                                int inteiroRecebido = Integer.parseInt(celulaExecelValorCampo.getContents());
 
-                                            int inteiroRecebido = Integer.parseInt(valorCampo.getContents());
+                                                novoRegistro.getCampoByNomeOuAnotacao(nomeCampo).setValor(inteiroRecebido);
 
-                                            novoRegistro.getCampoByNomeOuAnotacao(nomeCampo).setValor(inteiroRecebido);
+                                            } else {
 
-                                        } else {
+                                                deuErro = true;
+                                                mensagemErro = "\nNão foi possivel setar o valor do campo: " + nomeCampo + "\n" + "\nTipo do campo: " + tipoPrimitivo + "\n" + "\nValor recebido: " + celulaExecelValorCampo.getContents() + "\n" + "\nPOSIÇÃO NO XML" + "\n" + "\nLinha: " + (i + 1) + "\n" + "\nColuna: " + (coluna + 1) + "\n" + "\nCausa provavel: CAMPO EM BRANCO\n";
+                                                listaDeErros.add(mensagemErro);
+                                                novoRegistro.getCampoByNomeOuAnotacao(nomeCampo).setValor(0);
 
-                                            deuErro = true;
-                                            mensagemErro = "\nNão foi possivel setar o valor do campo: " + nomeCampo + "\n" + "\nTipo do campo: " + tipoPrimitivo + "\n" + "\nValor recebido: " + valorCampo.getContents() + "\n" + "\nPOSIÇÃO NO XML" + "\n" + "\nLinha: " + (i + 1) + "\n" + "\nColuna: " + (coluna + 1) + "\n" + "\nCausa provavel: CAMPO EM BRANCO\n";
-                                            listaDeErros.add(mensagemErro);
-                                            novoRegistro.getCampoByNomeOuAnotacao(nomeCampo).setValor(0);
+                                            }
 
-                                        }
+                                            break;
 
-                                        break;
+                                        case LETRAS:
 
-                                    case LETRAS:
+                                            novoRegistro.getCampoByNomeOuAnotacao(nomeCampo).setValor(celulaExecelValorCampo.getContents());
 
-                                        novoRegistro.getCampoByNomeOuAnotacao(nomeCampo).setValor(valorCampo.getContents());
+                                            break;
 
-                                        break;
+                                        case DATAS:
 
-                                    case DATAS:
+                                            if (!celulaExecelValorCampo.getContents().equals("")) {
 
-                                        if (!valorCampo.getContents().equals("")) {
+                                                String dataRecebida = celulaExecelValorCampo.getContents();
 
-                                            String dataRecebida = valorCampo.getContents();
+                                                Date dataFormatada = UtilSBCoreDataHora.converteStringDD_MM_YYYYEmData(dataRecebida);
 
-                                            Date dataFormatada = UtilSBCoreDataHora.converteStringDD_MM_YYYYEmData(dataRecebida);
+                                                novoRegistro.getCampoByNomeOuAnotacao(nomeCampo).setValor(dataFormatada);
 
-                                            novoRegistro.getCampoByNomeOuAnotacao(nomeCampo).setValor(dataFormatada);
+                                            } else {
 
-                                        } else {
+                                                deuErro = true;
+                                                mensagemErro = "\nNão foi possivel setar o valor do campo: " + nomeCampo + "\n" + "\nTipo do campo: " + tipoPrimitivo + "\n" + "\nValor recebido: " + celulaExecelValorCampo.getContents() + "\n" + "\nPOSIÇÃO NO XML" + "\n" + "\nLinha: " + (i + 1) + "\n" + "\nColuna: " + (coluna + 1) + "\n" + "\nCausa provavel: CAMPO EM BRANCO\n";
+                                                listaDeErros.add(mensagemErro);
+                                                novoRegistro.getCampoByNomeOuAnotacao(nomeCampo).setValor(null);
 
-                                            deuErro = true;
-                                            mensagemErro = "\nNão foi possivel setar o valor do campo: " + nomeCampo + "\n" + "\nTipo do campo: " + tipoPrimitivo + "\n" + "\nValor recebido: " + valorCampo.getContents() + "\n" + "\nPOSIÇÃO NO XML" + "\n" + "\nLinha: " + (i + 1) + "\n" + "\nColuna: " + (coluna + 1) + "\n" + "\nCausa provavel: CAMPO EM BRANCO\n";
-                                            listaDeErros.add(mensagemErro);
-                                            novoRegistro.getCampoByNomeOuAnotacao(nomeCampo).setValor(null);
+                                            }
 
-                                        }
+                                            break;
 
-                                        break;
+                                        case BOOLEAN:
 
-                                    case BOOLEAN:
+                                            if (!celulaExecelValorCampo.getContents().equals("")) {
 
-                                        if (!valorCampo.getContents().equals("")) {
+                                                boolean booleanRecebido = Boolean.parseBoolean(celulaExecelValorCampo.getContents());
 
-                                            boolean booleanRecebido = Boolean.parseBoolean(valorCampo.getContents());
+                                                novoRegistro.getCampoByNomeOuAnotacao(nomeCampo).setValor(booleanRecebido);
 
-                                            novoRegistro.getCampoByNomeOuAnotacao(nomeCampo).setValor(booleanRecebido);
+                                            } else {
 
-                                        } else {
+                                                deuErro = true;
+                                                mensagemErro = "\nNão foi possivel setar o valor do campo: " + nomeCampo + "\n" + "\nTipo do campo: " + tipoPrimitivo + "\n" + "\nValor recebido: " + celulaExecelValorCampo.getContents() + "\n" + "\nPOSIÇÃO NO XML" + "\n" + "\nLinha: " + (i + 1) + "\n" + "\nColuna: " + (coluna + 1) + "\n" + "\nCausa provavel: CAMPO EM BRANCO\n";
+                                                listaDeErros.add(mensagemErro);
+                                                novoRegistro.getCampoByNomeOuAnotacao(nomeCampo).setValor(false);
 
-                                            deuErro = true;
-                                            mensagemErro = "\nNão foi possivel setar o valor do campo: " + nomeCampo + "\n" + "\nTipo do campo: " + tipoPrimitivo + "\n" + "\nValor recebido: " + valorCampo.getContents() + "\n" + "\nPOSIÇÃO NO XML" + "\n" + "\nLinha: " + (i + 1) + "\n" + "\nColuna: " + (coluna + 1) + "\n" + "\nCausa provavel: CAMPO EM BRANCO\n";
-                                            listaDeErros.add(mensagemErro);
-                                            novoRegistro.getCampoByNomeOuAnotacao(nomeCampo).setValor(false);
+                                            }
 
-                                        }
+                                            break;
 
-                                        break;
+                                        case DECIMAL:
 
-                                    case DECIMAL:
+                                            if (!celulaExecelValorCampo.getContents().equals("")) {
+                                                double doubleRecebido = 0d;
+                                                if (celulaExecelValorCampo.getType().equals(CellType.NUMBER_FORMULA)) {
+                                                    String valorString = celulaExecelValorCampo.getContents();
+                                                    String valorSemFormatacao = valorString;
+                                                    if (valorString.contains("R$")) {
+                                                        valorSemFormatacao = valorString.substring(valorString.lastIndexOf(" ") + 1, valorString.length()).replace(".", "").replace(",", ".");
+                                                    } else {
+                                                        valorSemFormatacao = valorString.substring(valorString.lastIndexOf(" ") + 1, valorString.length());
+                                                    }
+                                                    doubleRecebido = Double.parseDouble(valorSemFormatacao);
+                                                } else {
+                                                    doubleRecebido = Double.parseDouble(celulaExecelValorCampo.getContents().replace(",", "."));
+                                                }
+                                                novoRegistro.getCampoByNomeOuAnotacao(nomeCampo).setValor(doubleRecebido);
 
-                                        if (!valorCampo.getContents().equals("")) {
+                                            } else {
 
-                                            double doubleRecebido = Double.parseDouble(valorCampo.getContents());
+                                                deuErro = true;
+                                                mensagemErro = "\nNão foi possivel setar o valor do campo: " + nomeCampo + "\n" + "\nTipo do campo: " + tipoPrimitivo + "\n" + "\nValor recebido: " + celulaExecelValorCampo.getContents() + "\n" + "\nPOSIÇÃO NO XML" + "\n" + "\nLinha: " + (i + 1) + "\n" + "\nColuna: " + (coluna + 1) + "\n" + "\nCausa provavel: CAMPO EM BRANCO\n";
+                                                listaDeErros.add(mensagemErro);
+                                                novoRegistro.getCampoByNomeOuAnotacao(nomeCampo).setValor(0.0D);
 
-                                            novoRegistro.getCampoByNomeOuAnotacao(nomeCampo).setValor(doubleRecebido);
+                                            }
 
-                                        } else {
+                                        case ENTIDADE:
 
-                                            deuErro = true;
-                                            mensagemErro = "\nNão foi possivel setar o valor do campo: " + nomeCampo + "\n" + "\nTipo do campo: " + tipoPrimitivo + "\n" + "\nValor recebido: " + valorCampo.getContents() + "\n" + "\nPOSIÇÃO NO XML" + "\n" + "\nLinha: " + (i + 1) + "\n" + "\nColuna: " + (coluna + 1) + "\n" + "\nCausa provavel: CAMPO EM BRANCO\n";
-                                            listaDeErros.add(mensagemErro);
-                                            novoRegistro.getCampoByNomeOuAnotacao(nomeCampo).setValor(0.0D);
+                                            break;
 
-                                        }
+                                        case OUTROS_OBJETOS:
 
-                                    case ENTIDADE:
+                                            break;
 
-                                        break;
+                                        default:
 
-                                    case OUTROS_OBJETOS:
+                                            throw new AssertionError(tipoPrimitivo.name());
 
-                                        break;
-
-                                    default:
-
-                                        throw new AssertionError(tipoPrimitivo.name());
+                                    }
 
                                 }
-
                             }
-
                         } catch (Throwable t) {
 
                             deuErro = true;
-                            mensagemErro = "\nNão foi possivel setar o valor do campo: " + nomeCampo + "\n" + "\nTipo do campo: " + tipoPrimitivo + "\n" + "\nValor recebido: " + valorCampo.getContents() + "\n" + "\nPOSIÇÃO NO XML" + "\n" + "\nLinha: " + (i + 1) + "\n" + "\nColuna: " + (coluna + 1) + "\n" + "\nCausa provavel: TIPO INCORRETO\n";
+                            mensagemErro = "\nNão foi possivel setar o valor do campo: " + nomeCampo + "\n" + "\nTipo do campo: " + tipoPrimitivo + "\n" + "\nValor recebido: " + celulaExecelValorCampo.getContents() + "\n" + "\nPOSIÇÃO NO XML" + "\n" + "\nLinha: " + (i + 1) + "\n" + "\nColuna: " + (coluna + 1) + "\n" + "\nCausa provavel: TIPO INCORRETO\n";
                             listaDeErros.add(mensagemErro);
 
                         }
 
                     }
-
                     if (deuErro) {
 
                         registrosErro.add((T) novoRegistro);
