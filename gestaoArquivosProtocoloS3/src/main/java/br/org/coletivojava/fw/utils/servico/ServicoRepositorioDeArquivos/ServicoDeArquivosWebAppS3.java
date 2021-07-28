@@ -82,8 +82,17 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
             boolean salvouComSucessoS3 = tarefaSalvarNoS3.aguardarFinalizacao();
 
             if (salvouComSucessoS3) {
-
-                ((ItfBeanSimples) entidade).getCampoInstanciadoByNomeOuAnotacao(pCategoria).setValor(UtilSBCoreStringSlugs.gerarSlugSimples(pNome));
+                boolean arquivarnomeobjetoNaentidade = true;
+                if (pCategoria != null) {
+                    if (pCategoria.equals(FabTipoAtributoObjeto.IMG_PEQUENA.toString())) {
+                        if (((ItfBeanSimples) entidade).getCampoReflexaoByAnotacao(FabTipoAtributoObjeto.IMG_PEQUENA) == null) {
+                            arquivarnomeobjetoNaentidade = false;
+                        }
+                    }
+                }
+                if (arquivarnomeobjetoNaentidade) {
+                    ((ItfBeanSimples) entidade).getCampoInstanciadoByNomeOuAnotacao(pCategoria).setValor(UtilSBCoreStringSlugs.gerarSlugSimples(pNome));
+                }
                 return true;
             } else {
                 System.out.println("Falha Salvando no S3, tentando salvar em arquivo local");
