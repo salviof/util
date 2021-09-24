@@ -406,7 +406,7 @@ public class MapaSubstituicaoOffice extends MapaSubstituicaoArquivo {
                             P paragraphWithImage = null;
                             if (caminhoArquivo.startsWith("http")) {
                                 String imagemTempLocal = SBCore.getServicoSessao().getSessaoAtual().getPastaTempDeSessao() + "/" + UtilSBCoreStringNomeArquivosEDiretorios.getNomeArquivo(caminhoArquivo + ".jpg");
-                                UtilSBCoreOutputs.salvarArquivoInput(UTilSBCoreInputs.getStreamBuffredByURL(caminhoArquivo), imagemTempLocal);
+                                UtilSBCoreOutputs.salvarArquivoInput(UTilSBCoreInputs.getStreamBuffredByURL(caminhoArquivo, 10000, 60000), imagemTempLocal);
                                 paragraphWithImage = createInlineImageToParagraph(createInlineImage(new File(imagemTempLocal), mlp));
                             } else {
                                 coluna.getContent().removeAll(coluna.getContent());
