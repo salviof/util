@@ -5,10 +5,10 @@
  */
 package org.coletivoJava.TesteComunicacaoVip;
 
-import testesFW.geradorDeCodigo.erp.GeradorERPImplementacaoContexto;
 import br.org.coletivojava.erp.comunicacao.transporte.ERPTransporteComunicacao;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import org.junit.Test;
+import testes.geradorCodigo.erp.GeradorERPImplementacaoContexto;
 import testesFW.ConfigCoreJunitPadrao;
 import testesFW.TesteJunit;
 
