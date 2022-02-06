@@ -248,6 +248,7 @@ public class MapaSubstituicaoOffice extends MapaSubstituicaoArquivo {
                 System.out.println("Imagem Encontrada:" + pParte);
                 return true;
             }
+
         }
 
         return false;
