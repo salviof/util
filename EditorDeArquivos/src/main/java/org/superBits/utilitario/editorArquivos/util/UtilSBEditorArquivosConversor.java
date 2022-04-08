@@ -18,9 +18,12 @@ import java.util.logging.Logger;
 import org.docx4j.Docx4J;
 
 import org.docx4j.fonts.IdentityPlusMapper;
+import org.docx4j.fonts.Mapper;
 import org.docx4j.fonts.PhysicalFonts;
+import org.docx4j.jaxb.Context;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.wml.RFonts;
 import org.w3c.dom.Document;
 import org.w3c.tidy.Tidy;
 import org.xhtmlrenderer.pdf.ITextRenderer;
@@ -55,18 +58,21 @@ public class UtilSBEditorArquivosConversor {
     }
 
     public static boolean converterWordEmPDF(String arquivoOrigem, String pArquivoDestino) {
-        String regex = ".*(Courier New|Arial|Times New Roman|Comic Sans|Georgia|Impact|Lucida Console|Lucida Sans Unicode|Palatino Linotype|Tahoma|Trebuchet|Verdana|Symbol|Webdings|Wingdings|MS Sans Serif|MS Serif).*";
-
-        //    PhysicalFonts.setRegex(regex);
+        String regex = ".*(Courier New|Arial|Times New Roman|Comic Sans|Georgia|Impact|Lucida Console|Lucida Sans Unicode|Palatino Linotype|Tahoma|Trebuchet|Verdana|Symbol|Webdings|Wingdings|MS Sans Serif|MS Serif|Calibri).*";
+        Mapper fontMapper = new IdentityPlusMapper();
+        fontMapper.put("Calibri", PhysicalFonts.get("Calibri"));
+        PhysicalFonts.setRegex(regex);
         WordprocessingMLPackage wordMLPackage;
         try {
-            wordMLPackage = WordprocessingMLPackage.load(new File(arquivoOrigem));
 
+            wordMLPackage = WordprocessingMLPackage.load(new File(arquivoOrigem));
+            wordMLPackage.setFontMapper(fontMapper);
             //     Mapper fontMapper = new BestMatchingMapper();
             //    wordMLPackage.setFontMapper(fontMapper);
             //     PhysicalFont font = PhysicalFonts.getPhysicalFonts().get("Arial");
             //    fontMapper.getFontMappings().put("Calibri", font);
             OutputStream os = new java.io.FileOutputStream(new File(pArquivoDestino));
+
             Docx4J.toPDF(wordMLPackage, os);
 
             //     PdfConversion c = new org.docx4j.convert.out.pdf.viaXSLFO.Conversion(wordMLPackage);

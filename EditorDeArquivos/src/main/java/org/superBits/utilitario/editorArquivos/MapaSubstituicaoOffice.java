@@ -30,6 +30,9 @@ import javax.xml.bind.JAXBElement;
 import org.coletivojava.fw.api.tratamentoErros.FabErro;
 import org.docx4j.XmlUtils;
 import org.docx4j.dml.wordprocessingDrawing.Inline;
+import org.docx4j.fonts.IdentityPlusMapper;
+import org.docx4j.fonts.Mapper;
+import org.docx4j.fonts.PhysicalFonts;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage;
@@ -383,14 +386,15 @@ public class MapaSubstituicaoOffice extends MapaSubstituicaoArquivo {
     }
 
     private void substituirOfficeModoManual() {
-
+        Mapper fontMapper = new IdentityPlusMapper();
+        fontMapper.put("Calibri", PhysicalFonts.get("Calibri"));
         WordprocessingMLPackage mlp = null;
 
         //  List<TextoOfficeSubstituivel> textoSubstituivel = getTodosElementosDesteTipoNoObjeto(mlp, Tex)
         try {
             System.out.println("Processando" + arquivo.getAbsolutePath());
             mlp = WordprocessingMLPackage.load(arquivo);
-
+            mlp.setFontMapper(fontMapper);
             List<TextoOfficeSubstituivel> textosSubstituiveis = listaTextosSubstituiveis(mlp);
             List<String> controleListasSubstituidas = new ArrayList<>();
             for (TextoOfficeSubstituivel textoSub : textosSubstituiveis) {
