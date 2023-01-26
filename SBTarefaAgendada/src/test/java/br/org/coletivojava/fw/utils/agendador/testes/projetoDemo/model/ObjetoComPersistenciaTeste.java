@@ -5,23 +5,20 @@
  */
 package br.org.coletivojava.fw.utils.agendador.testes.projetoDemo.model;
 
-import com.super_bits.modulosSB.Persistencia.registro.persistidos.EntidadeSimples;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoCampo;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoObjetoSB;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campo.FabTipoAtributoObjeto;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.ItemSimples;
 
 /**
  *
  * @author desenvolvedor
  */
-@Entity
 @InfoObjetoSB(tags = "Entidade Teste", plural = "Entidades Testes")
-public class ObjetoComPersistenciaTeste extends EntidadeSimples {
+public class ObjetoComPersistenciaTeste extends ItemSimples {
 
     @InfoCampo(tipo = FabTipoAtributoObjeto.ID)
-    @Id
+
     private int id;
     @InfoCampo(tipo = FabTipoAtributoObjeto.AAA_NOME)
     private String descricao;

@@ -5,14 +5,11 @@
  */
 package br.org.coletivojava.fw.utils.agendador;
 
-import br.org.coletivojava.fw.utils.agendador.testes.projetoDemo.config.ConfigCoreTestesAgendamento;
-import br.org.coletivojava.fw.utils.agendador.testes.projetoDemo.config.ConfigPersistenciaDemonstracaoAgenda;
-import br.org.coletivojava.fw.utils.agendador.testes.projetoDemo.controller.FabAcoesDemosntrativoAgendador;
 import br.org.coletivojava.fw.utils.agendador.testes.projetoDemo.model.ObjetoComPersistenciaTeste;
-import com.super_bits.modulosSB.Persistencia.ConfigGeral.SBPersistencia;
-import com.super_bits.modulosSB.Persistencia.dao.UtilSBPersistencia;
+
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreDataHora;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.ItensGenericos.basico.UsuarioAnonimo;
 
 import java.util.Date;
 import org.junit.Test;
@@ -26,17 +23,16 @@ public class UtilSBAgendadorTarefasTest extends TesteJunit {
 
     @Test
     public void testAgendarTarefa() {
-        ObjetoComPersistenciaTeste obj = new ObjetoComPersistenciaTeste();
-        obj.setId(666);
-        obj.setNome("Apenas Teste");
-        UtilSBPersistencia.mergeRegistro(obj);
+
         AcaoAgendada novaAcao = new AcaoAgendada(
-                FabAcoesDemosntrativoAgendador.ACAO_DEMONSTRACAO_CTR_ACAO_DE_ENTIDADE_SIMPLES,
+                //FabAcoesDemosntrativoAgendador.ACAO_DEMONSTRACAO_CTR_ACAO_DE_ENTIDADE_SIMPLES,
+                null,
                 UtilSBCoreDataHora.incrementaSegundos(new Date(), 10),
-                obj);
+                new UsuarioAnonimo());
         novaAcao.agendar();
         AcaoAgendada novaAcao2 = new AcaoAgendada(
-                FabAcoesDemosntrativoAgendador.ACAO_DEMONSTRACAO_CTR_SEM_PARAMETRO,
+                //FabAcoesDemosntrativoAgendador.ACAO_DEMONSTRACAO_CTR_SEM_PARAMETRO,
+                null,
                 UtilSBCoreDataHora.incrementaSegundos(new Date(), 10));
         novaAcao2.agendar();
         while (true) {
@@ -51,8 +47,8 @@ public class UtilSBAgendadorTarefasTest extends TesteJunit {
 
     @Override
     protected void configAmbienteDesevolvimento() {
-        SBCore.configurar(new ConfigCoreTestesAgendamento(), SBCore.ESTADO_APP.DESENVOLVIMENTO);
-        SBPersistencia.configuraJPA(new ConfigPersistenciaDemonstracaoAgenda());
+        //SBCore.configurar(new ConfigCoreTestesAgendamento(), SBCore.ESTADO_APP.DESENVOLVIMENTO);
+        //SBPersistencia.configuraJPA(new ConfigPersistenciaDemonstracaoAgenda());
     }
 
 }

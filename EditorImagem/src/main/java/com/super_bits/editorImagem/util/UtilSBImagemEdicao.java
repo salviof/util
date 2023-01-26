@@ -355,6 +355,7 @@ public abstract class UtilSBImagemEdicao {
         try {
             ImagePlus img = new ImagePlus("teste", pImagem);
             ImageProcessor proc = img.getProcessor();
+
             proc.rotate(graus);
 
             return proc.getBufferedImage();
@@ -362,6 +363,44 @@ public abstract class UtilSBImagemEdicao {
             SBCore.RelatarErro(FabErro.SOLICITAR_REPARO, "Erro aplicando blur em imagem", e);
             return pImagem;
         }
+    }
+
+    public static BufferedImage rotacionarParaDireita90Graus(BufferedImage pImagem) {
+        try {
+            ImagePlus img = new ImagePlus("teste", pImagem);
+            ImageProcessor proc = img.getProcessor();
+
+            proc.rotateRight();
+
+            return proc.getBufferedImage();
+        } catch (Exception e) {
+            SBCore.RelatarErro(FabErro.SOLICITAR_REPARO, "Erro aplicando blur em imagem", e);
+            return pImagem;
+        }
+    }
+
+    public static BufferedImage rotacionar90GrausMetodo2(BufferedImage img) {
+
+        // Getting Dimensions of image
+        int width = img.getWidth();
+        int height = img.getHeight();
+
+        // Creating a new buffered image
+        BufferedImage newImage = new BufferedImage(
+                img.getHeight(), img.getWidth(), img.getType());
+
+        // creating Graphics in buffered image
+        Graphics2D g2 = newImage.createGraphics();
+
+        // Rotating image by degrees using toradians()
+        // method
+        // and setting new dimension t it
+        g2.rotate(Math.toRadians(90), width / 2,
+                height / 2);
+        g2.drawImage(img, null, 0, 0);
+
+        // Return rotated buffer image
+        return newImage;
     }
 
 }

@@ -34,12 +34,7 @@
             <artifactId>SBTestes</artifactId>
             <version>1.0.0-RC-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>br.org.coletivoJava.fw</groupId>
-            <artifactId>SBPersistencia</artifactId>
-            <version>1.0.0-RC-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
+
 
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
@@ -54,12 +49,7 @@
             <scope>test</scope>
 
         </dependency>
-        <dependency>
-            <groupId>br.org.coletivoJava.fw.modulos</groupId>
-            <artifactId>SBAcessosModel</artifactId>
-            <version>1.0.0-RC-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
+       
 
 
 

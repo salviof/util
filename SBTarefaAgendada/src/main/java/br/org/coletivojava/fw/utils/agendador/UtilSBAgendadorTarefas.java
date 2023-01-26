@@ -6,9 +6,12 @@
 package br.org.coletivojava.fw.utils.agendador;
 
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
+import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ItfAcaoControllerAutoExecucao;
 import com.super_bits.modulosSB.SBCore.modulos.fabrica.ItfFabricaAcoes;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfBeanSimples;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import org.quartz.Scheduler;
 import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
@@ -53,14 +56,40 @@ public class UtilSBAgendadorTarefas {
 
     public static void agendarTarefa(AcaoAgendada pAcaoAgendada) {
         JobDetail tarefa = pAcaoAgendada.getJobDetailQuartz();
-        Trigger gatilho = pAcaoAgendada.getTriggerQuartz();
+        Trigger gatilhoNovo = pAcaoAgendada.getTriggerQuartz();
+
+        JobKey chaveTarefa = new JobKey(pAcaoAgendada.getIdentificacaoTarefa(), SBCore.getGrupoProjeto());
+
         try {
-            if (!(getAgendador().checkExists(new JobKey(pAcaoAgendada.getIdentificacaoTarefa(), SBCore.getGrupoProjeto())))) {
-                getAgendador().scheduleJob(tarefa, gatilho);
+            if (!(getAgendador().checkExists(chaveTarefa))) {
+
+                getAgendador().scheduleJob(tarefa, gatilhoNovo);
+            } else {
+                List<? extends Trigger> triggers = getAgendador().getTriggersOfJob(chaveTarefa);
+                for (Trigger gatilho : triggers) {
+                    System.out.println("Gatilho inicio=" + gatilho.getStartTime());
+                    System.out.println("Gatilho fim=" + gatilho.getEndTime());
+                    gatilho.getFinalFireTime();
+
+                }
             }
         } catch (Throwable t) {
             SBCore.RelatarErro(FabErro.SOLICITAR_REPARO, "Erro agendando tarefa", t);
         }
+    }
+
+    public static void agendarAutoExecucaoAcaoProxima(ItfAcaoControllerAutoExecucao pAcao) {
+        if (pAcao == null) {
+            System.out.println("Enviou nulo para autoexecução de ação");
+            return;
+        }
+        Date proximoHorario = pAcao.getTipoAutoExecucao().getEstrategia().getEstrategiaImplementacao(new Date(), pAcao.getTipoAutoExecucao()).getProximoHorarioAgendamento();
+        SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        System.out.println("Ação autoexecução agendada para " + formatoData.format(proximoHorario) + " " + pAcao.getNomeUnico());
+        if (proximoHorario != null) {
+            agendarTarefa(pAcao.getEnumAcaoDoSistema(), proximoHorario);
+        }
+
     }
 
 }
