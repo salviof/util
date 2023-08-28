@@ -12,7 +12,7 @@ import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreOutputs;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringBuscaTrecho;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringFiltros;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringNomeArquivosEDiretorios;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringVariaveisEmTexto;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringVariaveisEntreCaracteres;
 
 import com.super_bits.modulosSB.SBCore.UtilGeral.stringSubstituicao.MapaSubstituicaoArquivo;
 import java.io.ByteArrayOutputStream;
@@ -157,7 +157,7 @@ public class MapaSubstituicaoOffice extends MapaSubstituicaoArquivo {
         for (String chave : mapaSubstituicao.keySet()) {
             String valor = mapaSubstituicao.get(chave);
 
-            List<String> variaveisEncontradas = UtilSBCoreStringVariaveisEmTexto.extrairVariaveisEntreColchete(valor);
+            List<String> variaveisEncontradas = UtilSBCoreStringVariaveisEntreCaracteres.extrairVariaveisEntreColchete(valor);
             if (!variaveisEncontradas.isEmpty()) {
                 for (String variavel : variaveisEncontradas) {
                     if (mapaSubstituicao.containsKey(variavel)) {
@@ -174,7 +174,7 @@ public class MapaSubstituicaoOffice extends MapaSubstituicaoArquivo {
             Map<String, String> mapaSubVariaveis = mapaSubstituicaoListas.get(chaveprincipal);
             for (String chave : mapaSubVariaveis.keySet()) {
                 String valor = mapaSubVariaveis.get(chave);
-                List<String> variaveisEncontradas = UtilSBCoreStringVariaveisEmTexto.extrairVariaveisEntreColchete(valor);
+                List<String> variaveisEncontradas = UtilSBCoreStringVariaveisEntreCaracteres.extrairVariaveisEntreColchete(valor);
                 if (!variaveisEncontradas.isEmpty()) {
                     for (String variavel : variaveisEncontradas) {
                         if (mapaSubstituicao.containsKey(variavel)) {
