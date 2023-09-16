@@ -11,6 +11,7 @@ import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basic
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,11 +21,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jxl.Cell;
 import jxl.CellType;
+import jxl.DateCell;
 
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
+import jxl.write.biff.DateRecord;
 import org.coletivojava.fw.api.tratamentoErros.FabErro;
 
 /**
@@ -108,9 +111,14 @@ public class ImportacaoExcel<T> implements Serializable {
                             break;
 
                         case LETRAS:
-
-                            pItem.getCampoByNomeOuAnotacao(pNomeCampo).setValor(pCelulaExcelValorCampo.getContents());
-
+                            if (pCelulaExcelValorCampo instanceof DateCell) {
+                                DateCell data = (DateCell) pCelulaExcelValorCampo;
+                                SimpleDateFormat datahoraSistemaFr = new SimpleDateFormat("dd/MM/yy");
+                                String valor = datahoraSistemaFr.format(data.getDate());
+                                pItem.getCampoByNomeOuAnotacao(pNomeCampo).setValor(valor);
+                            } else {
+                                pItem.getCampoByNomeOuAnotacao(pNomeCampo).setValor(pCelulaExcelValorCampo.getContents());
+                            }
                             break;
 
                         case DATAS:
