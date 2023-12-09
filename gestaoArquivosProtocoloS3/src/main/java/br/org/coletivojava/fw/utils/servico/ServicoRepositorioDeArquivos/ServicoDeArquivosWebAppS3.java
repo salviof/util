@@ -69,6 +69,14 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
 
     }
 
+    public String getEnderecoLocalAlternativo(ItfBeanSimplesSomenteLeitura entidade, String pCategoria, String pNome) {
+        if (entidade.getId() == 0) {
+            return super.getEndrLocalArquivoTemporario(pCategoria, entidade.getClass().getSimpleName(), pNome);
+        } else {
+            return super.getEndrLocalArquivoItem(entidade, pNome, pCategoria);
+        }
+    }
+
     @Override
     public boolean salvarArquivo(ItfBeanSimplesSomenteLeitura entidade, byte[] arqivo, String pCategoria, String pNome) {
         try {
@@ -201,19 +209,39 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
     }
 
     @Override
-    public boolean salvarImagemTamanhoMedio(ItfBeanSimplesSomenteLeitura entidade, InputStream foto) {
+    public boolean salvarImagemTamanhoMedio(ItfBeanSimplesSomenteLeitura pEntidade, InputStream foto) {
 
-        return salvarArquivo(entidade, UtilSBCoreBytes.gerarBytePorInputstream(foto), FabTipoAtributoObjeto.IMG_MEDIA.toString(), "imagemLogoMedio.jpg");
+        String categoria = FabTipoAtributoObjeto.IMG_MEDIA.toString();
+        if (pEntidade instanceof ItfBeanSimples) {
+            if (!((ItfBeanSimples) pEntidade).getCampoInstanciadoByAnotacao(FabTipoAtributoObjeto.IMG_MEDIA).isCampoNaoInstanciado()) {
+                categoria = ((ItfBeanSimples) pEntidade).getCampoInstanciadoByAnotacao(FabTipoAtributoObjeto.IMG_MEDIA).getNomeCamponaClasse();
+            }
+        }
+
+        return salvarArquivo(pEntidade, UtilSBCoreBytes.gerarBytePorInputstream(foto), categoria, "imagemLogoMedio.jpg");
     }
 
     @Override
-    public boolean salvarImagemTamanhoPequeno(ItfBeanSimplesSomenteLeitura entidade, InputStream foto) {
-        return salvarArquivo(entidade, UtilSBCoreBytes.gerarBytePorInputstream(foto), FabTipoAtributoObjeto.IMG_PEQUENA.toString(), "imagemLogoMedio.jpg");
+    public boolean salvarImagemTamanhoPequeno(ItfBeanSimplesSomenteLeitura pEntidade, InputStream foto) {
+        String categoria = FabTipoAtributoObjeto.IMG_PEQUENA.toString();
+        if (pEntidade instanceof ItfBeanSimples) {
+            if (!((ItfBeanSimples) pEntidade).getCampoInstanciadoByAnotacao(FabTipoAtributoObjeto.IMG_PEQUENA).isCampoNaoInstanciado()) {
+                categoria = ((ItfBeanSimples) pEntidade).getCampoInstanciadoByAnotacao(FabTipoAtributoObjeto.IMG_PEQUENA).getNomeCamponaClasse();
+            }
+        }
+        return salvarArquivo(pEntidade, UtilSBCoreBytes.gerarBytePorInputstream(foto), categoria, "imagemLogoPequena.jpg");
     }
 
     @Override
-    public boolean salvarImagemTamanhoGrande(ItfBeanSimplesSomenteLeitura entidade, InputStream foto) {
-        return salvarArquivo(entidade, UtilSBCoreBytes.gerarBytePorInputstream(foto), FabTipoAtributoObjeto.IMG_GRANDE.toString(), "imagemLogoMedio.jpg");
+    public boolean salvarImagemTamanhoGrande(ItfBeanSimplesSomenteLeitura pEntidade, InputStream foto) {
+
+        String categoria = FabTipoAtributoObjeto.IMG_MEDIA.toString();
+        if (pEntidade instanceof ItfBeanSimples) {
+            if (!((ItfBeanSimples) pEntidade).getCampoInstanciadoByAnotacao(FabTipoAtributoObjeto.IMG_GRANDE).isCampoNaoInstanciado()) {
+                categoria = ((ItfBeanSimples) pEntidade).getCampoInstanciadoByAnotacao(FabTipoAtributoObjeto.IMG_GRANDE).getNomeCamponaClasse();
+            }
+        }
+        return salvarArquivo(pEntidade, UtilSBCoreBytes.gerarBytePorInputstream(foto), categoria, "imagemLogoGrande.jpg");
     }
 
     @Override
@@ -445,6 +473,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
 
         }
         if (cpInstanciado != null) {
+
             campo = ((ItfBeanSimples) item).getCampoInstanciadoByAnotacao(tipo).getNomeCamponaClasse();
 
         }

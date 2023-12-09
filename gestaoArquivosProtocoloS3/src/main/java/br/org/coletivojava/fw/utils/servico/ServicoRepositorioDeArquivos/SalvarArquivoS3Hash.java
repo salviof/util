@@ -15,24 +15,17 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.super_bits.modulosSB.Persistencia.dao.UtilSBPersistencia;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.arquivosConfiguracao.ConfigModulo;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreBytes;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreReflexaoObjeto;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringNomeArquivosEDiretorios;
 import java.util.logging.Level;
-import br.org.coletivojava.fw.utils.servico.ServicoRepositorioDeArquivos.ServicoDeArquivosWebAppS3.*;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.google.common.collect.Lists;
+import com.google.common.io.ByteSource;
+import com.super_bits.modulosSB.Persistencia.dao.consultaDinamica.ConsultaDinamicaDeEntidade;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UTilSBCoreInputs;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreOutputs;
 import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.SynchronousQueue;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import org.coletivojava.fw.api.tratamentoErros.FabErro;
 
@@ -56,6 +49,10 @@ public class SalvarArquivoS3Hash extends Thread {
         CONSULTAR, ATUALIZAR
     }
 
+    public boolean isTrabalhoConcluidoComsucesso() {
+        return trabalhoConcluidoComsucesso;
+    }
+
     public SalvarArquivoS3Hash(ConfigModulo pConfigModuloArquivosEnts3, Class pClasseEntidade, int pIdEntidade, String pCampoReferencia, byte[] pArquivo, String pNomeArquivo) {
 
         arquivo = pArquivo;
@@ -71,24 +68,35 @@ public class SalvarArquivoS3Hash extends Thread {
         try {
 
             if (ServicoDeArquivosWebAppS3.ultimosArquivosSalvos.contains(phashIdentificadorArquivo)) {
-                return true;
+                EntityManager emPesquisaHahsArquivoSAlvo = UtilSBPersistencia.getEntyManagerPadraoNovo();
+                try {
+                    ConsultaDinamicaDeEntidade consultaHAsh = new ConsultaDinamicaDeEntidade(HashsDeArquivoDeEntidade.class, emPesquisaHahsArquivoSAlvo);
+                    consultaHAsh.addcondicaoCampoIgualA("hashCalculado", phashIdentificadorArquivo);
+                    return !consultaHAsh.resultadoRegistros().isEmpty();
+                } finally {
+                    UtilSBPersistencia.fecharEM(emPesquisaHahsArquivoSAlvo);
+                }
+
             }
             if (ServicoDeArquivosWebAppS3.ultimosArquivosSalvos.size() > 10) {
                 ServicoDeArquivosWebAppS3.ultimosArquivosSalvos.remove(0);
             }
             ServicoDeArquivosWebAppS3.ultimosArquivosSalvos.add(phashIdentificadorArquivo);
-
             String extencao = UtilSBCoreStringNomeArquivosEDiretorios.getExtencaoNomeArquivoSemPonto(pNomeArquivo);
             AWSCredentials credentials = new BasicAWSCredentials(pChavePublica, pChavePrivada);
             AmazonS3 s3client = new AmazonS3Client(credentials);
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.addUserMetadata("extencaoArquivo", extencao);
             metadata.addUserMetadata("nomeArquivo", pNomeArquivo);
+            metadata.setContentLength(arquivo.length);
             //metadata.setUserMetadata(userMetadata);
-            PutObjectResult putResult = s3client.putObject(new PutObjectRequest(bucket,
+            PutObjectRequest requisicao = new PutObjectRequest(bucket,
                     phashIdentificadorArquivo,
-                    new ByteArrayInputStream(arquivo), metadata).
-                    withCannedAcl(CannedAccessControlList.PublicRead));
+                    ByteSource.wrap(arquivo).openStream(), metadata).
+                    withCannedAcl(CannedAccessControlList.PublicRead);
+
+            requisicao.setSdkRequestTimeout(-1);
+            PutObjectResult putResult = s3client.putObject(requisicao);
 
             return true;
         } catch (Throwable t) {
@@ -150,7 +158,16 @@ public class SalvarArquivoS3Hash extends Thread {
             String identificadorHAshArquivo = ServicoDeArquivosWebAppS3.getIdentificadorArquivo(arquivo, extencaoDoArquivp);
             HashsDeArquivoDeEntidade arquivoHashAnterior = getControleDeArquivosDeEntidade(nomeClasseEntidade, campoReferencia, String.valueOf(idEntidade), acaoControleHashDeArquivo.CONSULTAR, null);
             if (arquivoHashAnterior != null && arquivoHashAnterior.getHashCalculado().equals(identificadorHAshArquivo)) {
-                trabalhoConcluidoComsucesso = true;
+
+                EntityManager emPesquisaHahsArquivoSAlvo = UtilSBPersistencia.getEntyManagerPadraoNovo();
+                try {
+                    ConsultaDinamicaDeEntidade consultaHAsh = new ConsultaDinamicaDeEntidade(HashsDeArquivoDeEntidade.class, emPesquisaHahsArquivoSAlvo);
+                    consultaHAsh.addcondicaoCampoIgualA("hashCalculado", identificadorHAshArquivo);
+                    trabalhoConcluidoComsucesso = !consultaHAsh.resultadoRegistros().isEmpty();
+                } finally {
+                    UtilSBPersistencia.fecharEM(emPesquisaHahsArquivoSAlvo);
+                }
+
                 trabalhoRealizado = true;
                 return;
             } else {
