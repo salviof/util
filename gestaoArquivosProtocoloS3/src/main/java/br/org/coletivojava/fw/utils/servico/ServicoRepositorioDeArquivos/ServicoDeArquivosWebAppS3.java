@@ -225,7 +225,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
     public boolean salvarImagemTamanhoPequeno(ItfBeanSimplesSomenteLeitura pEntidade, InputStream foto) {
         String categoria = FabTipoAtributoObjeto.IMG_PEQUENA.toString();
         if (pEntidade instanceof ItfBeanSimples) {
-            if (!((ItfBeanSimples) pEntidade).getCampoInstanciadoByAnotacao(FabTipoAtributoObjeto.IMG_PEQUENA).isCampoNaoInstanciado()) {
+            if (((ItfBeanSimples) pEntidade).isTemCampoAnotado(FabTipoAtributoObjeto.IMG_PEQUENA)) {
                 categoria = ((ItfBeanSimples) pEntidade).getCampoInstanciadoByAnotacao(FabTipoAtributoObjeto.IMG_PEQUENA).getNomeCamponaClasse();
             }
         }
