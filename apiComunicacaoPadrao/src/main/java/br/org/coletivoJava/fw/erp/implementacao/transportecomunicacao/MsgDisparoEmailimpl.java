@@ -16,7 +16,7 @@ public class MsgDisparoEmailimpl
     @Override
     public void dispararInicioComunicacao(ItfComunicacao comunicacao) {
 
-        if (UtilSBCoreEmail.enviarPorServidorPadrao(comunicacao.getDestinatario().getEmailsConcatenados(),
+        if (UtilSBCoreEmail.enviarPorServidorPadraoV2(comunicacao.getDestinatario().getEmailsConcatenados(),
                 comunicacao.getMensagem(), comunicacao.getAssunto())) {
             comunicacao.setStatusComunicacao(FabStatusComunicacao.ENVIADO);
         } else {
