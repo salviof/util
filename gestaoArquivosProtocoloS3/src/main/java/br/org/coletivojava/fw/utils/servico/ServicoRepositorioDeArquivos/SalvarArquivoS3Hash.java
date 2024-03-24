@@ -72,7 +72,21 @@ public class SalvarArquivoS3Hash extends Thread {
                 try {
                     ConsultaDinamicaDeEntidade consultaHAsh = new ConsultaDinamicaDeEntidade(HashsDeArquivoDeEntidade.class, emPesquisaHahsArquivoSAlvo);
                     consultaHAsh.addcondicaoCampoIgualA("hashCalculado", phashIdentificadorArquivo);
-                    return !consultaHAsh.resultadoRegistros().isEmpty();
+                    //Arquivo já existe no sistema
+
+                    if (!consultaHAsh.resultadoRegistros().isEmpty()) {
+                        return true;
+                    } else {
+                        sleep(10000);
+                    }
+                    consultaHAsh = new ConsultaDinamicaDeEntidade(HashsDeArquivoDeEntidade.class, emPesquisaHahsArquivoSAlvo);
+                    consultaHAsh.addcondicaoCampoIgualA("hashCalculado", phashIdentificadorArquivo);
+                    //Arquivo já existe no sistema
+
+                    if (!consultaHAsh.resultadoRegistros().isEmpty()) {
+                        return true;
+                    }
+                    //return !consultaHAsh.resultadoRegistros().isEmpty();
                 } finally {
                     UtilSBPersistencia.fecharEM(emPesquisaHahsArquivoSAlvo);
                 }
@@ -106,7 +120,16 @@ public class SalvarArquivoS3Hash extends Thread {
 
     }
 
-    public synchronized HashsDeArquivoDeEntidade getControleDeArquivosDeEntidade(String pEntid, String pCampo, String pID, acaoControleHashDeArquivo pTIpoAcao, HashsDeArquivoDeEntidade pHashAtualizado) {
+    /**
+     *
+     * @param pEntid
+     * @param pCampo
+     * @param pID
+     * @param pTIpoAcao
+     * @param pHashAtualizado
+     * @return
+     */
+    private synchronized HashsDeArquivoDeEntidade getControleDeArquivosDeEntidade(String pEntid, String pCampo, String pID, acaoControleHashDeArquivo pTIpoAcao, HashsDeArquivoDeEntidade pHashAtualizado) {
 
         switch (pTIpoAcao) {
             case CONSULTAR:
@@ -156,7 +179,8 @@ public class SalvarArquivoS3Hash extends Thread {
         try {
             String extencaoDoArquivp = UtilSBCoreStringNomeArquivosEDiretorios.getExtencaoNomeArquivo(nomeArquivo).replace(".", "");
             String identificadorHAshArquivo = ServicoDeArquivosWebAppS3.getIdentificadorArquivo(arquivo, extencaoDoArquivp);
-            HashsDeArquivoDeEntidade arquivoHashAnterior = getControleDeArquivosDeEntidade(nomeClasseEntidade, campoReferencia, String.valueOf(idEntidade), acaoControleHashDeArquivo.CONSULTAR, null);
+            HashsDeArquivoDeEntidade arquivoHashAnterior = getControleDeArquivosDeEntidade(nomeClasseEntidade, campoReferencia, String.valueOf(idEntidade),
+                    acaoControleHashDeArquivo.CONSULTAR, null);
             if (arquivoHashAnterior != null && arquivoHashAnterior.getHashCalculado().equals(identificadorHAshArquivo)) {
 
                 EntityManager emPesquisaHahsArquivoSAlvo = UtilSBPersistencia.getEntyManagerPadraoNovo();
@@ -173,7 +197,8 @@ public class SalvarArquivoS3Hash extends Thread {
             } else {
 
                 try {
-                    if (!salvarArquivoS3(arquivo, nomeArquivo, configModuloArquivosEnts3.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_CHAVE_PUBLICA), configModuloArquivosEnts3.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_CHAVE_SECRETA),
+                    if (!salvarArquivoS3(arquivo, nomeArquivo, configModuloArquivosEnts3.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_CHAVE_PUBLICA),
+                            configModuloArquivosEnts3.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_CHAVE_SECRETA),
                             configModuloArquivosEnts3.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_BUCKET), identificadorHAshArquivo)) {
                         throw new UnsupportedOperationException("Falha salvando arquivo no serviço S3");
                     }
