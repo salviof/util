@@ -133,14 +133,12 @@ public class SalvarArquivoS3Hash extends Thread {
 
         switch (pTIpoAcao) {
             case CONSULTAR:
-                String jpaQl = ServicoDeArquivosWebAppS3.getHSQLPesquisaHashsDeArquivoDeEntidade(pEntid, pCampo, pID);
                 EntityManager em = UtilSBPersistencia.getEntyManagerPadraoNovo();
-
-                HashsDeArquivoDeEntidade arquivoHashAnterior = (HashsDeArquivoDeEntidade) UtilSBPersistencia.getRegistroByJPQL(jpaQl,
-                        HashsDeArquivoDeEntidade.class, em);
-                UtilSBPersistencia.fecharEM(em);
-                return arquivoHashAnterior;
-
+                try {
+                    return UtilSBServicoArqEntidadeS3.getHashArquivoEntidade(em, pEntid, pCampo, pID);
+                } finally {
+                    UtilSBPersistencia.fecharEM(em);
+                }
             case ATUALIZAR:
                 HashsDeArquivoDeEntidade hashatualizado;
                 String novoHash = pHashAtualizado.getHashCalculado();

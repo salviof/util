@@ -101,6 +101,21 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
                 if (arquivarnomeobjetoNaentidade) {
                     ((ItfBeanSimples) entidade).getCampoInstanciadoByNomeOuAnotacao(pCategoria).setValor(UtilSBCoreStringSlugs.gerarSlugSimples(pNome));
                 }
+                //Apagando arquivo local caso sucesso
+                String caminhoArquivo;
+                if (entidade.getId() == 0) {
+                    caminhoArquivo = getEndrLocalArquivoTemporario(pCategoria, entidade.getClass().getSimpleName(), pNome);
+                } else {
+                    caminhoArquivo = getEndrLocalArquivoItem(entidade, pNome, pCategoria);
+                }
+                try {
+                    File arquivotemp = new File(caminhoArquivo);
+                    if (arquivotemp.exists()) {
+                        arquivotemp.delete();
+                    }
+                } catch (Throwable t) {
+
+                }
                 return true;
             } else {
                 System.out.println("Falha Salvando no S3, tentando salvar em arquivo local");
@@ -181,26 +196,6 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
         }
 
         return UtilSBCoreArquivos.getHashDoByteArray(pArquivo) + "." + pExtencaoArquivo;
-    }
-
-    protected static String getHSQLPesquisaHashsDeArquivoDeEntidade(String pNomeEntidade, String pCampo, String id) {
-        String jpql = " from " + HashsDeArquivoDeEntidade.class.getSimpleName()
-                + " where entidade ='" + pNomeEntidade + "'"
-                + " and idEntidade=" + id
-                + " and atributo='" + pCampo + "'";
-
-        return jpql;
-
-    }
-
-    protected static String getHSQLPesquisaHashDoArquivo(String pIdentificadorHashArquivo, String pNomeEntidade, String pCampo, String id) {
-        String jpql = " from " + HashsDeArquivoDeEntidade.class.getSimpleName()
-                + " where hashCalculado='" + pIdentificadorHashArquivo + "' and entidade ='" + pNomeEntidade
-                + "' and atributo='" + pCampo + "'"
-                + " and idEntidade=" + id;
-
-        return jpql;
-
     }
 
     @Override
@@ -315,15 +310,11 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
             String nomeImagemRepresentanteEntidade = nomeArquivo;
             ItfCampoInstanciado cp = objeto.getCampoInstanciadoByNomeOuAnotacao(pCampo);
 
-            String nomecampoidentificador = cp.getNomeCamponaClasse();
-
-            String hql = getHSQLPesquisaHashsDeArquivoDeEntidade(UtilSBCoreReflexaoObjeto.getClassExtraindoProxy(pItem.getClass().getSimpleName()).getSimpleName(),
-                    nomecampoidentificador, String.valueOf(pItem.getId()));
-            String valor = (String) UtilSBPersistencia.getRegistroByJPQL("select hashCalculado " + hql);
+            String hash = (String) UtilSBServicoArqEntidadeS3.getHashDoArquivo(cp);
             if (conectadoComS3) {
-                if (valor != null) {
-
-                    return "https://" + configModulo.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_BUCKET) + ".s3.amazonaws.com/" + valor;
+                if (hash != null) {
+                    removerItemTemporario(pItem, pCampo, nomeArquivo, hash);
+                    return "https://" + configModulo.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_BUCKET) + ".s3.amazonaws.com/" + hash;
                 } else {
 
                     String arquivoLocal = centralGenerica.getEndrLocalArquivoItem(pItem, nomeArquivo, pCampo);
@@ -331,7 +322,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
                     if (arquivo.exists()) {
                         try {
 
-                            new SalvarArquivoS3Hash(configModulo, pItem.getClass(), pItem.getId(), nomecampoidentificador, UtilSBCoreBytes.gerarBytesPorArquivo(arquivo), nomeImagemRepresentanteEntidade).start();
+                            new SalvarArquivoS3Hash(configModulo, pItem.getClass(), pItem.getId(), cp.getNomeCamponaClasse(), UtilSBCoreBytes.gerarBytesPorArquivo(arquivo), nomeImagemRepresentanteEntidade).start();
 
                             return centralGenerica.getEndrLocalArquivoItem(pItem, nomeArquivo, pCampo);
                         } catch (Exception t) {
@@ -381,21 +372,22 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
             } else {
                 String nomecampoidentificador = cp.getNomeCamponaClasse();
             }
-            String hql = getHSQLPesquisaHashsDeArquivoDeEntidade(UtilSBCoreReflexaoObjeto.getClassExtraindoProxy(item.getClass().getSimpleName()).getSimpleName(),
+
+            String hashArquivoArmazenado = UtilSBServicoArqEntidadeS3.getHashDoArquivo(item.getClass().getSimpleName(),
                     nomeCampoidentificador, String.valueOf(item.getId()));
-            String valor = (String) UtilSBPersistencia.getRegistroByJPQL("select hashCalculado " + hql);
-
-            if (valor != null) {
-
-                return "https://" + configModulo.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_BUCKET) + ".s3.amazonaws.com/" + valor;
+            String arquivoLocal = centralGenerica.getEndrLocalImagem(item, tipo, pSessao);
+            if (hashArquivoArmazenado != null) {
+                removerArquivoImagemTemporario(item, tipo, pSessao, hashArquivoArmazenado);
+                return "https://" + configModulo.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_BUCKET) + ".s3.amazonaws.com/" + hashArquivoArmazenado;
             } else {
 
-                String arquivoLocal = centralGenerica.getEndrLocalImagem(item, tipo, pSessao);
                 File arquivo = new File(arquivoLocal);
                 if (arquivo.exists()) {
                     try {
                         if (s3configurado) {
-                            new SalvarArquivoS3Hash(configModulo, item.getClass(), item.getId(), nomeCampoidentificador, UtilSBCoreBytes.gerarBytesPorArquivo(arquivo), nomeImagemRepresentanteEntidade).start();
+                            SalvarArquivoS3Hash trheadSalvarArquivoS3 = new SalvarArquivoS3Hash(configModulo, item.getClass(), item.getId(), nomeCampoidentificador, UtilSBCoreBytes.gerarBytesPorArquivo(arquivo), nomeImagemRepresentanteEntidade);
+                            trheadSalvarArquivoS3.start();
+
                         }
                         return centralGenerica.getEndrLocalImagem(item, tipo, pSessao);
                     } catch (Exception t) {
@@ -435,12 +427,63 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
         return centralGenerica.getEntdrRemotoIMGPadraoPorTipoClasse(entidade);
     }
 
+    private void removerItemTemporario(ItfBeanSimplesSomenteLeitura pItem, String pCampo, String pNomeArquivo, String pHash) {
+
+        if (pHash != null) {
+            if (pItem.getId() > 0) {
+                new Thread() {
+                    @Override
+                    public void run() {
+                        String arquivoLocal = centralGenerica.getEndrLocalArquivoItem(pItem, pNomeArquivo, pCampo);
+                        File arquivoLocalTemporario = new File(arquivoLocal);
+                        if (arquivoLocalTemporario.exists()) {
+                            arquivoLocalTemporario.delete();
+                        }
+                    }
+
+                }.start();
+            }
+        }
+    }
+
+    private void removerArquivoImagemTemporario(ItfBeanSimplesSomenteLeitura item, FabTipoAtributoObjeto tipo, ItfSessao pSessao, String pHash) {
+        String arquivoLocal = centralGenerica.getEndrLocalImagem(item, tipo, pSessao);
+        if (pHash != null) {
+            if (item.getId() > 0) {
+                new Thread() {
+                    @Override
+                    public void run() {
+
+                        File arquivoLocalTemporario = new File(arquivoLocal);
+                        if (arquivoLocalTemporario.exists()) {
+                            arquivoLocalTemporario.delete();
+                        }
+                    }
+
+                }.start();
+            }
+        }
+    }
+
     @Override
     public String getEndrRemotoImagem(ItfBeanSimplesSomenteLeitura item, FabTipoAtributoObjeto tipo
     ) {
         inicioSetup();
+
         String campo = tipo.toString();
         ItfCampoInstanciado cpInstanciado = ((ItfBeanSimples) item).getCampoInstanciadoByAnotacao(tipo);
+        if (item.getId() > 0) {
+            String campoCategoria = tipo.name();
+            if (cpInstanciado != null) {
+                campoCategoria = cpInstanciado.getNomeCamponaClasse();
+            }
+            String hashArquivoArmazenado = UtilSBServicoArqEntidadeS3.getHashDoArquivo(item.getClass().getSimpleName(),
+                    campoCategoria, String.valueOf(item.getId()));
+            if (hashArquivoArmazenado != null) {
+                removerArquivoImagemTemporario(item, tipo, null, hashArquivoArmazenado);
+            }
+        }
+
         String nomeArquivo;
         FabTipoArquivoConhecido tipoConhecido = FabTipoArquivoConhecido.IMAGEM_WEB;
 
@@ -502,26 +545,25 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
                 throw new UnsupportedOperationException("Baixar arquivo ainda não é suportado via acesso direto ao bucket");
 
             }
-            String jpql = "select hashCalculado ".concat(getHSQLPesquisaHashsDeArquivoDeEntidade(pItem.getClass().getSimpleName(), categoria, String.valueOf(pItem.getId())));
-            EntityManager em = UtilSBPersistencia.getEntyManagerPadraoNovo();
+
             if (conectadoComS3) {
+
                 try {
-                    try {
-                        String hash = (String) UtilSBPersistencia.getRegistroByJPQL(jpql, em);
-                        if (hash == null) {
-                            throw new UnsupportedOperationException("Baixar arquivo ainda não é suportado via acesso direto ao bucket");
-                        }
-                        if (temproxy) {
-                            return "https://" + configModulo.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_DOMINIO_PROXY_S3) + "/" + hash;
-                        } else {
-                            return "https://" + configModulo.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_BUCKET) + ".s3.amazonaws.com/" + hash;
-                        }
-                    } catch (Throwable t) {
+                    String hash = UtilSBServicoArqEntidadeS3.getHashDoArquivo(pItem.getClass().getSimpleName(), categoria, String.valueOf(pItem.getId()));
+
+                    if (hash == null) {
                         throw new UnsupportedOperationException("Baixar arquivo ainda não é suportado via acesso direto ao bucket");
                     }
-                } finally {
-                    UtilSBPersistencia.fecharEM(em);
+
+                    if (temproxy) {
+                        return "https://" + configModulo.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_DOMINIO_PROXY_S3) + "/" + hash;
+                    } else {
+                        return "https://" + configModulo.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_BUCKET) + ".s3.amazonaws.com/" + hash;
+                    }
+                } catch (Throwable t) {
+                    throw new UnsupportedOperationException("Baixar arquivo ainda não é suportado via acesso direto ao bucket");
                 }
+
             } else {
                 throw new UnsupportedOperationException("s3 desconectado");
             }
@@ -636,7 +678,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
             final String pNomeCampo = pCampo.getNomeCamponaClasse();
             //final String pHashDoArquivo;
 
-            String hqlHashDeCampoInstanciado = getHSQLPesquisaHashsDeArquivoDeEntidade(pEntidade, pNomeCampo, pIdEntidade);
+            String hqlHashDeCampoInstanciado = UtilSBServicoArqEntidadeS3.getHSQLPesquisaHashsDeArquivoDeEntidade(pEntidade, pNomeCampo, pIdEntidade);
 
             Query consulta = em.createQuery(hqlHashDeCampoInstanciado);
             consulta.setMaxResults(1);
@@ -726,7 +768,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
     @Override
     public boolean isTemImagem(ItfBeanSimplesSomenteLeitura item, FabTipoAtributoObjeto tipo
     ) {
-        String jpql = getHSQLPesquisaHashsDeArquivoDeEntidade(item.getClass().getSimpleName(), tipo.toString(), String.valueOf(item.getId()));
+        String jpql = UtilSBServicoArqEntidadeS3.getHSQLPesquisaHashsDeArquivoDeEntidade(item.getClass().getSimpleName(), tipo.toString(), String.valueOf(item.getId()));
         String valor = (String) UtilSBPersistencia.getRegistroByJPQL("select hashCalculado " + jpql);
         if (valor == null) {
             return centralGenerica.isTemImagem(item, tipo); //To change body of generated methods, choose Tools | Templates.
@@ -750,7 +792,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
     @Override
     public boolean excluirArquivo(ItfCampoInstanciado pCampo) {
         try {
-            String hql = getHSQLPesquisaHashsDeArquivoDeEntidade(UtilSBCoreReflexaoObjeto.getClassExtraindoProxy(pCampo.getObjetoDoAtributo().getClass().getSimpleName()).getSimpleName(),
+            String hql = UtilSBServicoArqEntidadeS3.getHSQLPesquisaHashsDeArquivoDeEntidade(UtilSBCoreReflexaoObjeto.getClassExtraindoProxy(pCampo.getObjetoDoAtributo().getClass().getSimpleName()).getSimpleName(),
                     pCampo.getNomeCamponaClasse(), String.valueOf(pCampo.getObjetoDoAtributo().getId()));
             String valor = (String) UtilSBPersistencia.getRegistroByJPQL("select hashCalculado " + hql);
             if (ultimosArquivosSalvos.contains(valor)) {
@@ -775,15 +817,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
 
     @Override
     public String getHashArquivoDeEntidadeRegistrado(ItfCampoInstanciado pCampo) {
-        try {
-            String hql = getHSQLPesquisaHashsDeArquivoDeEntidade(UtilSBCoreReflexaoObjeto.getClassExtraindoProxy(pCampo.getObjetoDoAtributo().getClass().getSimpleName()).getSimpleName(),
-                    pCampo.getNomeCamponaClasse(), String.valueOf(pCampo.getObjetoDoAtributo().getId()));
-            String valor = (String) UtilSBPersistencia.getRegistroByJPQL("select hashCalculado " + hql);
-            return valor;
-        } catch (Throwable t) {
-            SBCore.RelatarErro(FabErro.SOLICITAR_REPARO, "Erro buscando identificador hash registrado de arquivo de entidade", t);
-            return null;
-        }
+        return UtilSBServicoArqEntidadeS3.getHashDoArquivo(pCampo);
 
     }
 
