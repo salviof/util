@@ -1,6 +1,7 @@
 //Sistema desenvolvido sob encomenda para processamento de placas veiculares em tempo real pela Super Bits Sistemas sob encomnda da Sphera Secucurity
 package com.super_bits.editorImagem.util;
 
+import com.super_bits.editorImagem.Resolucao;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import ij.ImagePlus;
 import ij.process.ImageProcessor;
@@ -17,9 +18,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.FileImageInputStream;
+import javax.imageio.stream.ImageInputStream;
 import org.coletivojava.fw.api.tratamentoErros.FabErro;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -401,6 +406,26 @@ public abstract class UtilSBImagemEdicao {
 
         // Return rotated buffer image
         return newImage;
+    }
+
+    public static Resolucao getResolucao(InputStream pInput, String extencao) {
+
+        try {
+            ImageInputStream stream = ImageIO.createImageInputStream(pInput);
+
+            ImageReader reader = ImageIO.getImageReaders(stream).next(); // TODO: Handle unsupported format
+            reader.setInput(stream);
+
+            int width = reader.getWidth(0);
+            int height = reader.getHeight(0);
+
+            reader.dispose();
+            return new Resolucao(height, width);
+        } catch (Throwable t) {
+
+        }
+
+        return null;
     }
 
 }

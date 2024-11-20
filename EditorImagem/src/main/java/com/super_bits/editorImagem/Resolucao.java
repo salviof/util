@@ -22,8 +22,8 @@ public class Resolucao implements ItfResolucao {
         altura = pAltura;
         largura = pLargura;
     }
-    private int largura;
-    private int altura;
+    private final int largura;
+    private final int altura;
 
     @Override
     public int getLargura() {

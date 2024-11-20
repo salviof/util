@@ -35,8 +35,9 @@ public class ExecucaoTarefaAcaoDoSistemaAgendada extends ExecucaoTarefaAgendadaA
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         ItfAcaoController acao = null;
+        String acaoSTR = null;
         try {
-            String acaoSTR = (String) context.getJobDetail().getJobDataMap().get(AtributoDeTarefa.ACAO.toString());
+            acaoSTR = (String) context.getJobDetail().getJobDataMap().get(AtributoDeTarefa.ACAO.toString());
             if (acaoSTR == null) {
                 throw new UnsupportedOperationException("Erro localizando ação relacionada ao agendamento");
             }
@@ -49,11 +50,13 @@ public class ExecucaoTarefaAcaoDoSistemaAgendada extends ExecucaoTarefaAgendadaA
 
                 metodo.invoke(null, entidade);
             } else {
-                metodo.invoke(null);
+                if (metodo != null) {
+                    metodo.invoke(null);
+                }
             }
 
         } catch (Throwable t) {
-            SBCore.RelatarErro(FabErro.SOLICITAR_REPARO, "Falha executando tarefa agendada", t);
+            SBCore.RelatarErro(FabErro.SOLICITAR_REPARO, "Falha executando tarefa agendada " + acaoSTR, t);
         } finally {
 
             try {
