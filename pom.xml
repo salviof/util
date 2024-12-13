@@ -21,6 +21,7 @@
         <module>../SBRestClientTestes</module>
         <module>../SBRestClient</module>
         <module>./clienteRest</module>
+        <module>../../integracao/intAmazonShortMessageService</module>
         <module>./apiComunicacaoPadrao</module>
         <module>./SBTarefaAgendada</module>
         <module>./SBShell/shellCommands</module>
