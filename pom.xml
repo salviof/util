@@ -16,8 +16,8 @@
         <module>./EditorDeArquivos</module>
         <module>./EditorImagem</module>
      <!--    <module> ../SBPersistencia</module> -->
-       <!-- <module>./gestaoArquivosProtocoloS3</module> -->
-        <module>./clienteRest</module>
+     <!-- <module>./gestaoArquivosProtocoloS3</module> -->
+     <!--   <module>./clienteRest</module> -->
         <module>./apiComunicacaoPadrao</module>
         <module>./SBTarefaAgendada</module>
         <module>./SBShell/shellCommands</module>
