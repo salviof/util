@@ -18,7 +18,7 @@
      <!--    <module> ../SBPersistencia</module> -->
      <!-- <module>./gestaoArquivosProtocoloS3</module> -->
 	<module>../SBServlets</module>
-        <module>../SBRestClientTestes<module>
+        <module>../SBRestClientTestes</module>
         <module>../SBRestClient</module>
         <module>./clienteRest</module>
         <module>./apiComunicacaoPadrao</module>
