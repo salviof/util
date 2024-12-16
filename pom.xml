@@ -15,7 +15,7 @@
     <modules>
         <module>./EditorDeArquivos</module>
         <module>./EditorImagem</module>
-     <!--    <module> ../SBPersistencia</module> -->
+        <module> ../SBPersistencia</module> 
      <!-- <module>./gestaoArquivosProtocoloS3</module> -->
 	<module>../SBServlets</module>
         <module>../SBRestClientTestes</module>
