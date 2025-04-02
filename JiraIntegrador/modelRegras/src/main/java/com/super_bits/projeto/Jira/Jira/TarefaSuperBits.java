@@ -29,7 +29,7 @@ public class TarefaSuperBits extends ItemSimples implements ItfTarefaSuperBitsFW
     private final int id;
 
     private final TarefaJira tarefaJiraOrigem;
-    @InfoCampo(tipo = FabTipoAtributoObjeto.AAA_NOME)
+    @InfoCampo(tipo = FabTipoAtributoObjeto.NOME)
     private final String nomeTarefa;
     private final TipoProfissional tipoProfissional;
 

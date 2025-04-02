@@ -46,7 +46,7 @@ public class HashsDeArquivoDeEntidade extends EntidadeSimples {
     private int id;
 
     @Column(nullable = false)
-    @InfoCampo(tipo = FabTipoAtributoObjeto.AAA_NOME)
+    @InfoCampo(tipo = FabTipoAtributoObjeto.NOME)
     private String hashCalculado;
     @Column(nullable = false)
     private String entidade;

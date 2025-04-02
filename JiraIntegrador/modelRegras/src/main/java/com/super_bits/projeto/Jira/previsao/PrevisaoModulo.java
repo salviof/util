@@ -27,7 +27,7 @@ public class PrevisaoModulo extends ItemSimples implements ItfPrevisaoModulo {
 
     @InfoCampo(tipo = FabTipoAtributoObjeto.ID)
     private final int id;
-    @InfoCampo(tipo = FabTipoAtributoObjeto.AAA_NOME)
+    @InfoCampo(tipo = FabTipoAtributoObjeto.NOME)
     private final String nome;
     List<TarefaSuperBits> todasTarefas = new ArrayList<>();
     private final List<PrevisaoGestaoEntidade> gestoesPrevistas;

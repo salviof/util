@@ -35,7 +35,7 @@ public class PrevisaoEntidade extends ItemSimples implements ItfPrevisaoEntidade
 
     @InfoCampo(tipo = FabTipoAtributoObjeto.ID)
     private final int id;
-    @InfoCampo(tipo = FabTipoAtributoObjeto.AAA_NOME)
+    @InfoCampo(tipo = FabTipoAtributoObjeto.NOME)
     private final String nome;
 
     private final List<TarefaSuperBits> tarefasVinculadas;

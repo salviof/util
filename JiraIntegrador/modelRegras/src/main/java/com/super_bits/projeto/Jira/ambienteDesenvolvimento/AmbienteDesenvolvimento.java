@@ -25,7 +25,7 @@ public class AmbienteDesenvolvimento extends ItemSimples {
 
     @InfoCampo(tipo = FabTipoAtributoObjeto.ID)
     private int id;
-    @InfoCampo(tipo = FabTipoAtributoObjeto.AAA_NOME)
+    @InfoCampo(tipo = FabTipoAtributoObjeto.NOME)
     private String nomeAmbiente = "Ambiente Padrão";
     private int taxaAdminsitrativa = 20;
     private int adicionalHoraExtra = 50;
