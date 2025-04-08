@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.superBits.utilitario.editorArquivos;
+package org.superBits.utilitario.editorArquivos.office;
 
 import com.google.common.collect.Lists;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
@@ -50,12 +50,15 @@ import org.docx4j.wml.Tc;
 import org.docx4j.wml.Text;
 import org.docx4j.wml.Tr;
 import org.jvnet.jaxb2_commons.ppp.Child;
+import org.superBits.utilitario.editorArquivos.FabTipoTextoOfficeSubstituivel;
+import org.superBits.utilitario.editorArquivos.TextoOfficeSubstituivel;
+import org.superBits.utilitario.editorArquivos.TipoSubistituicao;
 
 /**
  *
  * @author salvioF
  */
-public class MapaSubstituicaoOffice extends MapaSubstituicaoArquivo {
+public class MapaSubstituicaoWordOld extends MapaSubstituicaoArquivo {
 
     private enum METODO_SUBISTITUICAO {
         MANUAL, CAMPOS_FIELD
@@ -63,11 +66,11 @@ public class MapaSubstituicaoOffice extends MapaSubstituicaoArquivo {
 
     private METODO_SUBISTITUICAO metodoEscolido = METODO_SUBISTITUICAO.MANUAL;
 
-    public MapaSubstituicaoOffice(File pArquivo) {
+    public MapaSubstituicaoWordOld(File pArquivo) {
         super(pArquivo);
     }
 
-    public MapaSubstituicaoOffice(String pCaminho) {
+    public MapaSubstituicaoWordOld(String pCaminho) {
         super(pCaminho);
     }
 
@@ -200,7 +203,7 @@ public class MapaSubstituicaoOffice extends MapaSubstituicaoArquivo {
             case DOCUMENTO_WORD_XDOC2007:
                 switch (metodoEscolido) {
                     case MANUAL:
-                        substituirOfficeModoManual();
+//                        substituirOfficeModoManual();
                         break;
                     case CAMPOS_FIELD:
                         break;
@@ -255,34 +258,6 @@ public class MapaSubstituicaoOffice extends MapaSubstituicaoArquivo {
         }
 
         return false;
-    }
-
-    private List<TextoOfficeSubstituivel> listaTextosSubstituiveis(WordprocessingMLPackage pArquivoWord) {
-        ContentAccessor acessoAoConteudo = pArquivoWord.getMainDocumentPart();
-
-        try {
-            List<Text> lista = obterTodosObjetosDoTIpoTexto(acessoAoConteudo, pArquivoWord, new ArrayList<>());
-
-            List<TextoOfficeSubstituivel> listaTexto = new ArrayList<>();
-            for (Text texto : lista) {
-                String conteudoTexto = texto.getValue();
-                if (isConteudoEncontrado(conteudoTexto)) {
-                    listaTexto.add(new TextoOfficeSubstituivel(texto, FabTipoTextoOfficeSubstituivel.SIMPLES));
-                }
-                if (isImagemEncontrada(conteudoTexto)) {
-                    listaTexto.add(new TextoOfficeSubstituivel(texto, FabTipoTextoOfficeSubstituivel.IMAGEM));
-                }
-                if (isCampoListaEncontrador(conteudoTexto)) {
-
-                    listaTexto.add(new TextoOfficeSubstituivel(texto, FabTipoTextoOfficeSubstituivel.LISTAGEM));
-                }
-            }
-            return listaTexto;
-        } catch (Throwable t) {
-            SBCore.RelatarErro(FabErro.SOLICITAR_REPARO, "Erro lendo documento pesquisando textos modificaveis", t);
-            return new ArrayList<>();
-        }
-
     }
 
     private List<Text> obterTodosObjetosDoTIpoTexto(ContentAccessor c, WordprocessingMLPackage mlp, List<Text> pLista)
@@ -382,172 +357,6 @@ public class MapaSubstituicaoOffice extends MapaSubstituicaoArquivo {
             }
         }
         return null;
-
-    }
-
-    private void substituirOfficeModoManual() {
-        Mapper fontMapper = new IdentityPlusMapper();
-        fontMapper.put("Calibri", PhysicalFonts.get("Calibri"));
-        WordprocessingMLPackage mlp = null;
-
-        //  List<TextoOfficeSubstituivel> textoSubstituivel = getTodosElementosDesteTipoNoObjeto(mlp, Tex)
-        try {
-            System.out.println("Processando" + arquivo.getAbsolutePath());
-            mlp = WordprocessingMLPackage.load(arquivo);
-            mlp.setFontMapper(fontMapper);
-            List<TextoOfficeSubstituivel> textosSubstituiveis = listaTextosSubstituiveis(mlp);
-            List<String> controleListasSubstituidas = new ArrayList<>();
-            for (TextoOfficeSubstituivel textoSub : textosSubstituiveis) {
-                try {
-                    Text textoDocumentoWord = textoSub.getTextoOrigem();
-                    switch (textoSub.getTipoTExto()) {
-                        case SIMPLES:
-                            textoDocumentoWord.setSpace("preserve"); // needed?
-                            textoDocumentoWord.setValue(substituirEmString(textoSub.getTexto()));
-                            break;
-                        case IMAGEM:
-                            Tc coluna = textoSub.getCooluna();
-                            String caminhoArquivo = mapaSubstituicaoImagem.get(textoSub.getTexto());
-                            P paragraphWithImage = null;
-                            if (caminhoArquivo.startsWith("http")) {
-                                String imagemTempLocal = SBCore.getServicoSessao().getSessaoAtual().getPastaTempDeSessao() + "/" + UtilSBCoreStringNomeArquivosEDiretorios.getNomeArquivo(caminhoArquivo + ".jpg");
-                                UtilSBCoreOutputs.salvarArquivoInput(UTilSBCoreInputs.getStreamBuffredByURL(caminhoArquivo, 10000, 60000), imagemTempLocal);
-                                paragraphWithImage = createInlineImageToParagraph(createInlineImage(new File(imagemTempLocal), mlp));
-                            } else {
-                                coluna.getContent().removeAll(coluna.getContent());
-                                paragraphWithImage = createInlineImageToParagraph(createInlineImage(new File(caminhoArquivo), mlp));
-                            }
-                            if (paragraphWithImage != null) {
-                                coluna.getContent().removeAll(coluna.getContent());
-                                coluna.getContent().add(paragraphWithImage);
-                            }
-                            if (coluna == null) {
-                                throw new UnsupportedOperationException("A Imagem deve estar dentro de uma coluna");
-                            }
-
-                            break;
-                        case LISTAGEM:
-
-                            Tbl tabela = textoSub.getTabela();
-
-                            String chaveLista = getChaveListas(textoSub.getTexto());
-
-                            Map<String, String> valores = mapaSubstituicaoListas.get(chaveLista);
-                            //List<Integer> lista = gerarLinhasSubLista(valores);
-                            Map<Integer, List<String>> estruturaTabela = ordemMapaSubstituicaoListas.get(chaveLista);
-                            if (estruturaTabela != null) {
-
-                                List<Integer> listaOrdenada = Lists.newArrayList(estruturaTabela.keySet());
-                                Collections.sort(listaOrdenada);
-                                if (!controleListasSubstituidas.contains(chaveLista)) {
-                                    for (Integer linha : listaOrdenada) {
-
-                                        controleListasSubstituidas.add(chaveLista);
-
-                                        Tr copia = (Tr) XmlUtils.deepCopy(textoSub.getLinha());
-                                        for (Object campoLinha : copia.getContent()) {
-                                            if (campoLinha instanceof JAXBElement) {
-                                                JAXBElement elemento = (JAXBElement) campoLinha;
-
-                                                Object valorElemento = elemento.getValue();
-                                                if (valorElemento instanceof Tc) {
-                                                    //valores.get(colunaDaLinha);
-
-                                                    Tc col = (Tc) valorElemento;
-
-                                                    Text texto = getTextoDaColuna(col);
-                                                    if (texto
-                                                            != null) {
-                                                        texto.setSpace("preserve");
-                                                        System.out.println("Valor Antigo="
-                                                                + texto.getValue());
-                                                        String valorCompleto = texto.getValue();
-                                                        String restante = UtilSBCoreStringBuscaTrecho.getStringAPartirDisto(valorCompleto, "[]");
-
-                                                        String chaveValorNovo = chaveLista + "[" + linha + restante;
-                                                        String novoValor = mapaSubstituicaoListas.get(chaveLista).get(chaveValorNovo);
-                                                        texto.setValue(novoValor);
-                                                    }
-                                                }
-
-                                            }
-
-                                            System.out.println(campoLinha.getClass().getSimpleName());
-                                            System.out.println(campoLinha.toString());
-                                        }
-
-                                        tabela.getContent().add(copia);
-                                    }
-                                }
-                            }
-                            /**
-                             * if
-                             * (!controleListasSubstituidas.contains(chaveLista))
-                             * { controleListasSubstituidas.add(chaveLista); for
-                             * (int linha : lista) { Tr copia = (Tr)
-                             * XmlUtils.deepCopy(textoSub.getLinha());
-                             *
-                             * for (Object campoLinha : copia.getContent()) { if
-                             * (campoLinha instanceof JAXBElement) { JAXBElement
-                             * elemento = (JAXBElement) campoLinha;
-                             *
-                             * Object valorElemento = elemento.getValue(); if
-                             * (valorElemento instanceof Tc) {
-                             * //valores.get(colunaDaLinha);
-                             *
-                             * Tc col = (Tc) valorElemento;
-                             *
-                             * Text texto = getTextoDaColuna(col); if (texto !=
-                             * null) { texto.setSpace("preserve");
-                             * System.out.println("Valor Antigo=" +
-                             * texto.getValue()); String valorCompleto =
-                             * texto.getValue(); String restante =
-                             * UtilSBCoreStrings.getStringAPartirDisto(valorCompleto,
-                             * "[]");
-                             *
-                             * String chaveValorNovo = chaveLista + "[" + linha
-                             * + restante; String novoValor =
-                             * mapaSubstituicaoListas.get(chaveLista).get(chaveValorNovo);
-                             *
-                             * texto.setValue(novoValor); } }
-                             *
-                             * }
-                             *
-                             * System.out.println(campoLinha.getClass().getSimpleName());
-                             * System.out.println(campoLinha.toString()); }
-                             *
-                             * tabela.getContent().add(copia);
-                             *
-                             * }
-                             * }
-                             */
-                            tabela.getContent().remove(textoSub.getLinha());
-
-                            break;
-
-                        default:
-                            throw new AssertionError(textoSub.getTipoTExto().name());
-
-                    }
-                } catch (Throwable t) {
-                    SBCore.RelatarErro(FabErro.SOLICITAR_REPARO, "Erro substituindo palavra chave", t);
-                    SBCore.getCentralDeMensagens().enviarMsgAlertaAoUsuario("Erro aplicando palavra chave em documento" + textoSub.getTexto());
-                }
-            }
-
-            // substituirTexto(acessoAoConteudo, mlp, null);
-            mlp.save(arquivo);
-
-        } catch (Docx4JException ex) {
-            Logger.getLogger(MapaSubstituicaoOffice.class
-                    .getName()).log(Level.SEVERE, null, ex);
-            SBCore.RelatarErro(FabErro.PARA_TUDO, "Falha processando " + Docx4JException.class.getSimpleName() + " " + arquivo.getAbsolutePath(), ex);
-
-        } catch (Exception ex) {
-            Logger.getLogger(MapaSubstituicaoOffice.class
-                    .getName()).log(Level.SEVERE, null, ex);
-            SBCore.RelatarErro(FabErro.PARA_TUDO, "Ecessão processando " + arquivo.getAbsolutePath(), ex);
-        }
 
     }
 

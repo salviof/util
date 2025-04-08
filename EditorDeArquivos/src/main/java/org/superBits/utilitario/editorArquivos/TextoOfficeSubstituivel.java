@@ -5,12 +5,8 @@
  */
 package org.superBits.utilitario.editorArquivos;
 
-import org.jvnet.jaxb2_commons.ppp.Child;
-import org.docx4j.wml.R;
-import org.docx4j.wml.Tbl;
-import org.docx4j.wml.Tc;
 import org.docx4j.wml.Text;
-import org.docx4j.wml.Tr;
+import org.superBits.utilitario.editorArquivos.office.manipulacao.ManipulacaoPacoteOffice;
 
 /**
  *
@@ -18,106 +14,43 @@ import org.docx4j.wml.Tr;
  */
 public class TextoOfficeSubstituivel {
 
-    private final Text textoOrigem;
+    private final Object objetoOrigem;
     private final FabTipoTextoOfficeSubstituivel tipoTExto;
-    private final String texto;
-    private Tr linha;
-    private Tc coluna;
-    private Tbl tabela;
+    private final String conteudoTexto;
+    private ManipulacaoPacoteOffice manipulacao;
 
-    public TextoOfficeSubstituivel(Text textoOrigem, FabTipoTextoOfficeSubstituivel pTipo) {
-        this.textoOrigem = textoOrigem;
-        tipoTExto = pTipo;
-        texto = textoOrigem.getValue();
+    public Text getObjetoOrigemComoTextoWord() {
+        return (Text) objetoOrigem;
     }
 
-    public Text getTextoOrigem() {
-        return textoOrigem;
+    public TextoOfficeSubstituivel(Object pObjetoOrigem, String conteudo, FabTipoTextoOfficeSubstituivel pTipo) {
+        this.objetoOrigem = pObjetoOrigem;
+        tipoTExto = pTipo;
+        conteudoTexto = conteudo;
     }
 
     public FabTipoTextoOfficeSubstituivel getTipoTExto() {
         return tipoTExto;
     }
 
-    public String getTexto() {
-        return texto;
+    public String getConteudoTexto() {
+        return conteudoTexto;
+    }
+    private ObjetoEmTabelaWord objEmTabela;
+
+    public Object getObjetoOrigem() {
+        return objetoOrigem;
     }
 
-    public Tc getCooluna() {
-        if (coluna == null) {
-            boolean terminouPesquisa = false;
-            Object objeto = textoOrigem.getParent();
-            while (!terminouPesquisa) {
-                if (objeto == null) {
-                    terminouPesquisa = true;
-
-                } else {
-                    if (objeto instanceof Tc) {
-                        coluna = (Tc) objeto;
-                        return coluna;
-                    } else if (objeto instanceof Child) {
-                        objeto = ((Child) objeto).getParent();
-                    } else {
-                        terminouPesquisa = true;
-                    }
-                }
-
-            }
-
+    public ObjetoEmTabelaWord getObjEmTabela() {
+        if (objEmTabela == null) {
+            objEmTabela = new ObjetoEmTabelaWord(getObjetoOrigemComoTextoWord());
         }
-        return coluna;
+        return objEmTabela;
     }
 
-    public Tr getLinha() {
-
-        if (linha == null) {
-            boolean terminouPesquisa = false;
-            Object objeto = textoOrigem.getParent();
-            while (!terminouPesquisa) {
-                if (objeto == null) {
-                    terminouPesquisa = true;
-
-                } else {
-                    if (objeto instanceof Tr) {
-                        linha = (Tr) objeto;
-                        return linha;
-                    } else if (objeto instanceof Child) {
-                        objeto = ((Child) objeto).getParent();
-                    } else {
-                        terminouPesquisa = true;
-                    }
-                }
-            }
-
-        }
-        return linha;
-
-    }
-
-    public Tbl getTabela() {
-
-        if (tabela == null) {
-            boolean terminouPesquisa = false;
-            Object objeto = textoOrigem.getParent();
-            while (!terminouPesquisa) {
-                if (objeto == null) {
-                    terminouPesquisa = true;
-
-                } else {
-                    if (objeto instanceof Tbl) {
-                        tabela = (Tbl) objeto;
-                        return tabela;
-                    } else if (objeto instanceof Child) {
-                        objeto = ((Child) objeto).getParent();
-                    } else {
-                        terminouPesquisa = true;
-                    }
-                }
-            }
-
-        }
-        return tabela;
-
+    public Text getTextoOrigem() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

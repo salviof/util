@@ -1,40 +1,47 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
  */
-package org.superBits.utilitario.editorArquivos;
+package org.superBits.utilitario.editorArquivos.office;
 
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
-import org.superBits.utilitario.editorArquivos.office.MapaSubstituicaoWordOld;
 import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.UtilSBCoreArquivos;
+import java.io.File;
 import org.junit.Test;
+import org.superBits.utilitario.editorArquivos.ConfiguradorCoreEditor;
 import org.superBits.utilitario.editorArquivos.util.UtilSBEditorArquivosConversor;
 
 /**
  *
- * @author salvioF
+ * @author salvio
  */
-public class MapaSubstituicaoOfficeTest {
+public class MapaSubstituicaoWordTest {
 
+    /**
+     * Test of lerArquivoArquivoPacoteOffice method, of class
+     * MapaSubstituicaoWord.
+     */
     @Test
-    public void testSubstituirEmArquivo() {
-
+    public void testLerArquivoArquivoPacoteOffice() throws Exception {
         String teste = "adfsdfasdf[33]";
+
+        SBCore.configurar(new ConfiguradorCoreEditor(), SBCore.ESTADO_APP.DESENVOLVIMENTO);
 
         if (!teste.replaceAll("\\[[0-9]", "-").equals(teste)) {
             System.out.println("Tem Colchete com numero");
         }
-        SBCore.configurar(new ConfiguradorCoreEditor(), SBCore.ESTADO_APP.DESENVOLVIMENTO);
-        String diretorioApp = "/home/superBits/projetos/Super_Bits/source/SuperBits_FrameWork/utilitarios/EditorDeArquivos/";
-        String arqExemplo = diretorioApp + "contratoTeste2.docx";
-        String arqModificado = diretorioApp + "modificado.docx";
+
+        String diretorioApp = "/home/superBits/projetos/coletivoJava/source/fw/util/EditorDeArquivos/";
+        String arqExemplo = diretorioApp + "src/test/resources/exemplos/testeDocWord.docx";
+
+        String arqModificado = diretorioApp + "src/test/resources/exemplos/modificado.docx";
         UtilSBCoreArquivos.copiarArquivos(arqExemplo, arqModificado);
         // UtilSBEditorArquivosConversor.converterWordEmPDF(arqExemplo, arqExemplo + ".pdf");
-        MapaSubstituicaoWordOld novoMapa = new MapaSubstituicaoWordOld(arqModificado);
-        novoMapa.adicionarPalavraChave("[nome]", "coléeeeeeeeeeeeeeeeeeee [nome]");
-        novoMapa.adicionarImagem("[logoCliente]", "/home/superBits/projetos/Super_Bits/source/SuperBits_FrameWork/utilitarios/EditorDeArquivos/Gnu.png");
-        novoMapa.adicionarImagem("[logoProspecto]", "/home/superBits/projetos/Super_Bits/source/SuperBits_FrameWork/utilitarios/EditorDeArquivos/Gnu.png");
+        MapaSubstituicaoWord novoMapa = new MapaSubstituicaoWord(new File(arqModificado));
+        novoMapa.adicionarPalavraChave("[nome]", "coléeeeeeeeeeeeeeeeeeee");
+        novoMapa.adicionarImagem("[logo]", diretorioApp + "src/test/resources/exemplos/Gnu.png");
+        novoMapa.adicionarImagem("[logoCliente]", diretorioApp + "src/test/resources/exemplos/Gnu.png");
+        novoMapa.adicionarImagem("[logoProspecto]", diretorioApp + "src/test/resources/exemplos/Gnu.png");
         novoMapa.adicionarPalavraChave("[Cliente.contratos[1].nome]", "contrato1");
         novoMapa.adicionarPalavraChave("[Cliente.contratos[1].valor]", "R$ 100,00");
         novoMapa.adicionarPalavraChave("[SITE]", "www.teste.com.br  [nome] ");
@@ -55,5 +62,8 @@ public class MapaSubstituicaoOfficeTest {
 
         UtilSBEditorArquivosConversor.converterWordEmPDFnovo(arqModificado, arqModificado + ".pdf");
     }
-
 }
+
+/**
+ * Test of listaTextosSubstituiveis method, of class MapaSubstituicaoWord.
+ */

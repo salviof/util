@@ -8,7 +8,7 @@ package org.superBits.utilitario.editorArquivos.util;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.UtilSBCoreArquivos;
 import org.coletivojava.fw.api.tratamentoErros.FabErro;
-import org.superBits.utilitario.editorArquivos.MapaSubstituicaoOffice;
+import org.superBits.utilitario.editorArquivos.office.MapaSubstituicaoWordOld;
 
 /**
  *
@@ -16,11 +16,11 @@ import org.superBits.utilitario.editorArquivos.MapaSubstituicaoOffice;
  */
 public class UtilSBEditorArquivos {
 
-    public static boolean gerarNovoArquivoSubstituindoPalavraChave(String arquivoOrigem, String arquivoDestino, MapaSubstituicaoOffice pMapaSubistituicao) {
+    public static boolean gerarNovoArquivoSubstituindoPalavraChave(String arquivoOrigem, String arquivoDestino, MapaSubstituicaoWordOld pMapaSubistituicao) {
         try {
             UtilSBCoreArquivos.copiarArquivos(arquivoOrigem, arquivoDestino);
 
-            MapaSubstituicaoOffice novoMapa = new MapaSubstituicaoOffice(arquivoDestino);
+            MapaSubstituicaoWordOld novoMapa = new MapaSubstituicaoWordOld(arquivoDestino);
 
             novoMapa.substituirEmArquivo();
             return true;
