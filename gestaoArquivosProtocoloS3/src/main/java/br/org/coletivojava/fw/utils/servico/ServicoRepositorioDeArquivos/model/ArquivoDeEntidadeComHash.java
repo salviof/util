@@ -18,7 +18,7 @@ import java.io.Serializable;
 @InfoObjetoSB(tags = {"Arquivo com hash de enteidade"}, plural = "Arquivos")
 public class ArquivoDeEntidadeComHash extends ItemSimples implements Serializable {
 
-    public ArquivoDeEntidadeComHash(int pId, String pNome, String pHash) {
+    public ArquivoDeEntidadeComHash(Long pId, String pNome, String pHash) {
         id = pId;
         nome = pNome;
         identificacaoHash = pHash;
@@ -29,19 +29,19 @@ public class ArquivoDeEntidadeComHash extends ItemSimples implements Serializabl
     }
 
     @InfoCampo(tipo = FabTipoAtributoObjeto.ID)
-    private int id;
+    private Long id;
     @InfoCampo(tipo = FabTipoAtributoObjeto.NOME)
     private String nome;
     @InfoCampo(tipo = FabTipoAtributoObjeto.TEXTO_SIMPLES)
     private String identificacaoHash;
 
     @Override
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
     @Override
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

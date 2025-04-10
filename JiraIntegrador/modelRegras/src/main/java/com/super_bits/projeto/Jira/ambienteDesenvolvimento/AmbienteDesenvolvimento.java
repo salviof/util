@@ -24,7 +24,7 @@ import org.coletivojava.fw.utilCoreBase.UtilSBCoreFabrica;
 public class AmbienteDesenvolvimento extends ItemSimples {
 
     @InfoCampo(tipo = FabTipoAtributoObjeto.ID)
-    private int id;
+    private Long id;
     @InfoCampo(tipo = FabTipoAtributoObjeto.NOME)
     private String nomeAmbiente = "Ambiente Padrão";
     private int taxaAdminsitrativa = 20;

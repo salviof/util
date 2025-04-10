@@ -27,7 +27,7 @@ public abstract class ExecucaoTarefaAgendadaAbstratoHelper implements Job {
             String idEntidadeSTR = String.valueOf(context.getJobDetail().getJobDataMap().get(AtributoDeTarefa.ID_ENTIDADE_PRINCIPAL.toString()));
             Class entidade = MapaObjetosProjetoAtual.getClasseDoObjetoByNome(entidadeSTR);
 
-            return new ParametroAcaoControllerSimples(entidadeSTR, Integer.valueOf(idEntidadeSTR));
+            return new ParametroAcaoControllerSimples(entidadeSTR, Long.valueOf(idEntidadeSTR));
         } catch (Throwable t) {
             SBCore.RelatarErro(FabErro.SOLICITAR_REPARO, "Erro obtendo dados de ação agendada", t);
             return null;

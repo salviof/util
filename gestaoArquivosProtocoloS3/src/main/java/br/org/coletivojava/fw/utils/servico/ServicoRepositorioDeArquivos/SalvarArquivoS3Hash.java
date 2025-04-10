@@ -43,7 +43,7 @@ public class SalvarArquivoS3Hash extends Thread {
     private final String campoReferencia;
     private final ConfigModulo configModuloArquivosEnts3;
     private final String nomeClasseEntidade;
-    private final int idEntidade;
+    private final Long idEntidade;
 
     private enum acaoControleHashDeArquivo {
         CONSULTAR, ATUALIZAR
@@ -53,7 +53,7 @@ public class SalvarArquivoS3Hash extends Thread {
         return trabalhoConcluidoComsucesso;
     }
 
-    public SalvarArquivoS3Hash(ConfigModulo pConfigModuloArquivosEnts3, Class pClasseEntidade, int pIdEntidade, String pCampoReferencia, byte[] pArquivo, String pNomeArquivo) {
+    public SalvarArquivoS3Hash(ConfigModulo pConfigModuloArquivosEnts3, Class pClasseEntidade, Long pIdEntidade, String pCampoReferencia, byte[] pArquivo, String pNomeArquivo) {
 
         arquivo = pArquivo;
         configModuloArquivosEnts3 = pConfigModuloArquivosEnts3;

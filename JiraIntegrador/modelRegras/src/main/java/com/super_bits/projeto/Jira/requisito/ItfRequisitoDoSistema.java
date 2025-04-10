@@ -22,7 +22,7 @@ public interface ItfRequisitoDoSistema {
 
     public Date getDataRequisicao();
 
-    public int getId();
+    public Long getId();
 
     public ModuloAcaoSistema getModulo();
 
@@ -40,7 +40,7 @@ public interface ItfRequisitoDoSistema {
 
     public void setDataRequisicao(Date dataRequisicao);
 
-    public void setId(int id);
+    public void setId(Long id);
 
     public void setModulo(ModuloAcaoSistema modulo);
 

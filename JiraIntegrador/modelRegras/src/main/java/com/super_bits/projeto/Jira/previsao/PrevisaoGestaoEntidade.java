@@ -30,7 +30,7 @@ import org.coletivojava.fw.api.objetoNativo.view.componente.ComponenteVisualBase
 public class PrevisaoGestaoEntidade extends ItemSimples implements ItfPrevisaoGestaoEntidade {
 
     @InfoCampo(tipo = FabTipoAtributoObjeto.ID)
-    private int id;
+    private Long id;
     @InfoCampo(tipo = FabTipoAtributoObjeto.NOME)
     private String descricao;
     private ItfAcaoGerenciarEntidade gestao;
@@ -151,12 +151,12 @@ public class PrevisaoGestaoEntidade extends ItemSimples implements ItfPrevisaoGe
     }
 
     @Override
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
     @Override
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

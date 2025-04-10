@@ -81,7 +81,7 @@ public class PrevisaoModulo extends ItemSimples implements ItfPrevisaoModulo {
     }
 
     @Override
-    public int getId() {
+    public Long getId() {
         return id;
     }
 

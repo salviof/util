@@ -46,7 +46,7 @@ public class EfeitoImagem extends ItemGenerico implements ItfBeanSimplesSomenteL
     }
 
     @Override
-    public int getId() {
+    public Long getId() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

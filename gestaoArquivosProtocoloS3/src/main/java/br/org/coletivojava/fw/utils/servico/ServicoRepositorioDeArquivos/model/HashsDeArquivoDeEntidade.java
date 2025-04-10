@@ -43,7 +43,7 @@ public class HashsDeArquivoDeEntidade extends EntidadeSimples {
     @Id
     @GeneratedValue
     @InfoCampo(tipo = FabTipoAtributoObjeto.ID)
-    private int id;
+    private Long id;
 
     @Column(nullable = false)
     @InfoCampo(tipo = FabTipoAtributoObjeto.NOME)
@@ -53,7 +53,7 @@ public class HashsDeArquivoDeEntidade extends EntidadeSimples {
     @Column(nullable = false)
     private String atributo;
     @Column(nullable = false)
-    private int idEntidade;
+    private Long idEntidade;
 
     @Override
     @InfoPreparacaoObjeto(classesPrConstructorPrincipal = ItfCampoInstanciado.class)
@@ -66,12 +66,12 @@ public class HashsDeArquivoDeEntidade extends EntidadeSimples {
     }
 
     @Override
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
     @Override
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -99,12 +99,13 @@ public class HashsDeArquivoDeEntidade extends EntidadeSimples {
         this.atributo = atributo;
     }
 
-    public int getIdEntidade() {
+    public Long getIdEntidade() {
         return idEntidade;
     }
 
-    public void setIdEntidade(int idEntidade) {
+    public void setIdEntidade(Long idEntidade) {
         this.idEntidade = idEntidade;
+
     }
 
 }

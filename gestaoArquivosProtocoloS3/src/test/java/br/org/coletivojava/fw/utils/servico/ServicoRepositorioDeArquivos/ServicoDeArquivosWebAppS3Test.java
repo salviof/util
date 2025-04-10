@@ -476,7 +476,7 @@ public class ServicoDeArquivosWebAppS3Test extends TesteJunitSBPersistencia {
     public void testGetEndrLocalImagem_3args() {
         ServicoDeArquivosWebAppS3 servico = new ServicoDeArquivosWebAppS3();
         HashsDeArquivoDeEntidade entidadeTeste = new HashsDeArquivoDeEntidade();
-        entidadeTeste.setId(1);
+        entidadeTeste.setId(1l);
         String result = servico.getEndrLocalImagem(entidadeTeste, FabTipoAtributoObjeto.IMG_MEDIA, SBCore.getServicoSessao().getSessaoAtual());
 
         // TODO review the generated test code and remove the default call to fail.
