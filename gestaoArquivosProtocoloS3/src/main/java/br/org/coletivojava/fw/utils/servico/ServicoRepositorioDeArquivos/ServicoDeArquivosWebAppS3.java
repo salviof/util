@@ -70,7 +70,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
     }
 
     public String getEnderecoLocalAlternativo(ItfBeanSimplesSomenteLeitura entidade, String pCategoria, String pNome) {
-        if (entidade.getId() == 0) {
+        if (entidade.getId() == null || entidade.getId() == null) {
             return super.getEndrLocalArquivoTemporario(pCategoria, entidade.getClass().getSimpleName(), pNome);
         } else {
             return super.getEndrLocalArquivoItem(entidade, pNome, pCategoria);
@@ -103,7 +103,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
                 }
                 //Apagando arquivo local caso sucesso
                 String caminhoArquivo;
-                if (entidade.getId() == 0) {
+                if (entidade.getId() == null) {
                     caminhoArquivo = getEndrLocalArquivoTemporario(pCategoria, entidade.getClass().getSimpleName(), pNome);
                 } else {
                     caminhoArquivo = getEndrLocalArquivoItem(entidade, pNome, pCategoria);
@@ -122,7 +122,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
                 return centralGenerica.salvarArquivo(entidade, arqivo, pCategoria, pNome);
             }
 
-            ///Qualquer problema, salva no HD
+         ///Qualquer problema, salva no HD
         } catch (Throwable ex) {
             return centralGenerica.salvarArquivo(entidade, arqivo, pCategoria, pNome);
 
@@ -303,7 +303,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
         if (!s3configurado) {
             return centralGenerica.getEndrLocalArquivoItem(pItem, nomeArquivo, pCampo);
         } else {
-            if (pItem.getId() == 0) {
+            if (pItem.getId() == null) {
                 return centralGenerica.getEndrLocalArquivoItem(pItem, nomeArquivo, pCampo);
             }
             ItfBeanSimples objeto = (ItfBeanSimples) pItem;
@@ -348,7 +348,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
         if (!s3configurado) {
             return centralGenerica.getEndrLocalImagem(item, tipo, pSessao);
         } else {
-            if (item.getId() == 0) {
+            if (item.getId() == null) {
                 return centralGenerica.getEndrLocalImagem(item, tipo, pSessao);
             }
             ItfBeanSimples objeto = (ItfBeanSimples) item;
@@ -430,7 +430,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
     private void removerItemTemporario(ItfBeanSimplesSomenteLeitura pItem, String pCampo, String pNomeArquivo, String pHash) {
 
         if (pHash != null) {
-            if (pItem.getId() > 0) {
+            if (pItem.getId() != null && pItem.getId() > 0) {
                 new Thread() {
                     @Override
                     public void run() {
@@ -449,7 +449,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
     private void removerArquivoImagemTemporario(ItfBeanSimplesSomenteLeitura item, FabTipoAtributoObjeto tipo, ItfSessao pSessao, String pHash) {
         String arquivoLocal = centralGenerica.getEndrLocalImagem(item, tipo, pSessao);
         if (pHash != null) {
-            if (item.getId() > 0) {
+            if (item.getId() != null && item.getId() > 0.) {
                 new Thread() {
                     @Override
                     public void run() {
@@ -472,7 +472,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
 
         String campo = tipo.toString();
         ItfCampoInstanciado cpInstanciado = ((ItfBeanSimples) item).getCampoInstanciadoByAnotacao(tipo);
-        if (item.getId() > 0) {
+        if (item.getId() != null && item.getId() > 0) {
             String campoCategoria = tipo.name();
             if (cpInstanciado != null) {
                 campoCategoria = cpInstanciado.getNomeCamponaClasse();

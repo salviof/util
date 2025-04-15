@@ -146,7 +146,7 @@ public class SalvarArquivoS3Hash extends Thread {
                 EntityManager emAtualizacao = UtilSBPersistencia.getEntyManagerPadraoNovo();
                 UtilSBPersistencia.iniciarTransacao(emAtualizacao);
                 try {
-                    if (pHashAtualizado.getId() == 0) {
+                    if (pHashAtualizado.getId() == null) {
                         System.out.println("registrando novo hash");
                         hashatualizado = UtilSBPersistencia.mergeRegistro(pHashAtualizado, emAtualizacao);
                         System.out.println("criado" + hashatualizado.getId() + " com hash " + hashatualizado.getHashCalculado());
