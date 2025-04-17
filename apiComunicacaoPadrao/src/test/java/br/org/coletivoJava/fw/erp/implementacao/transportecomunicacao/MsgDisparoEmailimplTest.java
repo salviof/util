@@ -5,13 +5,11 @@
  */
 package br.org.coletivoJava.fw.erp.implementacao.transportecomunicacao;
 
-import br.org.coletivojava.erp.comunicacao.transporte.ERPTransporteComunicacao;
+import br.org.coletivojava.erp.comunicacao.transporte.ERPTipoCanalComunicacao;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreEmail;
 import com.super_bits.modulosSB.SBCore.modulos.comunicacao.FabTipoComunicacao;
 import com.super_bits.modulosSB.SBCore.modulos.comunicacao.ItfDisparoComunicacao;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.ItensGenericos.basico.UsuarioAnonimo;
-import org.junit.Test;
 
 /**
  *
@@ -33,17 +31,16 @@ public class MsgDisparoEmailimplTest extends TestesComunicacaoVip {
 
     public void testeContexto() {
         try {
-            ItfDisparoComunicacao disparo = ERPTransporteComunicacao.EMAIL.getImplementacaoDoContexto();
+            ItfDisparoComunicacao disparo = ERPTipoCanalComunicacao.EMAIL.getImplementacaoDoContexto();
 
             if (disparo == null) {
                 throw new UnsupportedOperationException("Não foi possível determinar o comunicador");
             }
             UsuarioAnonimo usuarioAnononimo = new UsuarioAnonimo();
-            disparo.dispararInicioComunicacao(SBCore.getCentralComunicacao().
-                    iniciarComunicacaoSistema_Usuairo(
-                            FabTipoComunicacao.NOTIFICAR,
-                            SBCore.getUsuarioLogado(), "Teste",
-                            ERPTransporteComunicacao.EMAIL));
+            SBCore.getServicoComunicacao().
+                    dispararComunicacao(
+                            SBCore.getServicoComunicacao().gerarComunicacaoSistema_UsuarioLogado(FabTipoComunicacao.NOTIFICAR, "teste"),
+                            ERPTipoCanalComunicacao.EMAIL);
         } catch (Throwable t) {
             lancarErroJUnit(t);
         }

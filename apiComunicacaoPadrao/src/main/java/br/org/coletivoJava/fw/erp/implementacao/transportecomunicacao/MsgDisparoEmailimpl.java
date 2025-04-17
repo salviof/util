@@ -5,7 +5,7 @@ import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreEmail;
 import com.super_bits.modulosSB.SBCore.modulos.comunicacao.FabStatusComunicacao;
 import com.super_bits.modulosSB.SBCore.modulos.comunicacao.FabTipoRespostaComunicacao;
-import com.super_bits.modulosSB.SBCore.modulos.comunicacao.ItfComunicacao;
+import com.super_bits.modulosSB.SBCore.modulos.comunicacao.ItfDialogo;
 import org.coletivojava.fw.api.objetoNativo.comunicacao.RespostaComunicacao;
 
 @MsgDisparoEmail
@@ -14,22 +14,26 @@ public class MsgDisparoEmailimpl
         com.super_bits.modulosSB.SBCore.modulos.comunicacao.ItfDisparoComunicacao {
 
     @Override
-    public void dispararInicioComunicacao(ItfComunicacao comunicacao) {
+    public String dispararInicioComunicacao(ItfDialogo pComunicacao) {
 
-        if (UtilSBCoreEmail.enviarPorServidorPadraoV2(comunicacao.getDestinatario().getEmailsConcatenados(),
-                comunicacao.getMensagem(), comunicacao.getAssunto())) {
-            comunicacao.setStatusComunicacao(FabStatusComunicacao.ENVIADO);
+        String codigoEnvio = UtilSBCoreEmail.enviarPorServidorPadraoV2(pComunicacao.getDestinatario().getEmailsConcatenados(),
+                pComunicacao.getMensagem(), pComunicacao.getAssunto());
+        if (codigoEnvio != null) {
+            pComunicacao.setStatusComunicacao(FabStatusComunicacao.ENVIADO);
+            return codigoEnvio;
         } else {
-            comunicacao.setStatusComunicacao(FabStatusComunicacao.SELADO);
+            pComunicacao.setStatusComunicacao(FabStatusComunicacao.SELADO);
+            return null;
         }
+
     }
 
     @Override
-    public void dispararRespostaComunicacao(
-            com.super_bits.modulosSB.SBCore.modulos.comunicacao.ItfComunicacao comunicacao) {
-        RespostaComunicacao resp = new RespostaComunicacao(comunicacao, FabTipoRespostaComunicacao.ENTENDIDO.getRegistro());
-        if (SBCore.getCentralDeComunicacao().responderComunicacao(comunicacao, resp)) {
-            comunicacao.setStatusComunicacao(FabStatusComunicacao.RESPONDIDO);
+    public void dispararRespostaComunicacao(ItfDialogo pComunicacao) {
+
+        RespostaComunicacao resp = new RespostaComunicacao(pComunicacao, FabTipoRespostaComunicacao.ENTENDIDO.getRegistro());
+        if (SBCore.getServicoComunicacao().responderComunicacao(pComunicacao.getCodigoSelo(), resp)) {
+            pComunicacao.setStatusComunicacao(FabStatusComunicacao.RESPONDIDO);
         }
     }
 }

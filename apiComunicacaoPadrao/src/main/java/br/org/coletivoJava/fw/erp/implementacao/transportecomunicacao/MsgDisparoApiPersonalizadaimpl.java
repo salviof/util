@@ -1,7 +1,7 @@
 package br.org.coletivoJava.fw.erp.implementacao.transportecomunicacao;
 
-import com.super_bits.modulosSB.SBCore.modulos.comunicacao.ItfComunicacao;
 import br.org.coletivoJava.fw.api.erp.transportecomunicacao.MsgDisparoApiPersonalizada;
+import com.super_bits.modulosSB.SBCore.modulos.comunicacao.ItfDialogo;
 
 @MsgDisparoApiPersonalizada
 public class MsgDisparoApiPersonalizadaimpl
@@ -9,11 +9,13 @@ public class MsgDisparoApiPersonalizadaimpl
         com.super_bits.modulosSB.SBCore.modulos.comunicacao.ItfDisparoComunicacao {
 
     @Override
-    public void dispararInicioComunicacao(ItfComunicacao itfComunicacao) {
+    public String dispararInicioComunicacao(ItfDialogo pComunicacao) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void dispararRespostaComunicacao(
-            com.super_bits.modulosSB.SBCore.modulos.comunicacao.ItfComunicacao itfComunicacao) {
+    public void dispararRespostaComunicacao(ItfDialogo pComunicacao) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
 }
