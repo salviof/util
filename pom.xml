@@ -10,7 +10,7 @@
 
     <packaging>pom</packaging>
 
-    <name>Utillit�rios básicos do Super Bits FW do ColetivoJava</name>
+    <name>Utillitários Básicos Super Bits FW do ColetivoJava</name>
 
     <modules>
         <module>./EditorDeArquivos</module>
