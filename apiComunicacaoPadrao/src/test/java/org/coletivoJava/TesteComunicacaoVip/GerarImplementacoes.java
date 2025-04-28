@@ -8,7 +8,7 @@ package org.coletivoJava.TesteComunicacaoVip;
 import br.org.coletivojava.erp.comunicacao.transporte.ERPTipoCanalComunicacao;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import org.junit.Test;
-import testes.geradorCodigo.erp.GeradorERPImplementacaoContexto;
+//import testes.geradorCodigo.erp.GeradorERPImplementacaoContexto;
 import testesFW.ConfigCoreJunitPadraoDevLib;
 
 import testesFW.TesteJunit;
@@ -24,7 +24,7 @@ public class GerarImplementacoes extends TesteJunit {
         try {
 
             for (ERPTipoCanalComunicacao cm : ERPTipoCanalComunicacao.values()) {
-                new GeradorERPImplementacaoContexto(cm).salvarEmDiretorioPadraCASO_NAO_EXISTA();
+                //     new GeradorERPImplementacaoContexto(cm).salvarEmDiretorioPadraCASO_NAO_EXISTA();
             }
         } catch (Throwable t) {
             lancarErroJUnit(t);
