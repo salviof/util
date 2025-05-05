@@ -5,11 +5,10 @@
  */
 package org.coletivoJava.TesteComunicacaoVip;
 
-import br.org.coletivojava.erp.comunicacao.transporte.ERPTipoCanalComunicacao;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import org.junit.Test;
 //import testes.geradorCodigo.erp.GeradorERPImplementacaoContexto;
-import testesFW.ConfigCoreJunitPadraoDevLib;
+//import testesFW.ConfigCoreJunitPadraoDevLib;
 
 import testesFW.TesteJunit;
 
@@ -23,9 +22,9 @@ public class GerarImplementacoes extends TesteJunit {
     public void gerar() {
         try {
 
-            for (ERPTipoCanalComunicacao cm : ERPTipoCanalComunicacao.values()) {
-                //     new GeradorERPImplementacaoContexto(cm).salvarEmDiretorioPadraCASO_NAO_EXISTA();
-            }
+            //   for (ERPTipoCanalComunicacao cm : ERPTipoCanalComunicacao.values()) {
+            //     new GeradorERPImplementacaoContexto(cm).salvarEmDiretorioPadraCASO_NAO_EXISTA();
+            //      }
         } catch (Throwable t) {
             lancarErroJUnit(t);
         }
@@ -33,8 +32,8 @@ public class GerarImplementacoes extends TesteJunit {
 
     @Override
     protected void configAmbienteDesevolvimento() {
-        SBCore.configurar(new ConfigCoreJunitPadraoDevLib(), SBCore.ESTADO_APP.DESENVOLVIMENTO
-        );
+        //  SBCore.configurar(new ConfigCoreJunitPadraoDevLib(), SBCore.ESTADO_APP.DESENVOLVIMENTO
+        //  );
     }
 
 }
