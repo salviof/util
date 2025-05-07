@@ -63,7 +63,7 @@
             <!-- Caused by: java.lang.ClassNotFoundException: org.springframework.beans.factory.DisposableBean -->
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>3.1.1.RELEASE</version>
+            <version>5.2.22.RELEASE</version>
         </dependency>
         <dependency>
             <!-- Caused by: java.lang.ClassNotFoundException: javax.ws.rs.core.UriBuilder -->
