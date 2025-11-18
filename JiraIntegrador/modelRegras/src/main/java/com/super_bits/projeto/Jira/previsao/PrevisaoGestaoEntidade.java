@@ -10,7 +10,7 @@ import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ComoA
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.permissoes.ItfAcaoGerenciarEntidade;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoCampo;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campo.FabTipoAtributoObjeto;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.ItemSimples;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.EntidadeSimples;
 import com.super_bits.projeto.Jira.CustosDesenvolvimento;
 import com.super_bits.projeto.Jira.FabComponenteVisualRequisitos;
 import com.super_bits.projeto.Jira.ItfPrevisaoGestaoEntidade;
@@ -27,7 +27,7 @@ import org.coletivojava.fw.api.objetoNativo.view.componente.ComponenteVisualBase
  *
  * @author desenvolvedor
  */
-public class PrevisaoGestaoEntidade extends ItemSimples implements ItfPrevisaoGestaoEntidade {
+public class PrevisaoGestaoEntidade extends EntidadeSimples implements ItfPrevisaoGestaoEntidade {
 
     @InfoCampo(tipo = FabTipoAtributoObjeto.ID)
     private Long id;

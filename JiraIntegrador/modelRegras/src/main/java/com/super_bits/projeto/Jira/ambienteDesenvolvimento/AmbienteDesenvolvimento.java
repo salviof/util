@@ -7,7 +7,7 @@ package com.super_bits.projeto.Jira.ambienteDesenvolvimento;
 
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoCampo;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campo.FabTipoAtributoObjeto;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.ItemSimples;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.EntidadeSimples;
 import com.super_bits.projeto.Jira.DesenvolvedorProjetoSB;
 import com.super_bits.projeto.Jira.FabTipoProfissional;
 import com.super_bits.projeto.Jira.TipoProfissional;
@@ -21,7 +21,7 @@ import org.coletivojava.fw.utilCoreBase.UtilSBCoreFabrica;
  *
  * @author desenvolvedor
  */
-public class AmbienteDesenvolvimento extends ItemSimples {
+public class AmbienteDesenvolvimento extends EntidadeSimples {
 
     @InfoCampo(tipo = FabTipoAtributoObjeto.ID)
     private Long id;

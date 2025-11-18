@@ -22,7 +22,7 @@ public class ImportacaoExcelTest {
     public void testCarregarArquivo() {
 
         //   SBCore.configurar(new ConfiguradorCoreDeProjetoJarAbstrato , SBCore.ESTADO_APP.DESENVOLVIMENTO);
-        ComoEntidadeSimples Teste = new ItemSimplesTeste();
+        ComoEntidadeSimples Teste = new EntidadeSimplesTeste();
 
         Map<String, Integer> parametros = new HashMap<>();
 
@@ -32,9 +32,9 @@ public class ImportacaoExcelTest {
 
         System.out.println(SBCore.getCaminhoDesenvolvimento());
 
-        ImportacaoExcel<ItemSimplesTeste> importador = new ImportacaoExcel<>(SBCore.getCaminhoDesenvolvimento() + "/src/test/resources/excelTesteXLS.xls", parametros, ItemSimplesTeste.class);
+        ImportacaoExcel<EntidadeSimplesTeste> importador = new ImportacaoExcel<>(SBCore.getCaminhoDesenvolvimento() + "/src/test/resources/excelTesteXLS.xls", parametros, EntidadeSimplesTeste.class);
 
-        for (ItemSimplesTeste reg : importador.getRegistrosSucesso()) {
+        for (EntidadeSimplesTeste reg : importador.getRegistrosSucesso()) {
 
             System.out.println(reg.getId());
 

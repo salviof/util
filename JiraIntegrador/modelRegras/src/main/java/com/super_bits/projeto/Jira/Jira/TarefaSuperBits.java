@@ -9,7 +9,7 @@ import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.permissoes.
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoCampo;
 
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.ItemSimples;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.EntidadeSimples;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campo.FabTipoAtributoObjeto;
 import com.super_bits.projeto.Jira.Jira.tempo.DataUtilJira;
 import com.super_bits.projeto.Jira.Jira.tempo.InvalidDurationException;
@@ -23,7 +23,7 @@ import org.coletivojava.fw.api.tratamentoErros.FabErro;
  *
  * @author salvioF
  */
-public class TarefaSuperBits extends ItemSimples implements ItfTarefaSuperBitsFW {
+public class TarefaSuperBits extends EntidadeSimples implements ItfTarefaSuperBitsFW {
 
     @InfoCampo(tipo = FabTipoAtributoObjeto.ID)
     private final int id;

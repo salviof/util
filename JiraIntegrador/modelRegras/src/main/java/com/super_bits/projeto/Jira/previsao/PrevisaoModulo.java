@@ -10,7 +10,7 @@ import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.ItfModuloAc
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoCampo;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campo.FabTipoAtributoObjeto;
 
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.ItemSimples;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.EntidadeSimples;
 import com.super_bits.projeto.Jira.CustosDesenvolvimento;
 import com.super_bits.projeto.Jira.ItfPrevisaoModulo;
 import com.super_bits.projeto.Jira.Jira.TarefaSuperBits;
@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @author desenvolvedor
  */
-public class PrevisaoModulo extends ItemSimples implements ItfPrevisaoModulo {
+public class PrevisaoModulo extends EntidadeSimples implements ItfPrevisaoModulo {
 
     @InfoCampo(tipo = FabTipoAtributoObjeto.ID)
     private final int id;

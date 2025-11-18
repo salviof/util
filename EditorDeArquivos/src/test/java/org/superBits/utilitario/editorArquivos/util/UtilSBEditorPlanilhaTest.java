@@ -8,7 +8,7 @@ import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoObjetoSB;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.MapaObjetosProjetoAtual;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ComoEntidadeSimples;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.ItemSimples;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.EntidadeSimples;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
@@ -29,7 +29,7 @@ public class UtilSBEditorPlanilhaTest {
     }
 
     @InfoObjetoSB(tags = "Item teste", plural = "Itens testes")
-    class Itemteste extends ItemSimples {
+    class Itemteste extends EntidadeSimples {
 
         private String nome;
         private String teste;

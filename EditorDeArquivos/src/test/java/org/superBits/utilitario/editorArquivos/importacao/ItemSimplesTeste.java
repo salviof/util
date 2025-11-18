@@ -6,13 +6,13 @@ package org.superBits.utilitario.editorArquivos.importacao;
 
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoCampo;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campo.FabTipoAtributoObjeto;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.ItemSimples;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.EntidadeSimples;
 
 /**
  *
  * @author desenvolvedor
  */
-public class ItemSimplesTeste extends ItemSimples {
+public class EntidadeSimplesTeste extends EntidadeSimples {
 
     @InfoCampo(tipo = FabTipoAtributoObjeto.ID)
     private Long id;

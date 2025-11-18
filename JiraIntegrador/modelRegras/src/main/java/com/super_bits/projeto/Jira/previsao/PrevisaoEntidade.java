@@ -11,7 +11,7 @@ import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.Info
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoObjetoSB;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campo.FabTipoAtributoObjeto;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.ItemGenerico;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.ItemSimples;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.EntidadeSimples;
 import com.super_bits.modulosSB.SBCore.modulos.view.componenteAtributo.ComponenteVisualSBBean;
 import com.super_bits.projeto.Jira.CustosDesenvolvimento;
 import com.super_bits.projeto.Jira.FabComponenteVisualRequisitos;
@@ -31,7 +31,7 @@ import org.coletivojava.fw.api.tratamentoErros.FabErro;
  * @author desenvolvedor
  */
 @InfoObjetoSB(plural = "Previsões de Entidades ", tags = "Previsão Projeto Entidade")
-public class PrevisaoEntidade extends ItemSimples implements ItfPrevisaoEntidade {
+public class PrevisaoEntidade extends EntidadeSimples implements ItfPrevisaoEntidade {
 
     @InfoCampo(tipo = FabTipoAtributoObjeto.ID)
     private final int id;

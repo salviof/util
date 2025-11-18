@@ -8,7 +8,7 @@ package br.org.coletivojava.fw.utils.servico.ServicoRepositorioDeArquivos.model;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoCampo;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoObjetoSB;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campo.FabTipoAtributoObjeto;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.ItemSimples;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.EntidadeSimples;
 import java.io.Serializable;
 
 /**
@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @author sfurbino
  */
 @InfoObjetoSB(tags = {"Arquivo com hash de enteidade"}, plural = "Arquivos")
-public class ArquivoDeEntidadeComHash extends ItemSimples implements Serializable {
+public class ArquivoDeEntidadeComHash extends EntidadeSimples implements Serializable {
 
     public ArquivoDeEntidadeComHash(Long pId, String pNome, String pHash) {
         id = pId;

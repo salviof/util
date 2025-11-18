@@ -8,14 +8,14 @@ package com.super_bits.projeto.Jira;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoCampo;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campo.FabTipoAtributoObjeto;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ComoEntidadeSimples;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.ItemSimples;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.EntidadeSimples;
 
 /**
  * \
  *
  * @author salvioF
  */
-public class TipoProfissional extends ItemSimples implements ComoEntidadeSimples {
+public class TipoProfissional extends EntidadeSimples implements ComoEntidadeSimples {
 
     @InfoCampo(tipo = FabTipoAtributoObjeto.ID)
     private Long id;
