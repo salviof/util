@@ -25,7 +25,7 @@ import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreReflexaoObjeto;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringFiltros;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringSlugs;
 
-import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ItfAcaoDoSistema;
+import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ComoAcaoDoSistema;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.fabricas.FabTipoAcaoSistemaGenerica;
 import com.super_bits.modulosSB.SBCore.modulos.Mensagens.FabMensagens;
 
@@ -744,7 +744,7 @@ public class UtilSBCoreJira {
 
     }
 
-    public static String getSlugFacilAcao(ItfAcaoDoSistema pAcao) {
+    public static String getSlugFacilAcao(ComoAcaoDoSistema pAcao) {
         try {
             String slugModulo = UtilSBCoreStringFiltros.getPrimeirasXLetrasDaString(pAcao.getModulo().getNome(), 5);
             String slugNomeAcao = pAcao.getEnumAcaoDoSistema().toString();
@@ -755,7 +755,7 @@ public class UtilSBCoreJira {
         }
     }
 
-    public static TarefaJira getTarefaJiraAcaoDoSistema(TIPOS_DE_TAREFA_JIRA pTipoTarefaJira, ItfAcaoDoSistema pAcao) {
+    public static TarefaJira getTarefaJiraAcaoDoSistema(TIPOS_DE_TAREFA_JIRA pTipoTarefaJira, ComoAcaoDoSistema pAcao) {
         TarefaJira tarefa = pTipoTarefaJira.getTarefaInssueJira();
         tarefa.setAcaoVinculada(pAcao);
         tarefa.setTipoTarefa(pTipoTarefaJira);

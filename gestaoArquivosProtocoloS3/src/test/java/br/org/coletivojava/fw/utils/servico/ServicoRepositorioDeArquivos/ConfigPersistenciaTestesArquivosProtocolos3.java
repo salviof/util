@@ -6,7 +6,7 @@
 package br.org.coletivojava.fw.utils.servico.ServicoRepositorioDeArquivos;
 
 import com.super_bits.modulosSB.Persistencia.ConfigGeral.ConfigPersistenciaPadrao;
-import com.super_bits.modulosSB.SBCore.modulos.fabrica.ItfFabrica;
+import com.super_bits.modulosSB.SBCore.modulos.fabrica.ComoFabrica;
 
 /**
  *
@@ -20,7 +20,7 @@ public class ConfigPersistenciaTestesArquivosProtocolos3 extends ConfigPersisten
     }
 
     @Override
-    public Class<? extends ItfFabrica>[] fabricasRegistrosIniciais() {
+    public Class<? extends ComoFabrica>[] fabricasRegistrosIniciais() {
         return new Class[]{};
     }
 

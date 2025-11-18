@@ -5,7 +5,7 @@
  */
 package com.super_bits.shellcommands.model;
 
-import com.super_bits.modulosSB.SBCore.modulos.fabrica.ItfFabrica;
+import com.super_bits.modulosSB.SBCore.modulos.fabrica.ComoFabrica;
 
 /**
  *
@@ -20,7 +20,7 @@ import com.super_bits.modulosSB.SBCore.modulos.fabrica.ItfFabrica;
  *
  * @author sfurbino
  */
-public enum TIPOCMD implements ItfFabrica {
+public enum TIPOCMD implements ComoFabrica {
 
     /**
      *

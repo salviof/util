@@ -6,7 +6,7 @@
 package com.super_bits.projeto.Jira.previsao;
 
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.ItfModuloAcaoSistema;
-import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ItfAcaoDoSistema;
+import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ComoAcaoDoSistema;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.permissoes.ItfAcaoGerenciarEntidade;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoCampo;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campo.FabTipoAtributoObjeto;
@@ -51,7 +51,7 @@ public class PrevisaoGestaoEntidade extends ItemSimples implements ItfPrevisaoGe
         modulo = pAcaoGEstao.getModulo();
         descricao = "Previsão de desenvolvimento para " + pAcaoGEstao.getNomeAcao();
         id = descricao.hashCode();
-        for (ItfAcaoDoSistema acao : pAcaoGEstao.getAcoesVinculadas()) {
+        for (ComoAcaoDoSistema acao : pAcaoGEstao.getAcoesVinculadas()) {
             if (acao.isUmaAcaoController()) {
                 qtdAoesDeController++;
             } else {

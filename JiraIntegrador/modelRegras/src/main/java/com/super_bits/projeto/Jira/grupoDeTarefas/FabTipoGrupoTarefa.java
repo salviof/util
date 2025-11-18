@@ -5,14 +5,14 @@
  */
 package com.super_bits.projeto.Jira.grupoDeTarefas;
 
-import com.super_bits.modulosSB.SBCore.modulos.fabrica.ItfFabrica;
+import com.super_bits.modulosSB.SBCore.modulos.fabrica.ComoFabrica;
 import com.super_bits.projeto.Jira.TipoGrupoTarefa;
 
 /**
  *
  * @author salvioF
  */
-public enum FabTipoGrupoTarefa implements ItfFabrica {
+public enum FabTipoGrupoTarefa implements ComoFabrica {
 
     MODULO, GESTAO, TABELA, PERSONALIZADA;
 

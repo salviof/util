@@ -5,7 +5,7 @@
 package org.superBits.utilitario.editorArquivos.util;
 
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campoInstanciado.ItfCampoInstanciado;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfBeanSimples;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ComoEntidadeSimples;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -27,7 +27,7 @@ import org.docx4j.wml.CTWebSettings;
  */
 public class UtilSBEditorPlanilha {
 
-    public static boolean gerarPlanilha(String pCaminhoPlanilha, String pNomeAba, List<ItfBeanSimples> pItens) {
+    public static boolean gerarPlanilha(String pCaminhoPlanilha, String pNomeAba, List<ComoEntidadeSimples> pItens) {
 
         WorkbookSettings ws = new WorkbookSettings();
         ws.setLocale(new Locale("pt", "BR"));
@@ -42,7 +42,7 @@ public class UtilSBEditorPlanilha {
             int linha = 0;
             if (!pItens.isEmpty()) {
 
-                ItfBeanSimples itemColuna = pItens.get(0);
+                ComoEntidadeSimples itemColuna = pItens.get(0);
                 int col = 0;
                 for (ItfCampoInstanciado campo : itemColuna.getCamposInstanciados()) {
                     if (!campo.getNome().startsWith("this")) {
@@ -52,7 +52,7 @@ public class UtilSBEditorPlanilha {
                     col++;
                 }
                 linha++;
-                for (ItfBeanSimples itemSimples : pItens) {
+                for (ComoEntidadeSimples itemSimples : pItens) {
                     int coluna = 0;
                     for (ItfCampoInstanciado campo : itemSimples.getCamposInstanciados()) {
 

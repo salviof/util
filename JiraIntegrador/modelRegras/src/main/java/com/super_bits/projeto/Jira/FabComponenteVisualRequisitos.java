@@ -7,7 +7,7 @@ package com.super_bits.projeto.Jira;
 
 import com.super_bits.modulosSB.SBCore.modulos.view.fabricasCompVisual.FabFamiliaCompVisual;
 import com.super_bits.modulosSB.SBCore.modulos.view.fabricasCompVisual.InfoComponenteVisual;
-import com.super_bits.modulosSB.SBCore.modulos.view.fabricasCompVisual.ItfFabTipoComponenteVisual;
+import com.super_bits.modulosSB.SBCore.modulos.view.fabricasCompVisual.ComoFabTipoComponenteVisual;
 import org.coletivojava.fw.api.objetoNativo.view.componente.ComponenteVisualBase;
 
 import org.coletivojava.fw.utilCoreBase.UtilSBFabricaComponenteVisual;
@@ -16,7 +16,7 @@ import org.coletivojava.fw.utilCoreBase.UtilSBFabricaComponenteVisual;
  *
  * @author salvioF
  */
-public enum FabComponenteVisualRequisitos implements ItfFabTipoComponenteVisual {
+public enum FabComponenteVisualRequisitos implements ComoFabTipoComponenteVisual {
     @InfoComponenteVisual(classesCSS = "opcoesElementoVinculado",
             xhtmlJSF = FabComponenteVisualRequisitos.PASTACOMPONENTES + "/elementoNaoVinculadoDetalhes.xhtml",
             descricao = "", nome = "")

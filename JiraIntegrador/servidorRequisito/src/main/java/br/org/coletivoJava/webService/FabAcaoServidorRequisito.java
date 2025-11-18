@@ -7,7 +7,7 @@ package br.org.coletivoJava.webService;
 
 import com.super_bits.modulos.SBAcessosModel.controller.FabModulosSistemaSB;
 import com.super_bits.modulos.SBAcessosModel.controller.InfoModulosSistemaSB;
-import com.super_bits.modulos.SBAcessosModel.fabricas.ItfFabricaDeAcoesPersistencia;
+import com.super_bits.modulos.SBAcessosModel.fabricas.ComoFabricaDeAcoesPersistencia;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.anotacoes.InfoTipoAcaoGestaoEntidade;
 import com.super_bits.modulosSB.SBCore.modulos.requisito.ComentarioRequisito;
 
@@ -16,7 +16,7 @@ import com.super_bits.modulosSB.SBCore.modulos.requisito.ComentarioRequisito;
  * @author desenvolvedor
  */
 @InfoModulosSistemaSB(modulo = FabModulosSistemaSB.PAGINAS_DO_SISTEMA)
-public enum FabAcaoServidorRequisito implements ItfFabricaDeAcoesPersistencia {
+public enum FabAcaoServidorRequisito implements ComoFabricaDeAcoesPersistencia {
     @InfoTipoAcaoGestaoEntidade(nomeAcao = "Gestão de Comentarios WS", entidade = ComentarioRequisito.class)
     COMENTARIO_MB,
     COMENTARIO_CTR_CADASTRAR_COMENTARIO,

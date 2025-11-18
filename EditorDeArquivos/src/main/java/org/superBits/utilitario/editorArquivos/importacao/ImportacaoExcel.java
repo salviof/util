@@ -7,7 +7,7 @@ package org.superBits.utilitario.editorArquivos.importacao;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreDataHora;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campo.TIPO_PRIMITIVO;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfBeanSimples;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ComoEntidadeSimples;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -83,7 +83,7 @@ public class ImportacaoExcel<T> implements Serializable {
         mapaprocessadoresPersonalizados.put(pProcessador.getNomeColuna(), pProcessador);
     }
 
-    public void processarCelula(final Cell pCelulaExcelValorCampo, final String pNomeCampo, final ItfBeanSimples pItem) throws ErroProcessandCelula {
+    public void processarCelula(final Cell pCelulaExcelValorCampo, final String pNomeCampo, final ComoEntidadeSimples pItem) throws ErroProcessandCelula {
         TIPO_PRIMITIVO tipoPrimitivo = pItem.getCampoByNomeOuAnotacao(pNomeCampo).getTipoPrimitivoDoValor();
         try {
             if (mapaprocessadoresPersonalizados.containsKey(pNomeCampo)) {
@@ -225,7 +225,7 @@ public class ImportacaoExcel<T> implements Serializable {
 
                 boolean deuErro = false;
 
-                ItfBeanSimples novoRegistro = (ItfBeanSimples) classeImportacao.newInstance();
+                ComoEntidadeSimples novoRegistro = (ComoEntidadeSimples) classeImportacao.newInstance();
 
                 for (String nomeCampo : mapeamentoColunasPorNomeDoCampo.keySet()) {
 

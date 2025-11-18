@@ -55,7 +55,7 @@ public class PrevisaoEntidade extends ItemSimples implements ItfPrevisaoEntidade
         this.entidadeVinculada = entidadeVinculada;
         try {
 
-            ItemGenerico item = (ItemGenerico) entidadeVinculada.newInstance();
+            ComoEntidadeGenerica item = (ItemGenerico) entidadeVinculada.newInstance();
             estruturaDeEntidade = item.getEstruturaDaEntidade();
         } catch (InstantiationException | IllegalAccessException ex) {
             SBCore.RelatarErro(FabErro.SOLICITAR_REPARO, "Erro instanciando classe para analize de estrutura", ex);

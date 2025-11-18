@@ -31,7 +31,7 @@ public @interface InfoAcaoAcessoRestritoExemplo {
      *
      * Ao criar uma anotação InfoAcaoNomeDoModulo é importante:<br>
      * 1 - que o método chame acao <br>
-     * 2 - Que o enum implemente ItfFabricaDeAcoes
+     * 2 - Que o enum implemente ComoFabricaDeAcoes
      *
      * @return A ação vinculada ao Método
      */

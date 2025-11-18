@@ -11,7 +11,7 @@ import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.arquivosConfiguracao.ConfigModulo;
 import com.super_bits.modulosSB.SBCore.UtilGeral.MapaAcoesSistema;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.ItfResposta;
-import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ItfAcaoDoSistema;
+import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ComoAcaoDoSistema;
 import com.super_bits.modulosSB.SBCore.modulos.requisito.ComentarioRequisito;
 import com.super_bits.modulosSB.SBCore.modulos.requisito.ComentarioRequisitoEnvioNovo;
 import com.super_bits.modulosSB.SBCore.modulos.requisito.ItfServiceComentariosJira;
@@ -34,7 +34,7 @@ public class ServicoJiraComentariosSparkRest implements ItfServiceComentariosJir
     public RespostaWebService adicionarComentario(ComentarioRequisitoEnvioNovo coment) {
 
         ProjetoJiraSuperBits testeOFicialProjeto = new ProjetoJiraSuperBits(CONFIGURACOES);
-        ItfAcaoDoSistema acao = MapaAcoesSistema.getAcaoDoSistemaByNomeUnico(coment.getAcaoDoSistema());
+        ComoAcaoDoSistema acao = MapaAcoesSistema.getAcaoDoSistemaByNomeUnico(coment.getAcaoDoSistema());
         TarefaSuperBits tr = MapaTarefasProjeto.getTarefaDaAcao(acao);
         testeOFicialProjeto.adicionarComentario(tr, coment.getComentario());
 
@@ -44,7 +44,7 @@ public class ServicoJiraComentariosSparkRest implements ItfServiceComentariosJir
     @Override
     public ItfResposta obterRequisitoDeAcaoDoProjeto(String acaoNomeUnico) {
         ProjetoJiraSuperBits testeOFicialProjeto = new ProjetoJiraSuperBits(CONFIGURACOES);
-        ItfAcaoDoSistema acao = MapaAcoesSistema.getAcaoDoSistemaByNomeUnico(acaoNomeUnico);
+        ComoAcaoDoSistema acao = MapaAcoesSistema.getAcaoDoSistemaByNomeUnico(acaoNomeUnico);
         TarefaSuperBits tr = MapaTarefasProjeto.getTarefaDaAcao(acao);
         Issue tarefa = testeOFicialProjeto.getInssueJiraByTarefa(tr);
         Requisito req = new Requisito();

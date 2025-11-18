@@ -6,9 +6,9 @@
 package com.super_bits.InomeClienteI.JiraIntegradorModel.regras_de_negocio_e_controller;
 
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.ItfModuloAcaoSistema;
-import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.modulo.ItfFabricaModulo;
+import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.modulo.ComoFabricaModulo;
 import com.super_bits.modulos.SBAcessosModel.model.ModuloAcaoSistema;
-import com.super_bits.modulosSB.SBCore.modulos.view.menu.ItfFabricaMenu;
+import com.super_bits.modulosSB.SBCore.modulos.view.menu.ComoFabricaMenu;
 
 /**
  *
@@ -20,7 +20,7 @@ import com.super_bits.modulosSB.SBCore.modulos.view.menu.ItfFabricaMenu;
  *
  * @author Salvio Furbino
  */
-public enum FabModulosIProjetoTesteI implements ItfFabricaModulo {
+public enum FabModulosIProjetoTesteI implements ComoFabricaModulo {
 
     DEMONSTRACAO_BASICA, DEMONSTRACAO_ACESSO_RESTRITO;
 
@@ -46,7 +46,7 @@ public enum FabModulosIProjetoTesteI implements ItfFabricaModulo {
     }
 
     @Override
-    public ItfFabricaMenu getMenuPadrao() {
+    public ComoFabricaMenu getMenuPadrao() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

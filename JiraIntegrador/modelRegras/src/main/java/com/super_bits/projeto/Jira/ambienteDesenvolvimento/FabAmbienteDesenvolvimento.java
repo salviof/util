@@ -5,7 +5,7 @@
  */
 package com.super_bits.projeto.Jira.ambienteDesenvolvimento;
 
-import com.super_bits.modulosSB.SBCore.modulos.fabrica.ItfFabrica;
+import com.super_bits.modulosSB.SBCore.modulos.fabrica.ComoFabrica;
 import com.super_bits.projeto.Jira.DesenvolvedorProjetoSB;
 import com.super_bits.projeto.Jira.FabTipoProfissional;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author salvioF
  */
-public enum FabAmbienteDesenvolvimento implements ItfFabrica {
+public enum FabAmbienteDesenvolvimento implements ComoFabrica {
     AMBIENTE_PADRAO;
 
     @Override

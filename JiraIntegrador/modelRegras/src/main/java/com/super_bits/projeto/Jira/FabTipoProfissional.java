@@ -5,13 +5,13 @@
  */
 package com.super_bits.projeto.Jira;
 
-import com.super_bits.modulosSB.SBCore.modulos.fabrica.ItfFabrica;
+import com.super_bits.modulosSB.SBCore.modulos.fabrica.ComoFabrica;
 
 /**
  *
  * @author salvioF
  */
-public enum FabTipoProfissional implements ItfFabrica {
+public enum FabTipoProfissional implements ComoFabrica {
 
     ANALISTA_BANCO_DE_DADOS,
     ANALISTA_LOGICA_TDD,

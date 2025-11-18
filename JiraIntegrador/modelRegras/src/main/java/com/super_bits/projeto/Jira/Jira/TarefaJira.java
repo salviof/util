@@ -14,7 +14,7 @@ import com.atlassian.jira.rest.client.api.domain.input.ComplexIssueInputFieldVal
 import com.atlassian.jira.rest.client.api.domain.input.FieldInput;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInputBuilder;
-import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ItfAcaoDoSistema;
+import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ComoAcaoDoSistema;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreReflexaoObjeto;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campo.ItfCaminhoCampo;
@@ -44,7 +44,7 @@ public class TarefaJira {
     private String descricaoTarefa;
     private String codigoTarefa;
     private String tempoEsperado;
-    private ItfAcaoDoSistema acaoVinculada;
+    private ComoAcaoDoSistema acaoVinculada;
     private Class tabelaVinculada;
     private UtilSBCoreJira.TIPO_GRUPO_TAREFA tipoGrupoTarefa;
     private ItfRequisitoDoSistema requisitoVinculado;
@@ -125,11 +125,11 @@ public class TarefaJira {
         this.planosDeTrabalho = planosDeTrabalho;
     }
 
-    public ItfAcaoDoSistema getAcaoVinculada() {
+    public ComoAcaoDoSistema getAcaoVinculada() {
         return acaoVinculada;
     }
 
-    public void setAcaoVinculada(ItfAcaoDoSistema acaoVinculada) {
+    public void setAcaoVinculada(ComoAcaoDoSistema acaoVinculada) {
         if (tipoOrigem != null) {
             throw new UnsupportedOperationException("A origem da ação já foi definida como" + tipoOrigem);
         }
@@ -298,7 +298,7 @@ public class TarefaJira {
 
             tarefaPrincipal = new TarefaJira();
             tarefaPrincipal.setGropoTarefas(true);
-            ItfAcaoDoSistema acaoPrincipal = null;
+            ComoAcaoDoSistema acaoPrincipal = null;
 
             switch (getTipoOrigem()) {
                 case BANCO_DE_DADOS:

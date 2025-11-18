@@ -7,7 +7,7 @@ package org.superBits.utilitario.editorArquivos.importacao;
 
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.UtilSBCoreArquivoTexto;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfBeanSimples;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ComoEntidadeSimples;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
@@ -22,7 +22,7 @@ public class ImportacaoExcelTest {
     public void testCarregarArquivo() {
 
         //   SBCore.configurar(new ConfiguradorCoreDeProjetoJarAbstrato , SBCore.ESTADO_APP.DESENVOLVIMENTO);
-        ItfBeanSimples Teste = new ItemSimplesTeste();
+        ComoEntidadeSimples Teste = new ItemSimplesTeste();
 
         Map<String, Integer> parametros = new HashMap<>();
 

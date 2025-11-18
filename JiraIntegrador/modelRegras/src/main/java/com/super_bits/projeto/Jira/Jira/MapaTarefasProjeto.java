@@ -8,7 +8,7 @@ package com.super_bits.projeto.Jira.Jira;
 import com.super_bits.modulosSB.Persistencia.ConfigGeral.SBPersistencia;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.UtilGeral.MapaDeAcoes;
-import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ItfAcaoDoSistema;
+import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ComoAcaoDoSistema;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.permissoes.ItfAcaoGerenciarEntidade;
 import java.util.List;
 
@@ -53,7 +53,7 @@ public class MapaTarefasProjeto {
         return mapaTarefasDoProjeto.getTarefasDaGestao(pAcaoGestao);
     }
 
-    public static TarefaSuperBits getTarefaDaAcao(ItfAcaoDoSistema pAcao) {
+    public static TarefaSuperBits getTarefaDaAcao(ComoAcaoDoSistema pAcao) {
         criarTarefas();
         List<TarefaSuperBits> tarefas = getTarefasDaGestao(pAcao.getAcaoDeGestaoEntidade());
 

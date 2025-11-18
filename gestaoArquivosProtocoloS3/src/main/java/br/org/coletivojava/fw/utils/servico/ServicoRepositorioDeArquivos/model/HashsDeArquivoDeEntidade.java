@@ -5,7 +5,7 @@
  */
 package br.org.coletivojava.fw.utils.servico.ServicoRepositorioDeArquivos.model;
 
-import com.super_bits.modulosSB.Persistencia.registro.persistidos.EntidadeSimples;
+import com.super_bits.modulosSB.Persistencia.registro.persistidos.EntidadeSimplesORM;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoCampo;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoObjetoSB;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoPreparacaoObjeto;
@@ -38,7 +38,7 @@ import org.coletivojava.fw.api.tratamentoErros.ErroPreparandoObjeto;
 @Table(indexes = {
     @Index(name = "HashDeArquivo", columnList = "hashCalculado")})
 @InfoObjetoSB(tags = "Hash de Arquivo", plural = "Hashs de arquivos")
-public class HashsDeArquivoDeEntidade extends EntidadeSimples {
+public class HashsDeArquivoDeEntidade extends EntidadeSimplesORM {
 
     @Id
     @GeneratedValue

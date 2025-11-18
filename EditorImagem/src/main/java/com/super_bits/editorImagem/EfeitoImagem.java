@@ -6,8 +6,9 @@ package com.super_bits.editorImagem;
 
 import com.super_bits.editorImagem.util.UtilSBImagemEdicao;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfBeanSimplesSomenteLeitura;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.ItemGenerico;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.ComoEntidadeGenerica;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ComoEntidadeSimplesSomenteLeitura;
+
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +24,7 @@ import org.coletivojava.fw.api.tratamentoErros.FabErro;
  * @since 02/03/2015
  * @version 1.0
  */
-public class EfeitoImagem extends ItemGenerico implements ItfBeanSimplesSomenteLeitura {
+public class EfeitoImagem extends ComoEntidadeGenerica implements ComoEntidadeSimplesSomenteLeitura {
 
     @Override
     public String getImgPequena() {

@@ -11,7 +11,7 @@ import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.ItfModuloAcaoSistema;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.permissoes.ItfAcaoGerenciarEntidade;
 import com.super_bits.modulosSB.SBCore.UtilGeral.MapaDeAcoes;
-import com.super_bits.modulosSB.SBCore.modulos.fabrica.ItfFabricaAcoes;
+import com.super_bits.modulosSB.SBCore.modulos.fabrica.ComoFabricaAcoes;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoObjetoSB;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.ItemGenerico;
 import com.super_bits.projeto.Jira.CustosDesenvolvimento;
@@ -31,7 +31,7 @@ import javax.persistence.Entity;
  * @author desenvolvedor
  */
 @InfoObjetoSB(tags = {"Previsao Projeto"}, plural = "Previsões de Projeto")
-public class PrevisaoProjeto extends ItemGenerico implements Serializable {
+public class PrevisaoProjeto extends ComoEntidadeGenerica implements Serializable {
 
     private final Map<String, TarefaSuperBits> todasTarefas = new HashMap<>();
     private CustosDesenvolvimento custosDesenvolvimento;
@@ -80,7 +80,7 @@ public class PrevisaoProjeto extends ItemGenerico implements Serializable {
         if (entidades != null) {
             entidades.stream().forEach((entidade) -> {
                 try {
-                    ItemGenerico entiInst = (ItemGenerico) entidade.newInstance();
+                    ComoEntidadeGenerica entiInst = (ItemGenerico) entidade.newInstance();
 
                     addEntidadePrevista(entidade);
 
@@ -97,11 +97,11 @@ public class PrevisaoProjeto extends ItemGenerico implements Serializable {
         calcularValores();
     }
 
-    public PrevisaoProjeto(Class<? extends ItfFabricaAcoes>[] fabricas) {
+    public PrevisaoProjeto(Class<? extends ComoFabricaAcoes>[] fabricas) {
         this(new MapaDeAcoes(fabricas), null);
     }
 
-    public PrevisaoProjeto(Class<? extends ItfFabricaAcoes>[] fabricas, List<Class> entidades, List<ItfRequisitoDoSistema> requisitosPersonalizados) {
+    public PrevisaoProjeto(Class<? extends ComoFabricaAcoes>[] fabricas, List<Class> entidades, List<ItfRequisitoDoSistema> requisitosPersonalizados) {
         this(new MapaDeAcoes(fabricas), entidades);
 
         for (ItfRequisitoDoSistema req : requisitosPersonalizados) {

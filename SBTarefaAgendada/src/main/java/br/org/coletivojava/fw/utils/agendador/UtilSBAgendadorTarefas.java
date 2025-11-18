@@ -6,9 +6,9 @@
 package br.org.coletivojava.fw.utils.agendador;
 
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
-import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ItfAcaoControllerAutoExecucao;
-import com.super_bits.modulosSB.SBCore.modulos.fabrica.ItfFabricaAcoes;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfBeanSimples;
+import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ComoAcaoControllerAutoExecucao;
+import com.super_bits.modulosSB.SBCore.modulos.fabrica.ComoFabricaAcoes;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ComoEntidadeSimples;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -46,11 +46,11 @@ public class UtilSBAgendadorTarefas {
         return agendador;
     }
 
-    public static void agendarTarefa(ItfFabricaAcoes pAcao, Date pData) {
+    public static void agendarTarefa(ComoFabricaAcoes pAcao, Date pData) {
         agendarTarefa(new AcaoAgendada(pAcao, pData));
     }
 
-    public static void agendarTarefa(ItfFabricaAcoes pAcao, Date pData, ItfBeanSimples pParametro) {
+    public static void agendarTarefa(ComoFabricaAcoes pAcao, Date pData, ComoEntidadeSimples pParametro) {
         agendarTarefa(new AcaoAgendada(pAcao, pData, pParametro));
     }
 
@@ -78,7 +78,7 @@ public class UtilSBAgendadorTarefas {
         }
     }
 
-    public static void agendarAutoExecucaoAcaoProxima(ItfAcaoControllerAutoExecucao pAcao) {
+    public static void agendarAutoExecucaoAcaoProxima(ComoAcaoControllerAutoExecucao pAcao) {
         if (pAcao == null) {
             System.out.println("Enviou nulo para autoexecução de ação");
             return;

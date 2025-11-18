@@ -13,7 +13,7 @@ import com.super_bits.InomeClienteI.JiraIntegradorModel.regras_de_negocio_e_cont
 import com.super_bits.InomeClienteI.JiraIntegradorModel.regras_de_negocio_e_controller.InfoModuloInomeProjetoI;
 import com.super_bits.modulos.SBAcessosModel.model.acoes.AcaoDoSistema;
 import com.super_bits.modulos.SBAcessosModel.model.acoes.UtilFabricaDeAcoesAcessosModel;
-import com.super_bits.modulosSB.SBCore.modulos.fabrica.ItfFabricaAcoes;
+import com.super_bits.modulosSB.SBCore.modulos.fabrica.ComoFabricaAcoes;
 
 /**
  *
@@ -28,13 +28,13 @@ import com.super_bits.modulosSB.SBCore.modulos.fabrica.ItfFabricaAcoes;
  * informações consulte:
  *
  * @see
- * UtilFabricaDeAcoesAcessosModel#getTipoAcaoByNome(com.super_bits.modulosSB.SBCore.fabrica.ItfFabricaAcoes)
+ * UtilFabricaDeAcoesAcessosModel#getTipoAcaoByNome(com.super_bits.modulosSB.SBCore.fabrica.ComoFabricaAcoes)
  *
  *
  * @author Sálvio Furbino
  */
 @InfoModuloInomeProjetoI(modulo = FabModulosIProjetoTesteI.DEMONSTRACAO_ACESSO_RESTRITO)
-public enum FabAcaoAcessoRestritoExemplo implements ItfFabricaAcoes {
+public enum FabAcaoAcessoRestritoExemplo implements ComoFabricaAcoes {
 
     /**
      *
@@ -53,7 +53,7 @@ public enum FabAcaoAcessoRestritoExemplo implements ItfFabricaAcoes {
      *
      *
      * @see
-     * UtilFabricaDeAcoesAcessosModel#getTipoAcaoByNome(com.super_bits.modulosSB.SBCore.fabrica.ItfFabricaAcoes)
+     * UtilFabricaDeAcoesAcessosModel#getTipoAcaoByNome(com.super_bits.modulosSB.SBCore.fabrica.ComoFabricaAcoes)
      */
     @InfoTipoAcaoFormulario(campos = {"id", "nomeAcao", "precisaPermissao"}, entidade = AcaoDoSistema.class)
     RECURSO_RESTRITO_FRM_LISTAR,
@@ -63,14 +63,14 @@ public enum FabAcaoAcessoRestritoExemplo implements ItfFabricaAcoes {
      *
      *
      * @see
-     * UtilFabricaDeAcoesAcessosModel#getTipoAcaoByNome(com.super_bits.modulosSB.SBCore.fabrica.ItfFabricaAcoes)
+     * UtilFabricaDeAcoesAcessosModel#getTipoAcaoByNome(com.super_bits.modulosSB.SBCore.fabrica.ComoFabricaAcoes)
      */
     @InfoTipoAcaoFormulario(campos = {"id", "nomeAcao", "precisaPermissao", "cor"}, entidade = AcaoDoSistema.class)
     RECURSO_RESTRITO_FRM_VISUALIZAR,
     /**
      *
      * @see
-     * UtilFabricaDeAcoesAcessosModel#getTipoAcaoByNome(com.super_bits.modulosSB.SBCore.fabrica.ItfFabricaAcoes)
+     * UtilFabricaDeAcoesAcessosModel#getTipoAcaoByNome(com.super_bits.modulosSB.SBCore.fabrica.ComoFabricaAcoes)
      */
     @InfoTipoAcaoFormulario(campos = {"id", "nomeAcao", "precisaPermissao", "cor"}, entidade = AcaoDoSistema.class)
     RECURSO_RESTRITO_FRM_EDITAR,
@@ -78,7 +78,7 @@ public enum FabAcaoAcessoRestritoExemplo implements ItfFabricaAcoes {
      *
      *
      * @see
-     * UtilFabricaDeAcoesAcessosModel#getTipoAcaoByNome(com.super_bits.modulosSB.SBCore.fabrica.ItfFabricaAcoes)
+     * UtilFabricaDeAcoesAcessosModel#getTipoAcaoByNome(com.super_bits.modulosSB.SBCore.fabrica.ComoFabricaAcoes)
      */
     @InfoTipoAcaoController(icone = "fa fa-save", entidade = AcaoDoSistema.class)
     RECURSO_RESTRITO_CTR_SALVAR_MERGE;

@@ -13,7 +13,6 @@ import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.arquivosConfiguracao.ConfigModulo;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreBytes;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreReflexaoObjeto;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringFiltros;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringNomeArquivosEDiretorios;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringSlugs;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringValidador;
@@ -26,10 +25,11 @@ import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.acessoArquivo.Fab
 import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.interfaces.ItfCentralPermissaoArquivo;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campo.FabTipoAtributoObjeto;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campoInstanciado.ItfCampoInstanciado;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfBeanSimples;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfBeanSimplesSomenteLeitura;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfSessao;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.ItemGenerico;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.ComoEntidadeGenerica;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ComoEntidadeSimples;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ComoEntidadeSimplesSomenteLeitura;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ComoSessao;
+
 import com.super_bits.modulosSB.webPaginas.arquivosDoProjeto.CentralDeArquivosWebAppServidorSB;
 import java.io.File;
 import java.io.IOException;
@@ -69,7 +69,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
 
     }
 
-    public String getEnderecoLocalAlternativo(ItfBeanSimplesSomenteLeitura entidade, String pCategoria, String pNome) {
+    public String getEnderecoLocalAlternativo(ComoEntidadeSimplesSomenteLeitura entidade, String pCategoria, String pNome) {
         if (entidade.getId() == null || entidade.getId() == null) {
             return super.getEndrLocalArquivoTemporario(pCategoria, entidade.getClass().getSimpleName(), pNome);
         } else {
@@ -78,7 +78,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
     }
 
     @Override
-    public boolean salvarArquivo(ItfBeanSimplesSomenteLeitura entidade, byte[] arqivo, String pCategoria, String pNome) {
+    public boolean salvarArquivo(ComoEntidadeSimplesSomenteLeitura entidade, byte[] arqivo, String pCategoria, String pNome) {
         try {
 
             if (!s3configurado || !conectadoComS3) {
@@ -93,13 +93,13 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
                 boolean arquivarnomeobjetoNaentidade = true;
                 if (pCategoria != null) {
                     if (pCategoria.equals(FabTipoAtributoObjeto.IMG_PEQUENA.toString())) {
-                        if (((ItfBeanSimples) entidade).getCampoReflexaoByAnotacao(FabTipoAtributoObjeto.IMG_PEQUENA) == null) {
+                        if (((ComoEntidadeSimples) entidade).getCampoReflexaoByAnotacao(FabTipoAtributoObjeto.IMG_PEQUENA) == null) {
                             arquivarnomeobjetoNaentidade = false;
                         }
                     }
                 }
                 if (arquivarnomeobjetoNaentidade) {
-                    ((ItfBeanSimples) entidade).getCampoInstanciadoByNomeOuAnotacao(pCategoria).setValor(UtilSBCoreStringSlugs.gerarSlugSimples(pNome));
+                    ((ComoEntidadeSimples) entidade).getCampoInstanciadoByNomeOuAnotacao(pCategoria).setValor(UtilSBCoreStringSlugs.gerarSlugSimples(pNome));
                 }
                 //Apagando arquivo local caso sucesso
                 String caminhoArquivo;
@@ -133,7 +133,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
     @Override
     public boolean salvarArquivo(ItfCampoInstanciado pCampo, byte[] arquivo, String pNomeArquivo) {
         inicioSetup();
-        return salvarArquivo((ItfBeanSimplesSomenteLeitura) pCampo.getObjetoDoAtributo(), arquivo, pCampo.getNomeCamponaClasse(), pNomeArquivo);
+        return salvarArquivo((ComoEntidadeSimplesSomenteLeitura) pCampo.getObjetoDoAtributo(), arquivo, pCampo.getNomeCamponaClasse(), pNomeArquivo);
 
     }
 
@@ -199,17 +199,17 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
     }
 
     @Override
-    public boolean salvarImagemTodosOsFormatos(ItfBeanSimplesSomenteLeitura entidade, InputStream foto) {
+    public boolean salvarImagemTodosOsFormatos(ComoEntidadeSimplesSomenteLeitura entidade, InputStream foto) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean salvarImagemTamanhoMedio(ItfBeanSimplesSomenteLeitura pEntidade, InputStream foto) {
+    public boolean salvarImagemTamanhoMedio(ComoEntidadeSimplesSomenteLeitura pEntidade, InputStream foto) {
 
         String categoria = FabTipoAtributoObjeto.IMG_MEDIA.toString();
-        if (pEntidade instanceof ItfBeanSimples) {
-            if (!((ItfBeanSimples) pEntidade).getCampoInstanciadoByAnotacao(FabTipoAtributoObjeto.IMG_MEDIA).isCampoNaoInstanciado()) {
-                categoria = ((ItfBeanSimples) pEntidade).getCampoInstanciadoByAnotacao(FabTipoAtributoObjeto.IMG_MEDIA).getNomeCamponaClasse();
+        if (pEntidade instanceof ComoEntidadeSimples) {
+            if (!((ComoEntidadeSimples) pEntidade).getCampoInstanciadoByAnotacao(FabTipoAtributoObjeto.IMG_MEDIA).isCampoNaoInstanciado()) {
+                categoria = ((ComoEntidadeSimples) pEntidade).getCampoInstanciadoByAnotacao(FabTipoAtributoObjeto.IMG_MEDIA).getNomeCamponaClasse();
             }
         }
 
@@ -217,31 +217,31 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
     }
 
     @Override
-    public boolean salvarImagemTamanhoPequeno(ItfBeanSimplesSomenteLeitura pEntidade, InputStream foto) {
+    public boolean salvarImagemTamanhoPequeno(ComoEntidadeSimplesSomenteLeitura pEntidade, InputStream foto) {
         String categoria = FabTipoAtributoObjeto.IMG_PEQUENA.toString();
-        if (pEntidade instanceof ItfBeanSimples) {
-            if (((ItfBeanSimples) pEntidade).isTemCampoAnotado(FabTipoAtributoObjeto.IMG_PEQUENA)) {
-                categoria = ((ItfBeanSimples) pEntidade).getCampoInstanciadoByAnotacao(FabTipoAtributoObjeto.IMG_PEQUENA).getNomeCamponaClasse();
+        if (pEntidade instanceof ComoEntidadeSimples) {
+            if (((ComoEntidadeSimples) pEntidade).isTemCampoAnotado(FabTipoAtributoObjeto.IMG_PEQUENA)) {
+                categoria = ((ComoEntidadeSimples) pEntidade).getCampoInstanciadoByAnotacao(FabTipoAtributoObjeto.IMG_PEQUENA).getNomeCamponaClasse();
             }
         }
         return salvarArquivo(pEntidade, UtilSBCoreBytes.gerarBytePorInputstream(foto), categoria, "imagemLogoPequena.jpg");
     }
 
     @Override
-    public boolean salvarImagemTamanhoGrande(ItfBeanSimplesSomenteLeitura pEntidade, InputStream foto) {
+    public boolean salvarImagemTamanhoGrande(ComoEntidadeSimplesSomenteLeitura pEntidade, InputStream foto) {
 
         String categoria = FabTipoAtributoObjeto.IMG_MEDIA.toString();
-        if (pEntidade instanceof ItfBeanSimples) {
-            if (!((ItfBeanSimples) pEntidade).getCampoInstanciadoByAnotacao(FabTipoAtributoObjeto.IMG_GRANDE).isCampoNaoInstanciado()) {
-                categoria = ((ItfBeanSimples) pEntidade).getCampoInstanciadoByAnotacao(FabTipoAtributoObjeto.IMG_GRANDE).getNomeCamponaClasse();
+        if (pEntidade instanceof ComoEntidadeSimples) {
+            if (!((ComoEntidadeSimples) pEntidade).getCampoInstanciadoByAnotacao(FabTipoAtributoObjeto.IMG_GRANDE).isCampoNaoInstanciado()) {
+                categoria = ((ComoEntidadeSimples) pEntidade).getCampoInstanciadoByAnotacao(FabTipoAtributoObjeto.IMG_GRANDE).getNomeCamponaClasse();
             }
         }
         return salvarArquivo(pEntidade, UtilSBCoreBytes.gerarBytePorInputstream(foto), categoria, "imagemLogoGrande.jpg");
     }
 
     @Override
-    public boolean salvarArquivo(ItfBeanSimplesSomenteLeitura entidade, byte[] arquivo, String nomeCampo) {
-        return salvarArquivo(((ItfBeanSimples) entidade).getCampoInstanciadoByNomeOuAnotacao(nomeCampo), arquivo, ((ItfBeanSimples) entidade).getCampoInstanciadoByNomeOuAnotacao(nomeCampo).getValor().toString());
+    public boolean salvarArquivo(ComoEntidadeSimplesSomenteLeitura entidade, byte[] arquivo, String nomeCampo) {
+        return salvarArquivo(((ComoEntidadeSimples) entidade).getCampoInstanciadoByNomeOuAnotacao(nomeCampo), arquivo, ((ComoEntidadeSimples) entidade).getCampoInstanciadoByNomeOuAnotacao(nomeCampo).getValor().toString());
     }
 
     @Override
@@ -298,7 +298,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
     }
 
     @Override
-    public String getEndrLocalArquivoItem(ItfBeanSimplesSomenteLeitura pItem, String nomeArquivo, String pCampo) {
+    public String getEndrLocalArquivoItem(ComoEntidadeSimplesSomenteLeitura pItem, String nomeArquivo, String pCampo) {
         inicioSetup();
         if (!s3configurado) {
             return centralGenerica.getEndrLocalArquivoItem(pItem, nomeArquivo, pCampo);
@@ -306,7 +306,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
             if (pItem.getId() == null) {
                 return centralGenerica.getEndrLocalArquivoItem(pItem, nomeArquivo, pCampo);
             }
-            ItfBeanSimples objeto = (ItfBeanSimples) pItem;
+            ComoEntidadeSimples objeto = (ComoEntidadeSimples) pItem;
             String nomeImagemRepresentanteEntidade = nomeArquivo;
             ItfCampoInstanciado cp = objeto.getCampoInstanciadoByNomeOuAnotacao(pCampo);
 
@@ -341,8 +341,8 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
     }
 
     @Override
-    public String getEndrLocalImagem(ItfBeanSimplesSomenteLeitura item, FabTipoAtributoObjeto tipo,
-            ItfSessao pSessao
+    public String getEndrLocalImagem(ComoEntidadeSimplesSomenteLeitura item, FabTipoAtributoObjeto tipo,
+            ComoSessao pSessao
     ) {
         inicioSetup();
         if (!s3configurado) {
@@ -351,7 +351,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
             if (item.getId() == null) {
                 return centralGenerica.getEndrLocalImagem(item, tipo, pSessao);
             }
-            ItfBeanSimples objeto = (ItfBeanSimples) item;
+            ComoEntidadeSimples objeto = (ComoEntidadeSimples) item;
             String nomeImagemRepresentanteEntidade = tipo.toString() + ".jpg";
             switch (tipo) {
 
@@ -427,7 +427,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
         return centralGenerica.getEntdrRemotoIMGPadraoPorTipoClasse(entidade);
     }
 
-    private void removerItemTemporario(ItfBeanSimplesSomenteLeitura pItem, String pCampo, String pNomeArquivo, String pHash) {
+    private void removerItemTemporario(ComoEntidadeSimplesSomenteLeitura pItem, String pCampo, String pNomeArquivo, String pHash) {
 
         if (pHash != null) {
             if (pItem.getId() != null && pItem.getId() > 0) {
@@ -446,7 +446,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
         }
     }
 
-    private void removerArquivoImagemTemporario(ItfBeanSimplesSomenteLeitura item, FabTipoAtributoObjeto tipo, ItfSessao pSessao, String pHash) {
+    private void removerArquivoImagemTemporario(ComoEntidadeSimplesSomenteLeitura item, FabTipoAtributoObjeto tipo, ComoSessao pSessao, String pHash) {
         String arquivoLocal = centralGenerica.getEndrLocalImagem(item, tipo, pSessao);
         if (pHash != null) {
             if (item.getId() != null && item.getId() > 0.) {
@@ -466,12 +466,12 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
     }
 
     @Override
-    public String getEndrRemotoImagem(ItfBeanSimplesSomenteLeitura item, FabTipoAtributoObjeto tipo
+    public String getEndrRemotoImagem(ComoEntidadeSimplesSomenteLeitura item, FabTipoAtributoObjeto tipo
     ) {
         inicioSetup();
 
         String campo = tipo.toString();
-        ItfCampoInstanciado cpInstanciado = ((ItfBeanSimples) item).getCampoInstanciadoByAnotacao(tipo);
+        ItfCampoInstanciado cpInstanciado = ((ComoEntidadeSimples) item).getCampoInstanciadoByAnotacao(tipo);
         if (item.getId() != null && item.getId() > 0) {
             String campoCategoria = tipo.name();
             if (cpInstanciado != null) {
@@ -517,7 +517,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
         }
         if (cpInstanciado != null) {
 
-            campo = ((ItfBeanSimples) item).getCampoInstanciadoByAnotacao(tipo).getNomeCamponaClasse();
+            campo = ((ComoEntidadeSimples) item).getCampoInstanciadoByAnotacao(tipo).getNomeCamponaClasse();
 
         }
 
@@ -527,7 +527,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
     }
 
     @Override
-    public String getEndrRemotoArquivoItem(ItfBeanSimplesSomenteLeitura pItem, String nomeArquivo,
+    public String getEndrRemotoArquivoItem(ComoEntidadeSimplesSomenteLeitura pItem, String nomeArquivo,
             FabTipoAcessoArquivo pTipoAcesso, FabTipoArquivoConhecido pTipoArquivo
     ) {
 
@@ -536,7 +536,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
     }
 
     @Override
-    public String getEndrRemotoArquivoItem(ItfBeanSimplesSomenteLeitura pItem, String nomeArquivo,
+    public String getEndrRemotoArquivoItem(ComoEntidadeSimplesSomenteLeitura pItem, String nomeArquivo,
             String categoria, FabTipoAcessoArquivo pTipoAcesso,
             FabTipoArquivoConhecido pTipoArquivo
     ) {
@@ -587,7 +587,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
 
     @Override
     @Deprecated
-    public String getEndrRemotoRecursosItem(ItfBeanSimples item, String galeria,
+    public String getEndrRemotoRecursosItem(ComoEntidadeSimples item, String galeria,
             FabTipoAcessoArquivo pTipoAcesso, FabTipoArquivoConhecido pTipoArquivo
     ) {
         return centralGenerica.getEndrRemotoRecursosItem(item, galeria, pTipoAcesso, pTipoArquivo);
@@ -595,31 +595,31 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
     }
 
     @Override
-    public List<String> getEnterecosLocaisRecursosItem(ItfBeanSimples item, String galeria
+    public List<String> getEnterecosLocaisRecursosItem(ComoEntidadeSimples item, String galeria
     ) {
         return centralGenerica.getEnterecosLocaisRecursosItem(item, galeria);
     }
 
     @Override
-    public List<String> getEnterecosRemotosRecursosItem(ItfBeanSimplesSomenteLeitura item
+    public List<String> getEnterecosRemotosRecursosItem(ComoEntidadeSimplesSomenteLeitura item
     ) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<String> getEndrsLocaisDeCategoriasItem(ItfBeanSimplesSomenteLeitura item
+    public List<String> getEndrsLocaisDeCategoriasItem(ComoEntidadeSimplesSomenteLeitura item
     ) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<String> getNomesPastasCategoriasItem(ItfBeanSimplesSomenteLeitura item
+    public List<String> getNomesPastasCategoriasItem(ComoEntidadeSimplesSomenteLeitura item
     ) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean baixarArquivo(ItfBeanSimplesSomenteLeitura entidade, InputStream arqivo,
+    public boolean baixarArquivo(ComoEntidadeSimplesSomenteLeitura entidade, InputStream arqivo,
             String pNomeCampoOuCategoria, String pNomeArquivo,
             MapaSubstituicao mapaSubistituicao
     ) {
@@ -627,7 +627,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
     }
 
     @Override
-    public String getEndrLocalImagem(ItfBeanSimplesSomenteLeitura item, FabTipoAtributoObjeto tipo
+    public String getEndrLocalImagem(ComoEntidadeSimplesSomenteLeitura item, FabTipoAtributoObjeto tipo
     ) {
         return getEndrLocalImagem(item, tipo, SBCore.getServicoSessao().getSessaoAtual());
     }
@@ -638,7 +638,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
         inicioSetup();
         try {
             centralGenerica.setCentralDePermissao(pPermissao);
-            ItemGenerico.class.newInstance().getImgPequena();
+            ComoEntidadeGenerica.class.newInstance().getImgPequena();
         } catch (InstantiationException ex) {
             Logger.getLogger(ServicoDeArquivosWebAppS3.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
@@ -689,7 +689,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
                     if (!UtilSBCoreStringValidador.isNuloOuEmbranco(hash.getNome())) {
                         String extencao = UtilSBCoreStringNomeArquivosEDiretorios.getExtencaoNomeArquivoSemPonto(hash.getNome());
 
-                        ItfBeanSimples beanSimples = UtilSBPersistencia.loadEntidade(pCampo.getObjetoDoAtributo(), em);
+                        ComoEntidadeSimples beanSimples = UtilSBPersistencia.loadEntidade(pCampo.getObjetoDoAtributo(), em);
                         beanSimples.getCPinst(pCampo.getNomeCamponaClasse()).setValor("arquivo_sem_nome" + extencao);
                         UtilSBPersistencia.mergeRegistro(beanSimples, em);
                     }
@@ -766,7 +766,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
     }
 
     @Override
-    public boolean isTemImagem(ItfBeanSimplesSomenteLeitura item, FabTipoAtributoObjeto tipo
+    public boolean isTemImagem(ComoEntidadeSimplesSomenteLeitura item, FabTipoAtributoObjeto tipo
     ) {
         String jpql = UtilSBServicoArqEntidadeS3.getHSQLPesquisaHashsDeArquivoDeEntidade(item.getClass().getSimpleName(), tipo.toString(), String.valueOf(item.getId()));
         String valor = (String) UtilSBPersistencia.getRegistroByJPQL("select hashCalculado " + jpql);
@@ -785,7 +785,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
 
     @Override
     public String getEndrLocalArquivoCampoInstanciado(ItfCampoInstanciado pCampo) {
-        String caminhoArquivo = getEndrLocalArquivoItem((ItfBeanSimplesSomenteLeitura) pCampo.getObjetoDoAtributo(), (String) pCampo.getValor(), pCampo.getNomeCamponaClasse());
+        String caminhoArquivo = getEndrLocalArquivoItem((ComoEntidadeSimplesSomenteLeitura) pCampo.getObjetoDoAtributo(), (String) pCampo.getValor(), pCampo.getNomeCamponaClasse());
         return caminhoArquivo;
     }
 

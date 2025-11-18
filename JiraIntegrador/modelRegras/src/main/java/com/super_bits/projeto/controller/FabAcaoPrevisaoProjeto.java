@@ -5,14 +5,14 @@
  */
 package com.super_bits.projeto.controller;
 
-import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ItfAcaoDoSistema;
+import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ComoAcaoDoSistema;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.anotacoes.InfoTipoAcaoFormulario;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.anotacoes.InfoTipoAcaoGestaoEntidade;
 import com.super_bits.modulos.SBAcessosModel.controller.FabModulosSistemaSB;
 import com.super_bits.modulos.SBAcessosModel.controller.InfoModulosSistemaSB;
 import com.super_bits.modulos.SBAcessosModel.model.acoes.AcaoDoSistema;
 import com.super_bits.modulos.SBAcessosModel.model.acoes.UtilFabricaDeAcoesAcessosModel;
-import com.super_bits.modulosSB.SBCore.modulos.fabrica.ItfFabricaAcoes;
+import com.super_bits.modulosSB.SBCore.modulos.fabrica.ComoFabricaAcoes;
 import com.super_bits.projeto.Jira.previsao.PrevisaoProjeto;
 
 /**
@@ -20,7 +20,7 @@ import com.super_bits.projeto.Jira.previsao.PrevisaoProjeto;
  * @author salvioF
  */
 @InfoModulosSistemaSB(modulo = FabModulosSistemaSB.PAGINAS_DO_SISTEMA)
-public enum FabAcaoPrevisaoProjeto implements ItfFabricaAcoes {
+public enum FabAcaoPrevisaoProjeto implements ComoFabricaAcoes {
 
     /**
      * Gestão da previsão do projeto
@@ -116,7 +116,7 @@ public enum FabAcaoPrevisaoProjeto implements ItfFabricaAcoes {
     public static final String ARQUIVOS_DE_FORMULARIO = "/site/modulos/projetoAtual/";
     public static final String ARQUIVOS_DE_FORMULARIOMODULO = "/resources/site/modulos/projetoAtual/";
 
-    public ItfAcaoDoSistema getAcaoDoSistema() {
+    public ComoAcaoDoSistema getAcaoDoSistema() {
         AcaoDoSistema acao = (AcaoDoSistema) UtilFabricaDeAcoesAcessosModel.getNovaAcao(this);
         return acao;
     }
@@ -132,7 +132,7 @@ public enum FabAcaoPrevisaoProjeto implements ItfFabricaAcoes {
     }
 
     @Override
-    public ItfAcaoDoSistema getRegistro() {
+    public ComoAcaoDoSistema getRegistro() {
         return getAcaoDoSistema();
     }
 }

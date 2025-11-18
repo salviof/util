@@ -7,8 +7,8 @@ package br.org.coletivojava.fw.utils.agendador;
 
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreDataHora;
-import com.super_bits.modulosSB.SBCore.modulos.fabrica.ItfFabricaAcoes;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfBeanSimples;
+import com.super_bits.modulosSB.SBCore.modulos.fabrica.ComoFabricaAcoes;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ComoEntidadeSimples;
 import java.io.Serializable;
 import java.util.Date;
 import org.quartz.JobBuilder;
@@ -23,18 +23,18 @@ import static org.quartz.TriggerBuilder.newTrigger;
  */
 public class AcaoAgendada implements Serializable {
 
-    private ItfFabricaAcoes fabAcao;
+    private ComoFabricaAcoes fabAcao;
     private Date dataHora;
-    private ItfBeanSimples parametroBeanPrincipal;
+    private ComoEntidadeSimples parametroBeanPrincipal;
 
-    public AcaoAgendada(ItfFabricaAcoes pAcao, Date pDataHora, ItfBeanSimples pParametroPrincipal) {
+    public AcaoAgendada(ComoFabricaAcoes pAcao, Date pDataHora, ComoEntidadeSimples pParametroPrincipal) {
         fabAcao = pAcao;
         dataHora = pDataHora;
         parametroBeanPrincipal = pParametroPrincipal;
 
     }
 
-    public AcaoAgendada(ItfFabricaAcoes pAcao, Date pDataHora) {
+    public AcaoAgendada(ComoFabricaAcoes pAcao, Date pDataHora) {
         fabAcao = pAcao;
         dataHora = pDataHora;
 

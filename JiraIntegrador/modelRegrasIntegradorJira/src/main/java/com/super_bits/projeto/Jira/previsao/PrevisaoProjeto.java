@@ -12,7 +12,7 @@ import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.permissoes.
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.anotacoes.InfoClasse;
 import com.super_bits.modulosSB.SBCore.UtilGeral.MapaAcoesSistema;
 import com.super_bits.modulosSB.SBCore.UtilGeral.MapaDeAcoes;
-import com.super_bits.modulosSB.SBCore.modulos.fabrica.ItfFabricaAcoes;
+import com.super_bits.modulosSB.SBCore.modulos.fabrica.ComoFabricaAcoes;
 import com.super_bits.projeto.Jira.CustosDesenvolvimento;
 import com.super_bits.projeto.Jira.Jira.MapaTarefas;
 import com.super_bits.projeto.Jira.Jira.MapaTarefasProjeto;
@@ -39,7 +39,7 @@ public class PrevisaoProjeto implements Serializable {
     private MapaTarefas mapaDeTarefas;
     private MapaDeAcoes mpaAcoes;
 
-    public PrevisaoProjeto(Class<? extends ItfFabricaAcoes>[] fabricas) {
+    public PrevisaoProjeto(Class<? extends ComoFabricaAcoes>[] fabricas) {
         ambienteDesenvolvimento = new AmbienteDesenvolvimento();
         mpaAcoes = new MapaDeAcoes(fabricas);
         mapaDeTarefas = new MapaTarefas(mpaAcoes);
@@ -49,7 +49,7 @@ public class PrevisaoProjeto implements Serializable {
     }
 
     /*
-    public PrevisaoProjeto(Class<? extends ItfFabricaAcoes>[] fabricas, List<Class> entidades, TarefaSuperBits tarefaExtra) {
+    public PrevisaoProjeto(Class<? extends ComoFabricaAcoes>[] fabricas, List<Class> entidades, TarefaSuperBits tarefaExtra) {
 
         for (Class fab : fabricas) {
 

@@ -7,14 +7,14 @@ package com.super_bits.projeto;
 
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.permissoes.ItfAcaoFormulario;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.cep.ItfRegiao;
-import com.super_bits.modulosSB.SBCore.modulos.fabrica.ItfFabrica;
+import com.super_bits.modulosSB.SBCore.modulos.fabrica.ComoFabrica;
 import com.super_bits.projeto.controller.FabAcaoPrevisaoProjeto;
 
 /**
  *
  * @author salvioF
  */
-public enum FabTipoPrevisao implements ItfFabrica {
+public enum FabTipoPrevisao implements ComoFabrica {
 
     PREVISAO_GESTAO,
     PREVISAO_TABELA,

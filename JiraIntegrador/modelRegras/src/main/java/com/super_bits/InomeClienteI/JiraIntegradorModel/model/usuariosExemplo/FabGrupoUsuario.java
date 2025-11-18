@@ -7,13 +7,13 @@ package com.super_bits.InomeClienteI.JiraIntegradorModel.model.usuariosExemplo;
 
 import com.super_bits.modulos.SBAcessosModel.fabricas.acoesDemonstracao.FabAcaoDemonstracaoSB;
 import com.super_bits.modulos.SBAcessosModel.model.GrupoUsuarioSB;
-import com.super_bits.modulosSB.SBCore.modulos.fabrica.ItfFabrica;
+import com.super_bits.modulosSB.SBCore.modulos.fabrica.ComoFabrica;
 
 /**
  *
  * @author desenvolvedor
  */
-public enum FabGrupoUsuario implements ItfFabrica {
+public enum FabGrupoUsuario implements ComoFabrica {
     USUARIO_ANONIMO, USUARIO_ADMINISTRADOR;
 
     @Override

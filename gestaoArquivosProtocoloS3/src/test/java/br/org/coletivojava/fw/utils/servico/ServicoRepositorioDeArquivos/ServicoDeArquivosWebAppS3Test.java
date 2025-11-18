@@ -16,8 +16,8 @@ import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.acessoArquivo.Fab
 import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.interfaces.ItfCentralPermissaoArquivo;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campo.FabTipoAtributoObjeto;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campoInstanciado.ItfCampoInstanciado;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfBeanSimples;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfBeanSimplesSomenteLeitura;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ComoEntidadeSimples;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ComoEntidadeSimplesSomenteLeitura;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.List;
@@ -258,7 +258,7 @@ public class ServicoDeArquivosWebAppS3Test extends TesteJunitSBPersistencia {
     @Test
     public void testGetEndrRemotoImagem() {
         System.out.println("getEndrRemotoImagem");
-        ItfBeanSimplesSomenteLeitura item = null;
+        ComoEntidadeSimplesSomenteLeitura item = null;
         FabTipoAtributoObjeto tipo = null;
         ServicoDeArquivosWebAppS3 instance = null;
         String expResult = "";
@@ -275,7 +275,7 @@ public class ServicoDeArquivosWebAppS3Test extends TesteJunitSBPersistencia {
     @Test
     public void testGetEndrRemotoRecursosItem() {
         System.out.println("getEndrRemotoRecursosItem");
-        ItfBeanSimples item = null;
+        ComoEntidadeSimples item = null;
         String galeria = "";
         FabTipoAcessoArquivo pTipoAcesso = null;
         FabTipoArquivoConhecido pTipoArquivo = null;
@@ -294,7 +294,7 @@ public class ServicoDeArquivosWebAppS3Test extends TesteJunitSBPersistencia {
     @Test
     public void testGetEnterecosLocaisRecursosItem() {
         System.out.println("getEnterecosLocaisRecursosItem");
-        ItfBeanSimples item = null;
+        ComoEntidadeSimples item = null;
         String galeria = "";
         ServicoDeArquivosWebAppS3 instance = null;
         List<String> expResult = null;
@@ -311,7 +311,7 @@ public class ServicoDeArquivosWebAppS3Test extends TesteJunitSBPersistencia {
     @Test
     public void testGetEnterecosRemotosRecursosItem() {
         System.out.println("getEnterecosRemotosRecursosItem");
-        ItfBeanSimplesSomenteLeitura item = null;
+        ComoEntidadeSimplesSomenteLeitura item = null;
         ServicoDeArquivosWebAppS3 instance = null;
         List<String> expResult = null;
         List<String> result = instance.getEnterecosRemotosRecursosItem(item);
@@ -327,7 +327,7 @@ public class ServicoDeArquivosWebAppS3Test extends TesteJunitSBPersistencia {
     @Test
     public void testGetEndrsLocaisDeCategoriasItem() {
         System.out.println("getEndrsLocaisDeCategoriasItem");
-        ItfBeanSimplesSomenteLeitura item = null;
+        ComoEntidadeSimplesSomenteLeitura item = null;
         ServicoDeArquivosWebAppS3 instance = null;
         List<String> expResult = null;
         List<String> result = instance.getEndrsLocaisDeCategoriasItem(item);
@@ -343,7 +343,7 @@ public class ServicoDeArquivosWebAppS3Test extends TesteJunitSBPersistencia {
     @Test
     public void testGetNomesPastasCategoriasItem() {
         System.out.println("getNomesPastasCategoriasItem");
-        ItfBeanSimplesSomenteLeitura item = null;
+        ComoEntidadeSimplesSomenteLeitura item = null;
         ServicoDeArquivosWebAppS3 instance = null;
         List<String> expResult = null;
         List<String> result = instance.getNomesPastasCategoriasItem(item);
@@ -359,7 +359,7 @@ public class ServicoDeArquivosWebAppS3Test extends TesteJunitSBPersistencia {
     @Test
     public void testSalvarImagemTodosOsFormatos() {
         System.out.println("salvarImagemTodosOsFormatos");
-        ItfBeanSimplesSomenteLeitura entidade = null;
+        ComoEntidadeSimplesSomenteLeitura entidade = null;
         InputStream foto = null;
         ServicoDeArquivosWebAppS3 instance = null;
         boolean expResult = false;
@@ -376,7 +376,7 @@ public class ServicoDeArquivosWebAppS3Test extends TesteJunitSBPersistencia {
     @Test
     public void testSalvarImagemTamanhoMedio() {
         System.out.println("salvarImagemTamanhoMedio");
-        ItfBeanSimplesSomenteLeitura entidade = null;
+        ComoEntidadeSimplesSomenteLeitura entidade = null;
         InputStream foto = null;
         ServicoDeArquivosWebAppS3 instance = null;
         boolean expResult = false;
@@ -393,7 +393,7 @@ public class ServicoDeArquivosWebAppS3Test extends TesteJunitSBPersistencia {
     @Test
     public void testSalvarImagemTamanhoPequeno() {
         System.out.println("salvarImagemTamanhoPequeno");
-        ItfBeanSimplesSomenteLeitura entidade = null;
+        ComoEntidadeSimplesSomenteLeitura entidade = null;
         InputStream foto = null;
         ServicoDeArquivosWebAppS3 instance = null;
         boolean expResult = false;
@@ -410,7 +410,7 @@ public class ServicoDeArquivosWebAppS3Test extends TesteJunitSBPersistencia {
     @Test
     public void testSalvarImagemTamanhoGrande() {
         System.out.println("salvarImagemTamanhoGrande");
-        ItfBeanSimplesSomenteLeitura entidade = null;
+        ComoEntidadeSimplesSomenteLeitura entidade = null;
         InputStream foto = null;
         ServicoDeArquivosWebAppS3 instance = null;
         boolean expResult = false;
@@ -426,7 +426,7 @@ public class ServicoDeArquivosWebAppS3Test extends TesteJunitSBPersistencia {
     @Test
     public void testSalvarArquivo_3args_2() {
         System.out.println("salvarArquivo");
-        ItfBeanSimplesSomenteLeitura entidade = null;
+        ComoEntidadeSimplesSomenteLeitura entidade = null;
         byte[] arquivo = null;
         String nomeCampo = "";
         ServicoDeArquivosWebAppS3 instance = null;
@@ -443,7 +443,7 @@ public class ServicoDeArquivosWebAppS3Test extends TesteJunitSBPersistencia {
     @Test
     public void testBaixarArquivo() {
         System.out.println("baixarArquivo");
-        ItfBeanSimplesSomenteLeitura entidade = null;
+        ComoEntidadeSimplesSomenteLeitura entidade = null;
         InputStream arqivo = null;
         String pNomeCampoOuCategoria = "";
         String pNomeArquivo = "";
@@ -487,7 +487,7 @@ public class ServicoDeArquivosWebAppS3Test extends TesteJunitSBPersistencia {
      * Test of getEndrLocalImagem method, of class ServicoDeArquivosWebAppS3.
      */
     @Test
-    public void testGetEndrLocalImagem_ItfBeanSimplesSomenteLeitura_FabTipoAtributoObjeto() {
+    public void testGetEndrLocalImagem_ComoEntidadeSimplesSomenteLeitura_FabTipoAtributoObjeto() {
 
     }
 

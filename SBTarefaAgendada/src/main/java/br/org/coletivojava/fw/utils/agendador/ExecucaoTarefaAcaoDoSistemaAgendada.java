@@ -7,8 +7,8 @@ package br.org.coletivojava.fw.utils.agendador;
 
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.UtilGeral.MapaAcoesSistema;
-import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ItfAcaoController;
-import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ItfAcaoControllerAutoExecucao;
+import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ComoAcaoController;
+import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ComoAcaoControllerAutoExecucao;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.UtilSBController;
 import static com.super_bits.modulosSB.SBCore.modulos.Controller.acoesAutomatizadas.FabEstrategiaAutoexecucao.DIARIO;
 import static com.super_bits.modulosSB.SBCore.modulos.Controller.acoesAutomatizadas.FabEstrategiaAutoexecucao.GATILHO;
@@ -34,14 +34,14 @@ public class ExecucaoTarefaAcaoDoSistemaAgendada extends ExecucaoTarefaAgendadaA
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        ItfAcaoController acao = null;
+        ComoAcaoController acao = null;
         String acaoSTR = null;
         try {
             acaoSTR = (String) context.getJobDetail().getJobDataMap().get(AtributoDeTarefa.ACAO.toString());
             if (acaoSTR == null) {
                 throw new UnsupportedOperationException("Erro localizando ação relacionada ao agendamento");
             }
-            acao = (ItfAcaoController) MapaAcoesSistema.getAcaoDoSistemaByNomeUnico(acaoSTR);
+            acao = (ComoAcaoController) MapaAcoesSistema.getAcaoDoSistemaByNomeUnico(acaoSTR);
             ParametroAcaoControllerSimples pr = gerarParametroSimples(context);
             Method metodo = UtilSBController.getMetodoByAcaoController(acao);
             if (pr != null) {
@@ -65,7 +65,7 @@ public class ExecucaoTarefaAcaoDoSistemaAgendada extends ExecucaoTarefaAgendadaA
                 if (acao != null) {
                     if (acao.isUmaAcaoControllerAutoExecucao()) {
 
-                        ItfAcaoControllerAutoExecucao acaoAutoexec = (ItfAcaoControllerAutoExecucao) acao;
+                        ComoAcaoControllerAutoExecucao acaoAutoexec = (ComoAcaoControllerAutoExecucao) acao;
                         switch (acaoAutoexec.getTipoAutoExecucao().getEstrategia()) {
                             case GATILHO:
                                 break;

@@ -5,13 +5,13 @@
  */
 package org.superBits.utilitario.editorArquivos;
 
-import com.super_bits.modulosSB.SBCore.modulos.fabrica.ItfFabrica;
+import com.super_bits.modulosSB.SBCore.modulos.fabrica.ComoFabrica;
 
 /**
  *
  * @author salvioF
  */
-public enum FabTipoSubstituicao implements ItfFabrica {
+public enum FabTipoSubstituicao implements ComoFabrica {
 
     MANUAL, CAMPOS_DOCUMENTO;
 

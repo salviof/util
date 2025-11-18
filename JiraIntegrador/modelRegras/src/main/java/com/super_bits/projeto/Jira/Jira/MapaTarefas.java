@@ -9,7 +9,7 @@ import com.google.common.collect.Lists;
 import com.super_bits.modulosSB.Persistencia.dao.UtilSBPersistencia;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.UtilGeral.MapaDeAcoes;
-import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ItfAcaoDoSistema;
+import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ComoAcaoDoSistema;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.permissoes.ItfAcaoGerenciarEntidade;
 import com.super_bits.projeto.Jira.UtilSBCoreJira;
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class MapaTarefas {
 
     public MapaTarefas(MapaDeAcoes acoes) {
         Map<String, Class> mapaClasse = new HashMap();
-        for (ItfAcaoDoSistema acao : acoes.getListaTodasAcoes()) {
+        for (ComoAcaoDoSistema acao : acoes.getListaTodasAcoes()) {
             if (acao.getTipoAcaoGenerica() == null) {
                 throw new UnsupportedOperationException("A ação generica para" + acao.getNomeUnico() + " não foi especificada");
             }
@@ -60,7 +60,7 @@ public class MapaTarefas {
 
     }
 
-    private void addTarefa(ItfAcaoDoSistema pAcao) {
+    private void addTarefa(ComoAcaoDoSistema pAcao) {
         try {
             String chaveAcaoGestao;
             chaveAcaoGestao = pAcao.getAcaoDeGestaoEntidade().getNomeUnico();

@@ -7,7 +7,7 @@ package com.super_bits.InomeClienteI.JiraIntegradorModel.regras_de_negocio_e_con
 
 import com.super_bits.modulos.SBAcessosModel.fabricas.acoesDemonstracao.FabAcaoDemonstracaoSB;
 import com.super_bits.modulos.SBAcessosModel.model.acoes.AcaoDoSistema;
-import com.super_bits.modulosSB.SBCore.modulos.view.menu.ItfFabricaMenu;
+import com.super_bits.modulosSB.SBCore.modulos.view.menu.ComoFabricaMenu;
 import com.super_bits.modulosSB.SBCore.modulos.view.menu.ItfMenuSB;
 import com.super_bits.modulosSB.SBCore.modulos.view.menu.ItfSessaoDeMenuSB;
 import com.super_bits.modulosSB.SBCore.modulos.view.menu.SessaoMenuSB;
@@ -24,13 +24,13 @@ import org.coletivojava.fw.api.objetoNativo.view.menu.MenuSBFW;
  *
  * @author desenvolvedor
  */
-public enum FabMenuExemplo implements ItfFabricaMenu {
+public enum FabMenuExemplo implements ComoFabricaMenu {
     MENU_INICIAL, MENU_RESTRITO;
 
     @Override
     public List<ItfMenuSB> getTodosMenus() {
         List<MenuSBFW> menus = new ArrayList<>();
-        for (ItfFabricaMenu menu : this.getClass().getEnumConstants()) {
+        for (ComoFabricaMenu menu : this.getClass().getEnumConstants()) {
             menus.add((MenuSBFW) menu.getRegistro());
         }
         return (List) menus;
