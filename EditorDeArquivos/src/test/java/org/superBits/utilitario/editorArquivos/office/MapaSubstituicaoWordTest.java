@@ -60,7 +60,7 @@ public class MapaSubstituicaoWordTest {
 
         novoMapa.substituirEmArquivo();
 
-        UtilSBEditorArquivosConversor.converterWordEmPDFnovo(arqModificado, arqModificado + ".pdf");
+        UtilSBEditorArquivosConversor.converterWordEmPDF(arqModificado, arqModificado + ".pdf");
     }
 }
 

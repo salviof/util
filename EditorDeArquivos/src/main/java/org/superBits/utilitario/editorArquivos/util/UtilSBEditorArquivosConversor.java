@@ -5,28 +5,14 @@
  */
 package org.superBits.utilitario.editorArquivos.util;
 
-import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.UtilSBCoreArquivos;
-import java.io.ByteArrayInputStream;
+import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreShellBasico;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.docx4j.Docx4J;
-
-import org.docx4j.fonts.IdentityPlusMapper;
-import org.docx4j.fonts.Mapper;
-import org.docx4j.fonts.PhysicalFonts;
-import org.docx4j.jaxb.Context;
-import org.docx4j.openpackaging.exceptions.Docx4JException;
-import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
-import org.docx4j.wml.RFonts;
-import org.w3c.dom.Document;
-import org.w3c.tidy.Tidy;
-import org.xhtmlrenderer.pdf.ITextRenderer;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.charset.StandardCharsets;
+import org.coletivojava.fw.api.tratamentoErros.FabErro;
 
 /**
  *
@@ -34,85 +20,83 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
  */
 public class UtilSBEditorArquivosConversor {
 
-    public static boolean converterHTMLEmPDF(String pConteudoHTML, String localDestino) {
+    public static boolean converterWordEmPDF(String caminhoDocx, String caminhoPdfDesejado) {
         try {
-            UtilSBCoreArquivos.criarDiretorioParaArquivo(localDestino);
-            Tidy tidy = new Tidy();
-            tidy.setInputEncoding("utf-8");
-            tidy.setOutputEncoding("utf-8");
-            Document doc = tidy.parseDOM(new ByteArrayInputStream(pConteudoHTML.getBytes(Charset.forName("UTF-8"))), null);
+            File docx = new File(caminhoDocx);
+            if (!docx.exists()) {
+                throw new FileNotFoundException("DOCX não encontrado: " + caminhoDocx);
+            }
 
-            ITextRenderer renderer = new ITextRenderer();
-            //    renderer.getFontResolver().addFont("fonts/ARIALUNI.TTF", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+            // Pasta onde o LibreOffice vai jogar o PDF (ele sempre usa o mesmo nome do .docx)
+            String pastaSaida = new File(caminhoPdfDesejado).getParent();
+            String nomeBase = docx.getName().replaceFirst("\\.docx$", "");
 
-            // renderer.getFontResolver().addFont(fontResourceURL.getPath(),
-            //          BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            renderer.setDocument(doc, null);
-            renderer.layout();
-            renderer.createPDF(new FileOutputStream(new File(localDestino)));
-            return true;
-        } catch (Throwable e) {
-            e.printStackTrace();
+            // Remove PDF antigo se existir
+            File pdfGerado = new File(pastaSaida, nomeBase + ".pdf");
+            if (pdfGerado.exists()) {
+                pdfGerado.delete();
+            }
+
+            String saidaCompleta = UtilSBCoreShellBasico.executeCommand("libreoffice",
+                    "--headless",
+                    "--convert-to", "pdf",
+                    "--outdir", pastaSaida,
+                    caminhoDocx);
+            Thread.sleep(1000);
+            String saidaLower = saidaCompleta.toLowerCase();
+            if (saidaLower.contains("error")
+                    || saidaLower.contains("fatal")
+                    || saidaLower.contains("exception")
+                    || saidaLower.contains("password")
+                    || saidaLower.contains("corrupt")
+                    || saidaLower.contains("cannot")
+                    || saidaLower.contains("failed")) {
+
+                throw new RuntimeException("LibreOffice reportou erro:\n" + saidaCompleta);
+            }
+
+            // -----------------------------------------------------------------
+            // 2) O arquivo foi realmente criado?
+            // -----------------------------------------------------------------
+            if (!pdfGerado.exists()) {
+                throw new RuntimeException("LibreOffice terminou com sucesso, mas o PDF não foi criado");
+            }
+
+            // -----------------------------------------------------------------
+            // 3) O PDF tem o cabeçalho correto? (teste definitivo)
+            // -----------------------------------------------------------------
+            if (!isPdfValido(pdfGerado)) {
+                pdfGerado.delete();
+                throw new RuntimeException("PDF gerado é corrompido (cabeçalho inválido)");
+            }
+
+            // -----------------------------------------------------------------
+            // 4) Renomeia para o nome que você quiser (opcional, mas quase todo mundo quer)
+            // -----------------------------------------------------------------
+            File pdfFinal = new File(caminhoPdfDesejado);
+            if (!pdfGerado.getAbsolutePath().equals(pdfFinal.getAbsolutePath())) {
+                if (pdfFinal.exists()) {
+                    pdfFinal.delete();
+                }
+                if (!pdfGerado.renameTo(pdfFinal)) {
+                    throw new RuntimeException("Falha ao renomear o PDF");
+                }
+            }
+        } catch (Throwable t) {
+            SBCore.RelatarErro(FabErro.SOLICITAR_REPARO, "falha gerando arquivo " + caminhoPdfDesejado + " a partir de " + caminhoDocx, t);
             return false;
         }
+        return true; // ← suces
     }
 
-    public static boolean converterWordEmPDF(String arquivoOrigem, String pArquivoDestino) {
-        String regex = ".*(Courier New|Arial|Times New Roman|Comic Sans|Georgia|Impact|Lucida Console|Lucida Sans Unicode|Palatino Linotype|Tahoma|Trebuchet|Verdana|Symbol|Webdings|Wingdings|MS Sans Serif|MS Serif|Calibri).*";
-        Mapper fontMapper = new IdentityPlusMapper();
-        fontMapper.put("Calibri", PhysicalFonts.get("Calibri"));
-        PhysicalFonts.setRegex(regex);
-        WordprocessingMLPackage wordMLPackage;
-        try {
-
-            wordMLPackage = WordprocessingMLPackage.load(new File(arquivoOrigem));
-            wordMLPackage.setFontMapper(fontMapper);
-            //     Mapper fontMapper = new BestMatchingMapper();
-            //    wordMLPackage.setFontMapper(fontMapper);
-            //     PhysicalFont font = PhysicalFonts.getPhysicalFonts().get("Arial");
-            //    fontMapper.getFontMappings().put("Calibri", font);
-            OutputStream os = new java.io.FileOutputStream(new File(pArquivoDestino));
-
-            Docx4J.toPDF(wordMLPackage, os);
-
-            //     PdfConversion c = new org.docx4j.convert.out.pdf.viaXSLFO.Conversion(wordMLPackage);
-            //   OutputStream os = new java.io.FileOutputStream(new File(pArquivoDestino));
-            // c.output(os, new PdfSettings());
-            return true;
-        } catch (Docx4JException | FileNotFoundException ex) {
-            Logger.getLogger(UtilSBEditorArquivosConversor.class.getName()).log(Level.SEVERE, null, ex);
+    private static boolean isPdfValido(File file) throws IOException {
+        if (file.length() < 8) {
             return false;
-        } catch (Exception ex) {
-            Logger.getLogger(UtilSBEditorArquivosConversor.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
-
-    }
-
-    public static boolean converterWordEmPDFnovo(String arquivoOrigem, String ArquivoDestino) {
-
-        Date now = new Date();
-        WordprocessingMLPackage wordMLPackage;
-        try {
-            wordMLPackage = WordprocessingMLPackage.load(new File(arquivoOrigem));
-            // Fonts identity mapping – best on Microsoft Windows
-            wordMLPackage.setFontMapper(new IdentityPlusMapper());
-            // Set up converter
-
-            //// org.docx4j.convert.out.pdf.PdfConversion c
-            ////          = new org.docx4j.convert.out.pdf.viaXSLFO.Conversion(wordMLPackage);
-            // Write to output stream
-            ////   OutputStream os = new java.io.FileOutputStream(ArquivoDestino);
-            ////  c.output(os, new PdfSettings());
-            OutputStream os = new java.io.FileOutputStream(new File(ArquivoDestino));
-            Docx4J.toPDF(wordMLPackage, os);
-            return true;
-        } catch (Docx4JException ex) {
-            Logger.getLogger(UtilSBEditorArquivosConversor.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(UtilSBEditorArquivosConversor.class.getName()).log(Level.SEVERE, null, ex);
+        try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
+            byte[] magic = new byte[5];
+            raf.readFully(magic);
+            return new String(magic, StandardCharsets.US_ASCII).equals("%PDF-");
         }
-        return false;
-
     }
 }

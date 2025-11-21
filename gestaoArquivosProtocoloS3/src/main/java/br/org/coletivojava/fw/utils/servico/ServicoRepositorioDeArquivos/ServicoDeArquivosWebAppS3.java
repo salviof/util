@@ -81,7 +81,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
     public boolean salvarArquivo(ComoEntidadeSimplesSomenteLeitura entidade, byte[] arqivo, String pCategoria, String pNome) {
         try {
 
-            if (!s3configurado || !conectadoComS3) {
+            if (!s3configurado || !conectadoComS3 || entidade.getId() == null) {
                 return centralGenerica.salvarArquivo(entidade, arqivo, pCategoria, pNome);
             }
             SalvarArquivoS3Hash tarefaSalvarNoS3 = new SalvarArquivoS3Hash(configModulo, UtilSBCoreReflexaoObjeto.getClassExtraindoProxy(entidade.getClass().getSimpleName()),
@@ -345,7 +345,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
             ComoSessao pSessao
     ) {
         inicioSetup();
-        if (!s3configurado) {
+        if (!s3configurado || item.getId() == null) {
             return centralGenerica.getEndrLocalImagem(item, tipo, pSessao);
         } else {
             if (item.getId() == null) {
@@ -479,7 +479,8 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
             }
             String hashArquivoArmazenado = UtilSBServicoArqEntidadeS3.getHashDoArquivo(item.getClass().getSimpleName(),
                     campoCategoria, String.valueOf(item.getId()));
-            if (hashArquivoArmazenado != null) {
+            if (hashArquivoArmazenado != null && s3configurado && item.getId() != null) {
+
                 removerArquivoImagemTemporario(item, tipo, null, hashArquivoArmazenado);
             }
         }

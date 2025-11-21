@@ -6,8 +6,6 @@
 
 
 
-
-
     <groupId>br.org.coletivoJava.utilitarios</groupId>
     <version>1.0.0-RC-SNAPSHOT</version>
     <artifactId>editorArquivos</artifactId>
@@ -19,11 +17,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.xhtmlrenderer</groupId>
-            <artifactId>flying-saucer-pdf</artifactId>
-            <version>9.1.12</version>
+            <groupId>net.sourceforge.jexcelapi</groupId>
+            <artifactId>jxl</artifactId>
+            <version>2.6.12</version>
         </dependency>
-
 
         <dependency>
             <groupId>br.org.coletivoJava.fw</groupId>
@@ -31,49 +28,40 @@
             <version>1.0.0-RC-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-
-        <dependency>
-            <groupId>net.sf.jtidy</groupId>
-            <artifactId>jtidy</artifactId>
-            <version>r938</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.librepdf</groupId>
-            <artifactId>openpdf</artifactId>
-            <version>1.3.27</version>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-
-
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.docx4j/docx4j -->
+        <!-- Core do docx4j (substitui o antigo 'docx4j') -->
         <dependency>
             <groupId>org.docx4j</groupId>
-            <artifactId>docx4j</artifactId>
-            <version>6.1.2</version>
+            <artifactId>docx4j-core</artifactId>
+            <version>${docx4j.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/net.sourceforge.jexcelapi/jxl -->
+        <!-- JAXB para Java 8 -->
         <dependency>
-            <groupId>net.sourceforge.jexcelapi</groupId>
-            <artifactId>jxl</artifactId>
-            <version>2.6.12</version>
+            <groupId>org.docx4j</groupId>
+            <artifactId>docx4j-JAXB-ReferenceImpl</artifactId>
+            <version>${docx4j.version}</version>
         </dependency>
 
-
-        <!-- https://mvnrepository.com/artifact/org.docx4j/docx4j-export-fo -->
+        <!-- Export FO (se ainda precisar para PDF) -->
         <dependency>
             <groupId>org.docx4j</groupId>
             <artifactId>docx4j-export-fo</artifactId>
-            <version>8.0.0</version>
+            <version>${docx4j.version}</version>
         </dependency>
 
+        <!-- Apache FOP para export (se usando) -->
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>fop</artifactId>
+            <version>2.10</version>
+        </dependency>
+
+        <!-- Força Commons IO nova para resolver IOIterator -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
+        </dependency>
 
 
 
@@ -82,6 +70,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <docx4j.version>8.3.15</docx4j.version>
+        <commons.io.version>2.16.1</commons.io.version> <!-- Força versão com IOIterator -->
     </properties>
 
 

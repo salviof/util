@@ -5,8 +5,10 @@
  */
 package org.superBits.utilitario.editorArquivos.util;
 
+import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.superBits.utilitario.editorArquivos.ConfiguradorCoreEditor;
 
 /**
  *
@@ -27,13 +29,19 @@ public class UtilSBEditorArquivosConversorTest {
                 + "        </style>\n"
                 + "    </head>\n"
                 + "    <body>";
-        UtilSBEditorArquivosConversor.converterHTMLEmPDF(cabecalho + "<b> Olá cidadão do Mundo </b>"
-                + "</body></html>", "/home/superBits/teste.pdf");
+        // UtilSBEditorArquivosConversor.converterHTMLEmPDF(cabecalho + "<b> Olá cidadão do Mundo </b>"
+        //           + "</body></html>", "/home/superBits/teste.pdf");
 
     }
 
-    //@Test
+    @Test
     public void testConverterWordEmPDF() {
+        SBCore.configurar(new ConfiguradorCoreEditor(), SBCore.ESTADO_APP.DESENVOLVIMENTO);
+        if (UtilSBEditorArquivosConversor.converterWordEmPDF("/home/superBits/desenvolvedor/configModuloTestes/HOMOLOGACAO/Intranet_Marketing_Digital/arquivos/-2009385540/arqTemp.docx",
+                "/home/superBits/desenvolvedor/configModuloTestes/HOMOLOGACAO/Intranet_Marketing_Digital/arquivos/-2009385540/teste.pdf")) {
+            System.out.println("GErou com sucesso");
+        }
+
     }
 
     //@Test

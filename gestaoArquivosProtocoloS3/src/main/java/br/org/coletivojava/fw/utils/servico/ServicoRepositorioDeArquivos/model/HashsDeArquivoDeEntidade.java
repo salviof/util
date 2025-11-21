@@ -60,9 +60,9 @@ public class HashsDeArquivoDeEntidade extends EntidadeSimplesORM {
     public void prepararNovoObjeto(Object... parametros) throws ErroPreparandoObjeto {
 
         ItfCampoInstanciado campoinstanciado = (ItfCampoInstanciado) parametros[0];
-        entidade = campoinstanciado.getObjetoDoAtributo().getClass().getSimpleName();
+        entidade = campoinstanciado.getObjetoRaizDoAtributo().getClass().getSimpleName();
         atributo = campoinstanciado.getNomeCamponaClasse();
-        idEntidade = campoinstanciado.getObjetoDoAtributo().getId();
+        idEntidade = campoinstanciado.getObjetoRaizDoAtributo().getId();
     }
 
     @Override
