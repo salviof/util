@@ -27,7 +27,7 @@ public class ProjetoJiraSuperBitsTest extends TesteJunitSBPersistencia {
     public void testeCriacaoProjeto() {
         try {
 
-            //JiraRestClient conexao = UtilSBCoreJira.criarConexaoJira("", "");
+            //JiraRestClient conexao = UtilCRCJira.criarConexaoJira("", "");
             Class entidade = ModuloAcaoSistema.class;
 
             ProjetoJiraSuperBits testeOFicialProjeto = new ProjetoJiraSuperBits(SBCore.getConfigModulo(FabConfigModuloJiraIntegrador.class));

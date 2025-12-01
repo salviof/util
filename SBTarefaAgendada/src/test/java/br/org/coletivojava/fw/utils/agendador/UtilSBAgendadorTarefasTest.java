@@ -8,7 +8,7 @@ package br.org.coletivojava.fw.utils.agendador;
 import br.org.coletivojava.fw.utils.agendador.testes.projetoDemo.model.ObjetoComPersistenciaTeste;
 
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreDataHora;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCDataHora;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.ItensGenericos.basico.UsuarioAnonimo;
 
 import java.util.Date;
@@ -27,13 +27,13 @@ public class UtilSBAgendadorTarefasTest extends TesteJunit {
         AcaoAgendada novaAcao = new AcaoAgendada(
                 //FabAcoesDemosntrativoAgendador.ACAO_DEMONSTRACAO_CTR_ACAO_DE_ENTIDADE_SIMPLES,
                 null,
-                UtilSBCoreDataHora.incrementaSegundos(new Date(), 10),
+                UtilCRCDataHora.incrementaSegundos(new Date(), 10),
                 new UsuarioAnonimo());
         novaAcao.agendar();
         AcaoAgendada novaAcao2 = new AcaoAgendada(
                 //FabAcoesDemosntrativoAgendador.ACAO_DEMONSTRACAO_CTR_SEM_PARAMETRO,
                 null,
-                UtilSBCoreDataHora.incrementaSegundos(new Date(), 10));
+                UtilCRCDataHora.incrementaSegundos(new Date(), 10));
         novaAcao2.agendar();
         while (true) {
             try {

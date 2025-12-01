@@ -9,7 +9,7 @@ import br.org.coletivojava.fw.utils.servico.ServicoRepositorioDeArquivos.model.H
 import com.super_bits.modulosSB.Persistencia.ConfigGeral.SBPersistencia;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UTilSBCoreInputs;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreBytes;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCBytes;
 import com.super_bits.modulosSB.SBCore.UtilGeral.stringSubstituicao.MapaSubstituicao;
 import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.FabTipoArquivoConhecido;
 import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.acessoArquivo.FabTipoAcessoArquivo;
@@ -462,7 +462,7 @@ public class ServicoDeArquivosWebAppS3Test extends TesteJunitSBPersistencia {
         HashsDeArquivoDeEntidade hash = new HashsDeArquivoDeEntidade();
         ItfCampoInstanciado campoInstanciado = hash.getCPinst("hashCalculado");
         BufferedInputStream arquivo = UTilSBCoreInputs.getStreamBuffredByURL("https://www.4devs.com.br/4devs_gerador_imagem.php?acao=gerar_imagem&txt_largura=320&txt_altura=240&extensao=png&fundo_r=0.049800067292380845&fundo_g=0.1256103515625&fundo_b=0.029025927186012268&texto_r=0.9302978515625&texto_g=0.8945259004831314&texto_b=0.8945259004831314&texto=Apenas%20um%20teste%20simples&tamanho_fonte=10");
-        byte[] imagem1 = UtilSBCoreBytes.gerarBytePorInputstream(arquivo);
+        byte[] imagem1 = UtilCRCBytes.gerarBytePorInputstream(arquivo);
 
         servico.salvarArquivo(campoInstanciado, imagem1, "teste.jpg");
         servico.salvarArquivo(campoInstanciado, imagem1, "testeasd.jpg");

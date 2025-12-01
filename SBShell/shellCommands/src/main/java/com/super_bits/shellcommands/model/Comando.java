@@ -5,8 +5,8 @@
 package com.super_bits.shellcommands.model;
 
 import com.google.common.collect.Lists;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreParametrosEmString;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringConversores;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCParametrosEmString;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCStringConversores;
 
 import com.super_bits.shellcommands.shel.UtilSBShellScript;
 import java.io.InputStream;
@@ -135,14 +135,14 @@ public class Comando {
                         throw new UnsupportedOperationException("Script" + getNomeArquivoScript() + " não encontrado em na aplicação");
                     }
                 }
-                List<String> linhasScript = UtilSBCoreStringConversores.getStringsByInputStream(inputScript);
+                List<String> linhasScript = UtilCRCStringConversores.getStringsByInputStream(inputScript);
 
-                parametrosEncontrados = UtilSBCoreParametrosEmString.retornaParamentrosNomeadosEmLista(linhasScript);
+                parametrosEncontrados = UtilCRCParametrosEmString.retornaParamentrosNomeadosEmLista(linhasScript);
                 script = linhasScript;
 
                 break;
             case DIRETO:
-                parametrosEncontrados = UtilSBCoreParametrosEmString.retornaParamentrosNomeadosEmLista(getComando());
+                parametrosEncontrados = UtilCRCParametrosEmString.retornaParamentrosNomeadosEmLista(getComando());
                 break;
         }
         for (String pr : parametrosEncontrados) {

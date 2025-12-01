@@ -5,7 +5,7 @@
  */
 package br.org.coletivoJava.fw.erp.implementacao.transportecomunicacao;
 
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreEmail;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCEmail;
 import com.super_bits.modulosSB.SBCore.modulos.email.ConfigEmailServersProjeto;
 import testesFW.TesteJUnitBasicoSemPersistencia;
 
@@ -18,7 +18,7 @@ public class TestesComunicacaoVip extends TesteJUnitBasicoSemPersistencia {
     @Override
     protected void configAmbienteDesevolvimento() {
         super.configAmbienteDesevolvimento(); //To change body of generated methods, choose Tools | Templates.
-        UtilSBCoreEmail.configurar(new ConfigEmailServersProjeto("mail.casanovadigital.com.br", "contato@superkompras.com.br", "superkompras@123"));
+        UtilCRCEmail.configurar(new ConfigEmailServersProjeto("mail.casanovadigital.com.br", "contato@superkompras.com.br", "superkompras@123"));
     }
 
 }

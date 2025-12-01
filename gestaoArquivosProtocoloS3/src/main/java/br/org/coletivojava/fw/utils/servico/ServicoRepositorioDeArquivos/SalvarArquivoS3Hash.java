@@ -15,15 +15,15 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.super_bits.modulosSB.Persistencia.dao.UtilSBPersistencia;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.arquivosConfiguracao.ConfigModulo;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreReflexaoObjeto;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringNomeArquivosEDiretorios;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCReflexaoObjeto;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCStringNomeArquivosEDiretorios;
 import java.util.logging.Level;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.google.common.io.ByteSource;
 import com.super_bits.modulosSB.Persistencia.dao.consultaDinamica.ConsultaDinamicaDeEntidade;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UTilSBCoreInputs;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreOutputs;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCOutputs;
 import java.io.ByteArrayInputStream;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -59,7 +59,7 @@ public class SalvarArquivoS3Hash extends Thread {
         configModuloArquivosEnts3 = pConfigModuloArquivosEnts3;
         campoReferencia = pCampoReferencia;
         nomeArquivo = pNomeArquivo;
-        nomeClasseEntidade = UtilSBCoreReflexaoObjeto.getClassExtraindoProxy(pClasseEntidade.getSimpleName()).getSimpleName();
+        nomeClasseEntidade = UtilCRCReflexaoObjeto.getClassExtraindoProxy(pClasseEntidade.getSimpleName()).getSimpleName();
         idEntidade = pIdEntidade;
 
     }
@@ -96,7 +96,7 @@ public class SalvarArquivoS3Hash extends Thread {
                 ServicoDeArquivosWebAppS3.ultimosArquivosSalvos.remove(0);
             }
             ServicoDeArquivosWebAppS3.ultimosArquivosSalvos.add(phashIdentificadorArquivo);
-            String extencao = UtilSBCoreStringNomeArquivosEDiretorios.getExtencaoNomeArquivoSemPonto(pNomeArquivo);
+            String extencao = UtilCRCStringNomeArquivosEDiretorios.getExtencaoNomeArquivoSemPonto(pNomeArquivo);
             AWSCredentials credentials = new BasicAWSCredentials(pChavePublica, pChavePrivada);
             AmazonS3 s3client = new AmazonS3Client(credentials);
             ObjectMetadata metadata = new ObjectMetadata();
@@ -175,7 +175,7 @@ public class SalvarArquivoS3Hash extends Thread {
     public void run() {
 
         try {
-            String extencaoDoArquivp = UtilSBCoreStringNomeArquivosEDiretorios.getExtencaoNomeArquivo(nomeArquivo).replace(".", "");
+            String extencaoDoArquivp = UtilCRCStringNomeArquivosEDiretorios.getExtencaoNomeArquivo(nomeArquivo).replace(".", "");
             String identificadorHAshArquivo = ServicoDeArquivosWebAppS3.getIdentificadorArquivo(arquivo, extencaoDoArquivp);
             HashsDeArquivoDeEntidade arquivoHashAnterior = getControleDeArquivosDeEntidade(nomeClasseEntidade, campoReferencia, String.valueOf(idEntidade),
                     acaoControleHashDeArquivo.CONSULTAR, null);

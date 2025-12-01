@@ -7,7 +7,7 @@ package com.super_bits.projeto.Jira;
 
 import com.super_bits.projeto.Jira.ambienteDesenvolvimento.AmbienteDesenvolvimento;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreDataHora;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCDataHora;
 import com.super_bits.modulosSB.SBCore.modulos.tempo.ContagemRegressivaQtdTempo;
 import com.super_bits.projeto.Jira.Jira.TarefaSuperBits;
 import java.util.Date;
@@ -114,7 +114,7 @@ public class CustosDesenvolvimento {
             Date dataEntrega = new Date();
             int i = diasTrabalho;
             while (i > 0) {
-                dataEntrega = UtilSBCoreDataHora.incrementaDias(dataEntrega, 1);
+                dataEntrega = UtilCRCDataHora.incrementaDias(dataEntrega, 1);
                 if (!(dataEntrega.getDay() == 1 || dataEntrega.getDay() == 6)) {
                     i--;
                 }

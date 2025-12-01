@@ -4,9 +4,9 @@
  */
 package org.superBits.utilitario.editorArquivos.importacao;
 
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringFiltros;
-import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.UtilSBCoreArquivoTexto;
-import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.UtilSBCoreArquivos;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCStringFiltros;
+import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.UtilCRCArquivoTexto;
+import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.UtilCRCArquivos;
 import com.super_bits.modulosSB.SBCore.modulos.regex.FabProcessadorRegexConhecidos;
 import com.super_bits.modulosSB.SBCore.modulos.regex.ProcessadorRegexTexto;
 import java.io.File;
@@ -171,7 +171,7 @@ public class TesteEcomerce {
                     String textoResumo = resumo.getContents().replace(";", "[pontovirgula]");
                     System.out.println(valor);
 
-                    String slugString = UtilSBCoreStringFiltros.gerarUrlAmigavel(nome.getContents());
+                    String slugString = UtilCRCStringFiltros.gerarUrlAmigavel(nome.getContents());
                     System.out.println("SLUG----->" + slugString);
                     String pesoStr = getPeso(textoDescritivo).replace(",", ".");
                     System.out.println("PESO----->" + pesoStr);
@@ -249,20 +249,20 @@ public class TesteEcomerce {
         for (String linha : linhasDoArquivo) {
             linhaCompĺeta += linha;
         }
-        UtilSBCoreArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/arqXtecEloImprts.csv", linhaCompĺeta);
-        UtilSBCoreArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/01referencia.csv", linhasColunaReferencia);
-        UtilSBCoreArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/02nome.csv", linhasColunaNome);
-        UtilSBCoreArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/03slug.csv", linhasColunaSlug);
-        UtilSBCoreArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/04descritivo.csv", linhasColunaDescricao);
-        UtilSBCoreArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/05Resumo.csv", linhasColunaResumo);
-        UtilSBCoreArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/06Preco.csv", linhasColunaPreco);
-        UtilSBCoreArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/07PrecoPromo.csv", linhasPrecoPromo);
-        UtilSBCoreArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/08Peso.csv", linhasPeso);
-        UtilSBCoreArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/09Quantidade.csv", linhasPrecoQuantidade);
-        UtilSBCoreArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/10Altura.csv", linhasPrecoAltura);
-        UtilSBCoreArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/11Largura.csv", linhasPrecoLargura);
-        UtilSBCoreArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/12Profundidade.csv", linhasPrecoProfundidade);
-        UtilSBCoreArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/13EstoqueLiberado.csv", linhasBloquearEstoque);
+        UtilCRCArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/arqXtecEloImprts.csv", linhaCompĺeta);
+        UtilCRCArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/01referencia.csv", linhasColunaReferencia);
+        UtilCRCArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/02nome.csv", linhasColunaNome);
+        UtilCRCArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/03slug.csv", linhasColunaSlug);
+        UtilCRCArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/04descritivo.csv", linhasColunaDescricao);
+        UtilCRCArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/05Resumo.csv", linhasColunaResumo);
+        UtilCRCArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/06Preco.csv", linhasColunaPreco);
+        UtilCRCArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/07PrecoPromo.csv", linhasPrecoPromo);
+        UtilCRCArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/08Peso.csv", linhasPeso);
+        UtilCRCArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/09Quantidade.csv", linhasPrecoQuantidade);
+        UtilCRCArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/10Altura.csv", linhasPrecoAltura);
+        UtilCRCArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/11Largura.csv", linhasPrecoLargura);
+        UtilCRCArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/12Profundidade.csv", linhasPrecoProfundidade);
+        UtilCRCArquivoTexto.escreverEmArquivoSubstituindoArqAnterior("/home/superBits/dados/partearquivo/13EstoqueLiberado.csv", linhasBloquearEstoque);
 
     }
 
@@ -342,7 +342,7 @@ public class TesteEcomerce {
 
             //SBCore.getCentralComunicacao().iniciarComunicacaoUsuairo_paraGrupo(FabTipoComunicacao.NOTIFICAR, pRemetente, pDestinatario, origem,)
             planilha = Workbook.getWorkbook(new File(origem), ws);
-            UtilSBCoreArquivos.copiarArquivos(origem, gerado);
+            UtilCRCArquivos.copiarArquivos(origem, gerado);
 
             WorkbookSettings wsGerada = new WorkbookSettings();
             wsGerada.setEncoding("iso-8859-1");

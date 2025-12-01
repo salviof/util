@@ -5,8 +5,8 @@
 package com.super_bits.shellcommands.shel;
 
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringConversores;
-import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.UtilSBCoreArquivoTexto;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCStringConversores;
+import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.UtilCRCArquivoTexto;
 
 import com.super_bits.shellcommands.model.Comando;
 import com.super_bits.shellcommands.model.RespostaCMD;
@@ -69,7 +69,7 @@ public class UtilSBShellScript {
             String caminhoScriptExecucao = diretorioScriptExecucao + pComando.getNomeArquivoScript();
             pComando.setDiretorioExecucao(diretorioScriptExecucao);
 
-            UtilSBCoreArquivoTexto.limparArquivoTexto(caminhoScriptExecucao);
+            UtilCRCArquivoTexto.limparArquivoTexto(caminhoScriptExecucao);
             int i = 1;
             for (String linha : pComando.getScript()) {
 
@@ -78,7 +78,7 @@ public class UtilSBShellScript {
                     i++;
                 }
 
-                if (!UtilSBCoreArquivoTexto.printLnNoArquivo(linha, caminhoScriptExecucao)) {
+                if (!UtilCRCArquivoTexto.printLnNoArquivo(linha, caminhoScriptExecucao)) {
                     conseguiuCriarArquivo = false;
                 }
 
@@ -121,8 +121,8 @@ public class UtilSBShellScript {
 
             Process p = pb.start();
 
-            resposta.setRetornoPadrao(UtilSBCoreStringConversores.getStringByInputStream(p.getErrorStream()));
-            resposta.setRetornoErro(UtilSBCoreStringConversores.getStringByInputStream(p.getInputStream()));
+            resposta.setRetornoPadrao(UtilCRCStringConversores.getStringByInputStream(p.getErrorStream()));
+            resposta.setRetornoErro(UtilCRCStringConversores.getStringByInputStream(p.getInputStream()));
             resposta = defineResposta(pComando, resposta);
         } catch (Throwable e) {
 

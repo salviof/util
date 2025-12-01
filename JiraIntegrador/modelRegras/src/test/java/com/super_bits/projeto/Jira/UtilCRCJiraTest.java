@@ -28,15 +28,15 @@ import testesFW.TesteJunitSBPersistencia;
  *
  * @author desenvolvedor
  */
-public class UtilSBCoreJiraTest extends TesteJunitSBPersistencia {
+public class UtilCRCJiraTest extends TesteJunitSBPersistencia {
 
-    public UtilSBCoreJiraTest() {
+    public UtilCRCJiraTest() {
     }
 
     @Test
     public void testGetTarefaJiraAcaoDoSistema() {
 
-        JiraRestClient conexao = UtilSBCoreJira.criarConexaoJira(SBCore.getConfigModulo(FabConfigModuloJiraIntegrador.class).getPropriedade(FabConfigModuloJiraIntegrador.USUARIO), SBCore.getConfigModulo(FabConfigModuloJiraIntegrador.class).getPropriedade(FabConfigModuloJiraIntegrador.SENHA), SBCore.getConfigModulo(FabConfigModuloJiraIntegrador.class).getPropriedade(FabConfigModuloJiraIntegrador.PROJETO));
+        JiraRestClient conexao = UtilCRCJira.criarConexaoJira(SBCore.getConfigModulo(FabConfigModuloJiraIntegrador.class).getPropriedade(FabConfigModuloJiraIntegrador.USUARIO), SBCore.getConfigModulo(FabConfigModuloJiraIntegrador.class).getPropriedade(FabConfigModuloJiraIntegrador.SENHA), SBCore.getConfigModulo(FabConfigModuloJiraIntegrador.class).getPropriedade(FabConfigModuloJiraIntegrador.PROJETO));
 
         SearchResult resultado = conexao.getSearchClient().searchJql("summary ~ \"Controllers\"").claim();
         List<Issue> todasTarefas = Lists.newArrayList(resultado.getIssues().iterator());
@@ -47,17 +47,17 @@ public class UtilSBCoreJiraTest extends TesteJunitSBPersistencia {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
-                Logger.getLogger(UtilSBCoreJiraTest.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UtilCRCJiraTest.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
-        User usuario = UtilSBCoreJira.getUsuarioPorNome(conexao, "salvio");
-        User usuario2 = UtilSBCoreJira.getUsuarioPorNome(conexao, "cristopherAmaral");
+        User usuario = UtilCRCJira.getUsuarioPorNome(conexao, "salvio");
+        User usuario2 = UtilCRCJira.getUsuarioPorNome(conexao, "cristopherAmaral");
         UTILSBCoreDesktopApp.showMessageStopProcess(new MensagemProgramador(usuario.getName()));
         UTILSBCoreDesktopApp.showMessageStopProcess(new MensagemProgramador(usuario2.getName()));
 
-        TarefaJira tarefa = UtilSBCoreJira.getTarefaJiraAcaoDoSistema(UtilSBCoreJira.TIPOS_DE_TAREFA_JIRA.ACAO_IMPLEMENTACAO_MANAGED_BEAN, FabAcaoProjetoSB.PROJETO_MB_GERENCIAR.getRegistro());
-        //   UtilSBCoreJira.criarTarefafasDaAcao(conexao, tarefa);
+        TarefaJira tarefa = UtilCRCJira.getTarefaJiraAcaoDoSistema(UtilCRCJira.TIPOS_DE_TAREFA_JIRA.ACAO_IMPLEMENTACAO_MANAGED_BEAN, FabAcaoProjetoSB.PROJETO_MB_GERENCIAR.getRegistro());
+        //   UtilCRCJira.criarTarefafasDaAcao(conexao, tarefa);
 
     }
 

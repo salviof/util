@@ -6,7 +6,7 @@
 package org.superBits.utilitario.editorArquivos.util;
 
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreShellBasico;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCShellBasico;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class UtilSBEditorArquivosConversor {
                 pdfGerado.delete();
             }
 
-            String saidaCompleta = UtilSBCoreShellBasico.executeCommand("libreoffice",
+            String saidaCompleta = UtilCRCShellBasico.executeCommand("libreoffice",
                     "--headless",
                     "--convert-to", "pdf",
                     "--outdir", pastaSaida,
@@ -60,6 +60,8 @@ public class UtilSBEditorArquivosConversor {
             // -----------------------------------------------------------------
             if (!pdfGerado.exists()) {
                 throw new RuntimeException("LibreOffice terminou com sucesso, mas o PDF não foi criado");
+            } else {
+                System.out.println("Econtrou " + pdfGerado.getAbsolutePath());
             }
 
             // -----------------------------------------------------------------

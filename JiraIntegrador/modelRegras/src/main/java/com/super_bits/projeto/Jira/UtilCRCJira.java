@@ -21,9 +21,9 @@ import com.atlassian.util.concurrent.Promise;
 import com.google.common.collect.Lists;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.arquivosConfiguracao.ConfigModulo;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreReflexaoObjeto;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringFiltros;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringSlugs;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCReflexaoObjeto;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCStringFiltros;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCStringSlugs;
 
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ComoAcaoDoSistema;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.fabricas.FabTipoAcaoSistemaGenerica;
@@ -43,7 +43,7 @@ import org.coletivojava.fw.api.tratamentoErros.FabErro;
  *
  * @author desenvolvedor
  */
-public class UtilSBCoreJira {
+public class UtilCRCJira {
 
     private static ConfigModulo configuracao = SBCore.getConfigModulo(FabConfigModuloJiraIntegrador.class);
 
@@ -449,8 +449,8 @@ public class UtilSBCoreJira {
 
             for (BasicProject proj : lista) {
                 textoProjetos += proj.getKey();
-                String nomeProjeto = UtilSBCoreStringSlugs.gerarSlugCaixaAlta(pNomeProjeto);
-                String nomeProjetoRemoto = UtilSBCoreStringSlugs.gerarSlugCaixaAlta(proj.getName());
+                String nomeProjeto = UtilCRCStringSlugs.gerarSlugCaixaAlta(pNomeProjeto);
+                String nomeProjetoRemoto = UtilCRCStringSlugs.gerarSlugCaixaAlta(proj.getName());
                 System.out.println(nomeProjeto);
                 if (nomeProjeto != null && proj.getName() != null && nomeProjetoRemoto.equals(nomeProjeto)) {
 
@@ -685,7 +685,7 @@ public class UtilSBCoreJira {
 
     public static TarefaJira getTarefaJiraEntidade(TIPOS_DE_TAREFA_JIRA pTipoTarefaJira, Class pEntidade) {
         TarefaJira tarefa = pTipoTarefaJira.getTarefaInssueJira();
-        String nomeEntidade = UtilSBCoreReflexaoObjeto.getNomeDoObjetoPorAnotacaoInfoClasse(pEntidade);
+        String nomeEntidade = UtilCRCReflexaoObjeto.getNomeDoObjetoPorAnotacaoInfoClasse(pEntidade);
         tarefa.setTabelaVinculada(pEntidade);
         tarefa.setTipoTarefa(pTipoTarefaJira);
 
@@ -746,7 +746,7 @@ public class UtilSBCoreJira {
 
     public static String getSlugFacilAcao(ComoAcaoDoSistema pAcao) {
         try {
-            String slugModulo = UtilSBCoreStringFiltros.getPrimeirasXLetrasDaString(pAcao.getModulo().getNome(), 5);
+            String slugModulo = UtilCRCStringFiltros.getPrimeirasXLetrasDaString(pAcao.getModulo().getNome(), 5);
             String slugNomeAcao = pAcao.getEnumAcaoDoSistema().toString();
             return slugModulo + " " + slugNomeAcao;
         } catch (Throwable t) {

@@ -6,9 +6,9 @@
 package com.super_bits.editorImagem.util;
 
 import com.super_bits.modulosSB.SBCore.UtilGeral.UTilSBCoreInputs;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreInputOutputConversoes;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreOutputs;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringNomeArquivosEDiretorios;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCInputOutputConversoes;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCOutputs;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCStringNomeArquivosEDiretorios;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -146,17 +146,17 @@ public class UtilSBImagemEdicaoTest {
 
             BufferedImage imagemComAlpha = UTilSBCoreInputs.getImagemBufferedByLocalFile(CaminhoArquivoTeste);
             //   BufferedImage imagem = UtilSBImagemEdicao.redimencionaImagem(imagemComAlpha, 50, "png");
-            String extencao = UtilSBCoreStringNomeArquivosEDiretorios.getExtencaoNomeArquivoSemPonto(CaminhoArquivoTeste);
+            String extencao = UtilCRCStringNomeArquivosEDiretorios.getExtencaoNomeArquivoSemPonto(CaminhoArquivoTeste);
             BufferedImage imagem = UtilSBImagemEdicao.reduzirProporcionalAlturaMaxima(imagemComAlpha, 50, extencao);
-            InputStream inputImagem = UtilSBCoreInputOutputConversoes.BufferedImageToInputStream(imagem, extencao);
+            InputStream inputImagem = UtilCRCInputOutputConversoes.BufferedImageToInputStream(imagem, extencao);
 
-            UtilSBCoreOutputs.salvarArquivoByte(IOUtils.toByteArray(inputImagem), "/home/superBits/projetos/Super_Bits/source/SuperBits_FrameWork/utilitarios/EditorImagem/imagemTesteBlackReduziada.png");
+            UtilCRCOutputs.salvarArquivoByte(IOUtils.toByteArray(inputImagem), "/home/superBits/projetos/Super_Bits/source/SuperBits_FrameWork/utilitarios/EditorImagem/imagemTesteBlackReduziada.png");
             BufferedImage img = ImageIO.read(new File("/home/superBits/projetos/Super_Bits/source/SuperBits_FrameWork/utilitarios/EditorImagem/imagemTesteBlackReduziada.png"));
             ImageIO.write(img, "jpg", new File("/home/superBits/projetos/Super_Bits/source/SuperBits_FrameWork/utilitarios/EditorImagem/imagemTesteBlackReduziada.jpg"));
         } catch (Throwable t) {
 
         }
-        //UtilSBCoreOutputs.salvarArquivoInputStream(inputImagem, "/home/superBits/projetos/Super_Bits/source/SuperBits_FrameWork/utilitarios/EditorImagem/imagemTesteBlackReduziada.png");
+        //UtilCRCOutputs.salvarArquivoInputStream(inputImagem, "/home/superBits/projetos/Super_Bits/source/SuperBits_FrameWork/utilitarios/EditorImagem/imagemTesteBlackReduziada.png");
     }
 
     /**

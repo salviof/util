@@ -14,7 +14,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import javax.inject.Qualifier;
-import org.coletivojava.fw.utilCoreBase.UtilSBCoreReflexaoAPIERP;
+import org.coletivojava.fw.utilCoreBase.UtilCRCReflexaoAPIERP;
 import testesFW.geradorDeCodigo.GeradorClasseGenerico;
 
 /**
@@ -24,7 +24,7 @@ import testesFW.geradorDeCodigo.GeradorClasseGenerico;
 public class GeradorERPImplementacaoTeste extends GeradorClasseGenerico {
 
     public GeradorERPImplementacaoTeste(ItfApiErpSuperBits pFabrica) {
-        super(UtilSBCoreReflexaoAPIERP.getNomeClasseAnotacaoImplementacaoPadrao(pFabrica), UtilSBCoreReflexaoAPIERP.getNomeClasseAnotacaoImplementacao(pFabrica));
+        super(UtilCRCReflexaoAPIERP.getNomeClasseAnotacaoImplementacaoPadrao(pFabrica), UtilCRCReflexaoAPIERP.getNomeClasseAnotacaoImplementacao(pFabrica));
         getCodigoJava().addAnnotation(Qualifier.class);
         getCodigoJava().addImport(pFabrica.getInterface());
         getCodigoJava().addAnnotation(InfoReferenciaEntidade.class).setLiteralValue("tipoObjeto ", pFabrica.getInterface().getSimpleName() + ".class");

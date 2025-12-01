@@ -5,7 +5,7 @@
 package org.superBits.utilitario.editorArquivos.office;
 
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
-import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.UtilSBCoreArquivos;
+import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.UtilCRCArquivos;
 import java.io.File;
 import java.util.List;
 import org.docx4j.Docx4J;
@@ -45,7 +45,7 @@ public class MapaSubstituicaoApresentacaoTest {
         String arqExemplo = diretorioApp + "src/test/resources/exemplos/apresentacaoTeste.pptx";
 
         String arqModificado = diretorioApp + "src/test/resources/exemplos/apresentacaoTesteMod.pptx";
-        UtilSBCoreArquivos.copiarArquivos(arqExemplo, arqModificado);
+        UtilCRCArquivos.copiarArquivos(arqExemplo, arqModificado);
         // UtilSBEditorArquivosConversor.converterWordEmPDF(arqExemplo, arqExemplo + ".pdf");
         MapaSubstituicaoApresentacao novoMapa = new MapaSubstituicaoApresentacao(new File(arqModificado));
         novoMapa.adicionarPalavraChave("[nome]", "coléeeeeeeeeeeeeeeeeeee");

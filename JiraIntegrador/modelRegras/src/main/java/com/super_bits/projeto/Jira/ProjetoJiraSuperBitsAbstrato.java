@@ -23,7 +23,7 @@ public class ProjetoJiraSuperBitsAbstrato {
     private String nomeProjeto;
 
     public ProjetoJiraSuperBitsAbstrato(String pUsuario, String pSenha, String pNomeProjeto) {
-        this.conexao = UtilSBCoreJira.criarConexaoJira(pUsuario, pSenha, pNomeProjeto);
+        this.conexao = UtilCRCJira.criarConexaoJira(pUsuario, pSenha, pNomeProjeto);
         if (conexao != null) {
             conexaoAberta = true;
         }

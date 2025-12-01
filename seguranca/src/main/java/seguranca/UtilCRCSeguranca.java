@@ -16,7 +16,7 @@ import org.apache.commons.codec.binary.Hex;
  *
  * @author SalvioF
  */
-public class UtilSBCoreSeguranca {
+public class UtilCRCSeguranca {
 
     public static String getChaveSecretaRandomica() {
         SecureRandom random = new SecureRandom();

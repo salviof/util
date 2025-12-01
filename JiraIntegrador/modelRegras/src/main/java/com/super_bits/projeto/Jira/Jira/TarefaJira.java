@@ -16,11 +16,11 @@ import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInputBuilder;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ComoAcaoDoSistema;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreReflexaoObjeto;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCReflexaoObjeto;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campo.ItfCaminhoCampo;
 import com.super_bits.projeto.Jira.requisito.ItfRequisitoDoSistema;
 import com.super_bits.projeto.Jira.Jira.tempo.old.PlanosDeTrabalhoTempoJira;
-import com.super_bits.projeto.Jira.UtilSBCoreJira;
+import com.super_bits.projeto.Jira.UtilCRCJira;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -39,23 +39,23 @@ public class TarefaJira {
 
     private boolean gropoTarefas;
     private TIPO_ORIGEM_TAREFA tipoOrigem;
-    private UtilSBCoreJira.TIPOS_DE_TAREFA_JIRA tipoTarefa;
+    private UtilCRCJira.TIPOS_DE_TAREFA_JIRA tipoTarefa;
     private String nomeTarefa;
     private String descricaoTarefa;
     private String codigoTarefa;
     private String tempoEsperado;
     private ComoAcaoDoSistema acaoVinculada;
     private Class tabelaVinculada;
-    private UtilSBCoreJira.TIPO_GRUPO_TAREFA tipoGrupoTarefa;
+    private UtilCRCJira.TIPO_GRUPO_TAREFA tipoGrupoTarefa;
     private ItfRequisitoDoSistema requisitoVinculado;
     private TarefaJira tarefaPrincipal;
     private List<PlanosDeTrabalhoTempoJira> planosDeTrabalho;
 
-    public UtilSBCoreJira.TIPOS_DE_TAREFA_JIRA getTipoTarefa() {
+    public UtilCRCJira.TIPOS_DE_TAREFA_JIRA getTipoTarefa() {
         return tipoTarefa;
     }
 
-    public void setTipoTarefa(UtilSBCoreJira.TIPOS_DE_TAREFA_JIRA tipoTarefa) {
+    public void setTipoTarefa(UtilCRCJira.TIPOS_DE_TAREFA_JIRA tipoTarefa) {
         this.tipoTarefa = tipoTarefa;
     }
 
@@ -265,11 +265,11 @@ public class TarefaJira {
         return tipoOrigem;
     }
 
-    public UtilSBCoreJira.TIPO_GRUPO_TAREFA getTipoGrupoTarefa() {
+    public UtilCRCJira.TIPO_GRUPO_TAREFA getTipoGrupoTarefa() {
         return tipoGrupoTarefa;
     }
 
-    public void setTipoGrupoTarefa(UtilSBCoreJira.TIPO_GRUPO_TAREFA tipoGrupoTarefa) {
+    public void setTipoGrupoTarefa(UtilCRCJira.TIPO_GRUPO_TAREFA tipoGrupoTarefa) {
         this.tipoGrupoTarefa = tipoGrupoTarefa;
     }
 
@@ -326,27 +326,27 @@ public class TarefaJira {
 
             switch (getTipoTarefa().getGrupoTarefaInssueJira()) {
                 case TELA_GESTAO_ENTIDADE:
-                    tarefaPrincipal.setTipoGrupoTarefa(UtilSBCoreJira.TIPO_GRUPO_TAREFA.TELA_GESTAO_ENTIDADE);
+                    tarefaPrincipal.setTipoGrupoTarefa(UtilCRCJira.TIPO_GRUPO_TAREFA.TELA_GESTAO_ENTIDADE);
                     tarefaPrincipal.setNomeTarefa("WebPaginas p/ " + acaoPrincipal.getNomeAcao());
                     tarefaPrincipal.setDescricaoTarefa("Webpaginas que  \n"
                             + " implementam uma Listagem da entidade com botões para todas as ações vinculadas a ela. \n juntamente com os formularios atrelados as ações");
                     return tarefaPrincipal;
                 case MODULO_CONTROLLER:
-                    tarefaPrincipal.setTipoGrupoTarefa(UtilSBCoreJira.TIPO_GRUPO_TAREFA.MODULO_CONTROLLER);
+                    tarefaPrincipal.setTipoGrupoTarefa(UtilCRCJira.TIPO_GRUPO_TAREFA.MODULO_CONTROLLER);
                     tarefaPrincipal.setNomeTarefa("Controllers p/" + acaoPrincipal.getModulo().getNome() + "." + acaoPrincipal.getNomeAcao());
                     tarefaPrincipal.setDescricaoTarefa("As ações  do modulo controller são aquelas que geram alterações no sistema \n"
                             + " todas as ações do sistema estarão disponíveis via API, portanto sua implementação deve levar em consideração chamadas com parametros de todas as formas possíveis, "
                             + "e não apenas aquelas que estarão disponíveis para o usuário. ");
                     return tarefaPrincipal;
                 case MODELAGEM_TABELA:
-                    tarefaPrincipal.setTipoGrupoTarefa(UtilSBCoreJira.TIPO_GRUPO_TAREFA.MODELAGEM_TABELA);
-                    String nomeEntidade = UtilSBCoreReflexaoObjeto.getNomeDoObjetoPorAnotacaoInfoClasse(getTabelaVinculada());
+                    tarefaPrincipal.setTipoGrupoTarefa(UtilCRCJira.TIPO_GRUPO_TAREFA.MODELAGEM_TABELA);
+                    String nomeEntidade = UtilCRCReflexaoObjeto.getNomeDoObjetoPorAnotacaoInfoClasse(getTabelaVinculada());
                     tarefaPrincipal.setNomeTarefa("Model p/ " + nomeEntidade + " ");
                     return tarefaPrincipal;
                 case ACAO_BANCO_AMBIENTE_E_ADEQUACAO:
                     break;
                 case REQUISITO_PERSONALIZADAO:
-                    tarefaPrincipal.setTipoGrupoTarefa(UtilSBCoreJira.TIPO_GRUPO_TAREFA.REQUISITO_PERSONALIZADAO);
+                    tarefaPrincipal.setTipoGrupoTarefa(UtilCRCJira.TIPO_GRUPO_TAREFA.REQUISITO_PERSONALIZADAO);
                     tarefaPrincipal.setNomeTarefa("Requisitos para " + getRequisitoVinculado().getDescricaoRequisito());
                     break;
                 default:

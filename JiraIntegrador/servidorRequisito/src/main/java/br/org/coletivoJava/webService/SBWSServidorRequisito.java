@@ -16,7 +16,7 @@ import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.ItfResposta
 import com.super_bits.modulosSB.SBCore.modulos.requisito.ComentarioRequisitoEnvioNovo;
 import com.super_bits.modulosSB.SBCore.modulos.requisito.FabConfigModuloJiraRequisitos;
 import com.super_bits.projeto.Jira.FabConfigModuloJiraIntegrador;
-import com.super_bits.projeto.Jira.UtilSBCoreJira;
+import com.super_bits.projeto.Jira.UtilCRCJira;
 
 import spark.Spark;
 import static br.org.coletivoJava.webService.InicioSBWS.SERVICO_COMENTARIO;
@@ -72,9 +72,9 @@ public class SBWSServidorRequisito {
 
                 ComentarioRequisitoEnvioNovo novoComent = new Gson().fromJson(request.body(), ComentarioRequisitoEnvioNovo.class);
 
-                ConexaoJiraProjetoSB conexao = UtilSBCoreJira.criarConexaoJira(CONFIGURACOESJIRASERVER.getPropriedade(FabConfigModuloJiraIntegrador.USUARIO), CONFIGURACOESJIRASERVER.getPropriedade(FabConfigModuloJiraIntegrador.SENHA), CONFIGURACOESJIRASERVER.getPropriedade(FabConfigModuloJiraIntegrador.PROJETO));
+                ConexaoJiraProjetoSB conexao = UtilCRCJira.criarConexaoJira(CONFIGURACOESJIRASERVER.getPropriedade(FabConfigModuloJiraIntegrador.USUARIO), CONFIGURACOESJIRASERVER.getPropriedade(FabConfigModuloJiraIntegrador.SENHA), CONFIGURACOESJIRASERVER.getPropriedade(FabConfigModuloJiraIntegrador.PROJETO));
                 Class entidade = ModuloAcaoSistema.class;
-                //Limpara tarefas Recentes UtilSBCoreJira.limparPorJiraQuery(conexao, "created >= -1w order by created DESC");
+                //Limpara tarefas Recentes UtilCRCJira.limparPorJiraQuery(conexao, "created >= -1w order by created DESC");
 
                 String jsonResp = "Erro tratando NovoComentario de" + novoComent.getUsuario();
                 try {

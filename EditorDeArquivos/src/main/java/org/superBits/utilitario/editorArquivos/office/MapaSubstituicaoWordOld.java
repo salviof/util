@@ -8,11 +8,11 @@ package org.superBits.utilitario.editorArquivos.office;
 import com.google.common.collect.Lists;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UTilSBCoreInputs;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreOutputs;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringBuscaTrecho;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringFiltros;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringNomeArquivosEDiretorios;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringVariaveisEntreCaracteres;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCOutputs;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCStringBuscaTrecho;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCStringFiltros;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCStringNomeArquivosEDiretorios;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCStringVariaveisEntreCaracteres;
 
 import com.super_bits.modulosSB.SBCore.UtilGeral.stringSubstituicao.MapaSubstituicaoArquivo;
 import java.io.ByteArrayOutputStream;
@@ -160,7 +160,7 @@ public class MapaSubstituicaoWordOld extends MapaSubstituicaoArquivo {
         for (String chave : mapaSubstituicao.keySet()) {
             String valor = mapaSubstituicao.get(chave);
 
-            List<String> variaveisEncontradas = UtilSBCoreStringVariaveisEntreCaracteres.extrairVariaveisEntreColchete(valor);
+            List<String> variaveisEncontradas = UtilCRCStringVariaveisEntreCaracteres.extrairVariaveisEntreColchete(valor);
             if (!variaveisEncontradas.isEmpty()) {
                 for (String variavel : variaveisEncontradas) {
                     if (mapaSubstituicao.containsKey(variavel)) {
@@ -177,7 +177,7 @@ public class MapaSubstituicaoWordOld extends MapaSubstituicaoArquivo {
             Map<String, String> mapaSubVariaveis = mapaSubstituicaoListas.get(chaveprincipal);
             for (String chave : mapaSubVariaveis.keySet()) {
                 String valor = mapaSubVariaveis.get(chave);
-                List<String> variaveisEncontradas = UtilSBCoreStringVariaveisEntreCaracteres.extrairVariaveisEntreColchete(valor);
+                List<String> variaveisEncontradas = UtilCRCStringVariaveisEntreCaracteres.extrairVariaveisEntreColchete(valor);
                 if (!variaveisEncontradas.isEmpty()) {
                     for (String variavel : variaveisEncontradas) {
                         if (mapaSubstituicao.containsKey(variavel)) {
@@ -288,7 +288,7 @@ public class MapaSubstituicaoWordOld extends MapaSubstituicaoArquivo {
         List<Integer> resposta = new ArrayList<>();
         if (valores != null) {
             for (String valorChave : valores.keySet()) {
-                String numeroLinha = UtilSBCoreStringFiltros.getNumericosDaString(valorChave);
+                String numeroLinha = UtilCRCStringFiltros.getNumericosDaString(valorChave);
                 if (numeroLinha != null && !numeroLinha.isEmpty()) {
                     if (!resposta.contains(Integer.parseInt(numeroLinha))) {
                         resposta.add(Integer.parseInt(numeroLinha));

@@ -38,7 +38,7 @@ public class ProjetoJiraSuperBits extends ProjetoJiraSuperBitsAbstrato {
     }
 
     private User getUsuario(String pUsuario) {
-        return UtilSBCoreJira.getUsuarioPorNome(getConexao(), pUsuario);
+        return UtilCRCJira.getUsuarioPorNome(getConexao(), pUsuario);
     }
 
     public User getAnalistaBancoDados() {
@@ -120,7 +120,7 @@ public class ProjetoJiraSuperBits extends ProjetoJiraSuperBitsAbstrato {
     public void atualizarAcoesServidorJira(List<TarefaSuperBits> pAcoes) {
 
         for (TarefaSuperBits tarefa : pAcoes) {
-            if (!UtilSBCoreJira.criarTarefafasDaAcao(getConexao(), tarefa.getTarefaJiraOrigem(), getUsuarioPorTipoDeAcao(tarefa.getTarefaJiraOrigem()))) {
+            if (!UtilCRCJira.criarTarefafasDaAcao(getConexao(), tarefa.getTarefaJiraOrigem(), getUsuarioPorTipoDeAcao(tarefa.getTarefaJiraOrigem()))) {
                 throw new UnsupportedOperationException("Erro criando ação para " + tarefa.getTarefaJiraOrigem().getAcaoVinculada().getNomeUnico());
             }
         }
@@ -140,7 +140,7 @@ public class ProjetoJiraSuperBits extends ProjetoJiraSuperBitsAbstrato {
 
     public Issue getInssueJiraByTarefa(TarefaSuperBits pTarefa) {
 
-        String id = UtilSBCoreJira.getIdTarefaPeloLabel(getConexao(), pTarefa.getTarefaJiraOrigem());
+        String id = UtilCRCJira.getIdTarefaPeloLabel(getConexao(), pTarefa.getTarefaJiraOrigem());
         return getConexao().getIssueClient().getIssue(id).claim();
 
     }
@@ -170,26 +170,26 @@ public class ProjetoJiraSuperBits extends ProjetoJiraSuperBitsAbstrato {
 
     public void limparTodasIssuesEncontradasNoServidorJira() {
 
-        List<Issue> tarefas = UtilSBCoreJira.listarTodasTarefasDoProjeto(getConexao());
+        List<Issue> tarefas = UtilCRCJira.listarTodasTarefasDoProjeto(getConexao());
         // Enquanto houver tarefas deste projeto, excluir
         while (!tarefas.isEmpty()) {
             for (Issue tr : tarefas) {
                 getConexao().getIssueClient().deleteIssue(tr.getKey(), true).claim();
             }
-            tarefas = UtilSBCoreJira.listarTodasTarefasDoProjeto(getConexao());
+            tarefas = UtilCRCJira.listarTodasTarefasDoProjeto(getConexao());
         }
     }
 
     public boolean adicionarComentario(TarefaSuperBits pTarefa, String pComentario) {
         Issue teste = getInssueJiraByTarefa(pTarefa);
-        return UtilSBCoreJira.comentario_adicionar(getConexao(), teste, pComentario);
+        return UtilCRCJira.comentario_adicionar(getConexao(), teste, pComentario);
 
     }
 
     public void limparTodasAsAcoes() {
 
         for (TarefaSuperBits tarefa : MapaTarefasProjeto.getTodasTarefas()) {
-            UtilSBCoreJira.apagarTarefasDaCao(getConexao(), tarefa.getTarefaJiraOrigem(), true);
+            UtilCRCJira.apagarTarefasDaCao(getConexao(), tarefa.getTarefaJiraOrigem(), true);
         }
 
     }

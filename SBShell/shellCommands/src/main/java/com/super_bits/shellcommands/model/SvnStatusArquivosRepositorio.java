@@ -6,7 +6,7 @@
 package com.super_bits.shellcommands.model;
 
 
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringListas;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCStringListas;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class SvnStatusArquivosRepositorio {
         comandoSvn.configParametro("pastaSvnStatus", diretorio);
         RespostaCMD resposta = comandoSvn.executarComando();
         System.out.println(resposta.getComando());
-        List<String> status = UtilSBCoreStringListas.getlistadeLinhas(resposta.getRetorno());
+        List<String> status = UtilCRCStringListas.getlistadeLinhas(resposta.getRetorno());
 
         for (String ln : status) {
 
@@ -92,7 +92,7 @@ public class SvnStatusArquivosRepositorio {
     }
 
     private String separarPorEspaco(List<String> lista) {
-        return UtilSBCoreStringListas.getStringDaListaComSeparador(lista, " ");
+        return UtilCRCStringListas.getStringDaListaComSeparador(lista, " ");
     }
 
     public String getExcluidosSeparadosPorEspaco() {

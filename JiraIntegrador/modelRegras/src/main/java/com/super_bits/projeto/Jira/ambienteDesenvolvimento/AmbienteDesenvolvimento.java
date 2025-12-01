@@ -13,7 +13,7 @@ import com.super_bits.projeto.Jira.FabTipoProfissional;
 import com.super_bits.projeto.Jira.TipoProfissional;
 import java.util.ArrayList;
 import java.util.List;
-import org.coletivojava.fw.utilCoreBase.UtilSBCoreFabrica;
+import org.coletivojava.fw.utilCoreBase.UtilCRCFabrica;
 
 /**
  *
@@ -34,7 +34,7 @@ public class AmbienteDesenvolvimento extends EntidadeSimples {
     private int fatorProdutividade = 1;
 
     private List<DesenvolvedorProjetoSB> desenvolvedores;
-    private final List<TipoProfissional> tiposProfissional = (List) UtilSBCoreFabrica.listaRegistros(FabTipoProfissional.class);
+    private final List<TipoProfissional> tiposProfissional = (List) UtilCRCFabrica.listaRegistros(FabTipoProfissional.class);
 
     public AmbienteDesenvolvimento() {
         desenvolvedores = new ArrayList<>();

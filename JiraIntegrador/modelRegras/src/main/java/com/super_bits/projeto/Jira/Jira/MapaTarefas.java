@@ -11,7 +11,7 @@ import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.UtilGeral.MapaDeAcoes;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ComoAcaoDoSistema;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.permissoes.ItfAcaoGerenciarEntidade;
-import com.super_bits.projeto.Jira.UtilSBCoreJira;
+import com.super_bits.projeto.Jira.UtilCRCJira;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +50,7 @@ public class MapaTarefas {
             if (acao.getTipoAcaoGenerica() == null) {
                 throw new UnsupportedOperationException("A ação generica para" + acao.getNomeUnico() + " não foi especificada");
             }
-            for (UtilSBCoreJira.TIPOS_DE_TAREFA_JIRA tipoTarefa : UtilSBCoreJira.getTiposTarefaPorTipoAcao(acao.getTipoAcaoGenerica())) {
+            for (UtilCRCJira.TIPOS_DE_TAREFA_JIRA tipoTarefa : UtilCRCJira.getTiposTarefaPorTipoAcao(acao.getTipoAcaoGenerica())) {
                 addTarefa(acao);
             }
             mapaClasse.put(acao.getEnumAcaoDoSistema().getEntidadeDominio().getSimpleName(), acao.getEnumAcaoDoSistema().getEntidadeDominio());
@@ -67,8 +67,8 @@ public class MapaTarefas {
             if (!TAREFAS_PROJETO_ATUAL.containsKey(chaveAcaoGestao)) {
                 TAREFAS_PROJETO_ATUAL.put(chaveAcaoGestao, new ArrayList<>());
             }
-            for (UtilSBCoreJira.TIPOS_DE_TAREFA_JIRA tipoTarefa : UtilSBCoreJira.getTiposTarefaPorTipoAcao(pAcao.getTipoAcaoGenerica())) {
-                TarefaJira tarefa = UtilSBCoreJira.getTarefaJiraAcaoDoSistema(tipoTarefa, pAcao);
+            for (UtilCRCJira.TIPOS_DE_TAREFA_JIRA tipoTarefa : UtilCRCJira.getTiposTarefaPorTipoAcao(pAcao.getTipoAcaoGenerica())) {
+                TarefaJira tarefa = UtilCRCJira.getTarefaJiraAcaoDoSistema(tipoTarefa, pAcao);
                 TarefaSuperBits novaTarefa = new TarefaSuperBits(tarefa);
                 if (!TAREFAS_PROJETO_ATUAL.get(chaveAcaoGestao).contains(novaTarefa)) {
                     TarefaSuperBits novaTarefaadd = new TarefaSuperBits(tarefa);
@@ -91,14 +91,14 @@ public class MapaTarefas {
             TAREFAS_PROJETO_ATUAL.put(pEntidade.getSimpleName(), new ArrayList<>());
         }
 
-        for (UtilSBCoreJira.TIPOS_DE_TAREFA_JIRA tipoTarefa : UtilSBCoreJira.getTiposTarefaPorEntidade(pEntidade)) {
+        for (UtilCRCJira.TIPOS_DE_TAREFA_JIRA tipoTarefa : UtilCRCJira.getTiposTarefaPorEntidade(pEntidade)) {
 
-            TarefaJira tarefaEntidade = UtilSBCoreJira.getTarefaJiraEntidade(tipoTarefa, pEntidade);
+            TarefaJira tarefaEntidade = UtilCRCJira.getTarefaJiraEntidade(tipoTarefa, pEntidade);
             TarefaSuperBits novaTarefaAdd = new TarefaSuperBits(tarefaEntidade);
             if (!TAREFAS_PROJETO_ATUAL.get(pEntidade.getSimpleName()).contains(novaTarefaAdd)) {
                 TAREFAS_PROJETO_ATUAL.get(pEntidade.getSimpleName()).add(novaTarefaAdd);
             }
-            /*  if (!UtilSBCoreJira.criarTarefafasDaAcao(getConexao(), tarefaEntidade, getAnalistaBancoDados())) {
+            /*  if (!UtilCRCJira.criarTarefafasDaAcao(getConexao(), tarefaEntidade, getAnalistaBancoDados())) {
                 throw new UnsupportedOperationException("Erro criando ação para " + entidade.getSimpleName());
                 } */
         }

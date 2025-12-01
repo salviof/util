@@ -6,7 +6,7 @@
 package org.superBits.utilitario.editorArquivos.importacao;
 
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
-import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.UtilSBCoreArquivoTexto;
+import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.UtilCRCArquivoTexto;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ComoEntidadeSimples;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +48,7 @@ public class ImportacaoExcelTest {
 
         System.out.println(importador.getRelatorioImportacao());
 
-        UtilSBCoreArquivoTexto.escreverEmArquivo("/home/desenvolvedor/relatorio.html", importador.getRelatorioImportacao());
+        UtilCRCArquivoTexto.escreverEmArquivo("/home/desenvolvedor/relatorio.html", importador.getRelatorioImportacao());
 
     }
 

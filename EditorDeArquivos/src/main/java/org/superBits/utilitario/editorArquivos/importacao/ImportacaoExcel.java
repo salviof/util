@@ -5,7 +5,7 @@
 package org.superBits.utilitario.editorArquivos.importacao;
 
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreDataHora;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCDataHora;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campo.TIPO_PRIMITIVO;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ComoEntidadeSimples;
 import java.io.File;
@@ -127,7 +127,7 @@ public class ImportacaoExcel<T> implements Serializable {
 
                                 String dataRecebida = pCelulaExcelValorCampo.getContents();
 
-                                Date dataFormatada = UtilSBCoreDataHora.converteStringDD_MM_YYYYEmData(dataRecebida);
+                                Date dataFormatada = UtilCRCDataHora.converteStringDD_MM_YYYYEmData(dataRecebida);
 
                                 pItem.getCampoByNomeOuAnotacao(pNomeCampo).setValor(dataFormatada);
 

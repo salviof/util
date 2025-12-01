@@ -3,9 +3,9 @@ package org.superBits.utilitario.editorArquivos.office.manipulacao;
 import com.google.common.collect.Lists;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UTilSBCoreInputs;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreOutputs;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringBuscaTrecho;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringNomeArquivosEDiretorios;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCOutputs;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCStringBuscaTrecho;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCStringNomeArquivosEDiretorios;
 import com.super_bits.modulosSB.SBCore.UtilGeral.stringSubstituicao.MapaSubstituicaoArquivo;
 import java.io.File;
 import java.util.ArrayList;
@@ -65,8 +65,8 @@ public class ManipulacaoWord extends ManipulacaoPacoteOffice {
                 String caminhoArquivo = getMapa().getValorImagem(getTextoSubstituivel().getConteudoTexto());
                 P paragraphWithImage = null;
                 if (caminhoArquivo.startsWith("http")) {
-                    String imagemTempLocal = SBCore.getServicoSessao().getSessaoAtual().getPastaTempDeSessao() + "/" + UtilSBCoreStringNomeArquivosEDiretorios.getNomeArquivo(caminhoArquivo + ".jpg");
-                    UtilSBCoreOutputs.salvarArquivoInput(UTilSBCoreInputs.getStreamBuffredByURL(caminhoArquivo, 10000, 60000), imagemTempLocal);
+                    String imagemTempLocal = SBCore.getServicoSessao().getSessaoAtual().getPastaTempDeSessao() + "/" + UtilCRCStringNomeArquivosEDiretorios.getNomeArquivo(caminhoArquivo + ".jpg");
+                    UtilCRCOutputs.salvarArquivoInput(UTilSBCoreInputs.getStreamBuffredByURL(caminhoArquivo, 10000, 60000), imagemTempLocal);
                     try {
                         paragraphWithImage = createInlineImageToParagraph(createInlineImage(new File(imagemTempLocal), documento));
                     } catch (Exception ex) {
@@ -126,8 +126,8 @@ public class ManipulacaoWord extends ManipulacaoPacoteOffice {
                                             System.out.println("Valor Antigo="
                                                     + texto.getValue());
                                             String valorCompleto = texto.getValue();
-                                            String restante = UtilSBCoreStringBuscaTrecho.getStringAPartirDisto(valorCompleto, "[]");
-                                            String nomeLista = UtilSBCoreStringBuscaTrecho.getStringAteEncontrarIsto(valorCompleto, "[]");
+                                            String restante = UtilCRCStringBuscaTrecho.getStringAPartirDisto(valorCompleto, "[]");
+                                            String nomeLista = UtilCRCStringBuscaTrecho.getStringAteEncontrarIsto(valorCompleto, "[]");
                                             String chaveValorNovo = chaveLista + "[" + linha + restante;
                                             try {
                                                 Map<String, String> valoresDaLista = getMapa().getValoresListas(nomeLista);

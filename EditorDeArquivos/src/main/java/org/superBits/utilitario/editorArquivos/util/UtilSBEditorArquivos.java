@@ -6,7 +6,7 @@
 package org.superBits.utilitario.editorArquivos.util;
 
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
-import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.UtilSBCoreArquivos;
+import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.UtilCRCArquivos;
 import org.coletivojava.fw.api.tratamentoErros.FabErro;
 import org.superBits.utilitario.editorArquivos.office.MapaSubstituicaoWordOld;
 
@@ -18,7 +18,7 @@ public class UtilSBEditorArquivos {
 
     public static boolean gerarNovoArquivoSubstituindoPalavraChave(String arquivoOrigem, String arquivoDestino, MapaSubstituicaoWordOld pMapaSubistituicao) {
         try {
-            UtilSBCoreArquivos.copiarArquivos(arquivoOrigem, arquivoDestino);
+            UtilCRCArquivos.copiarArquivos(arquivoOrigem, arquivoDestino);
 
             MapaSubstituicaoWordOld novoMapa = new MapaSubstituicaoWordOld(arquivoDestino);
 

@@ -4,19 +4,19 @@
  */
 package seguranca;
 
-import seguranca.UtilSBCoreSeguranca;
+import seguranca.UtilCRCSeguranca;
 import org.junit.Test;
 
 /**
  *
  * @author SalvioF
  */
-public class UtilSBCoreSegurancaTest {
+public class UtilCRCSegurancaTest {
 
     @Test
     public void testGetChaveSecretaRandomica() {
-        String chaveRandomica = UtilSBCoreSeguranca.getChaveSecretaRandomica();
-        UtilSBCoreSeguranca.getTOTPCode(chaveRandomica);
+        String chaveRandomica = UtilCRCSeguranca.getChaveSecretaRandomica();
+        UtilCRCSeguranca.getTOTPCode(chaveRandomica);
         System.out.println("Chava=" + chaveRandomica);
 
     }
