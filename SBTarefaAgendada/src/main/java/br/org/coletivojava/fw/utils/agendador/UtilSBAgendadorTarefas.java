@@ -8,7 +8,7 @@ package br.org.coletivojava.fw.utils.agendador;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.acoes.ComoAcaoControllerAutoExecucao;
 import com.super_bits.modulosSB.SBCore.modulos.fabrica.ComoFabricaAcoes;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ComoEntidadeSimples;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.entidade.basico.ComoEntidadeSimples;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;

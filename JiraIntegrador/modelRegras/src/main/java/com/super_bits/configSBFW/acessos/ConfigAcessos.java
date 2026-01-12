@@ -11,8 +11,8 @@ import com.super_bits.InomeClienteI.JiraIntegradorModel.regras_de_negocio_e_cont
 import com.super_bits.modulos.SBAcessosModel.ConfigPermissoesAcessoModelAbstrato;
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.permissoes.token.ItfTokenRecuperacaoEmail;
 
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfGrupoUsuario;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ComoUsuario;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.entidade.basico.ItfGrupoUsuario;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.entidade.basico.ComoUsuario;
 import com.super_bits.modulosSB.SBCore.modulos.view.menu.MenusDaSessao;
 
 /**

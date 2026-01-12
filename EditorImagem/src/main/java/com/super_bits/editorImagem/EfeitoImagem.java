@@ -7,7 +7,7 @@ package com.super_bits.editorImagem;
 import com.super_bits.editorImagem.util.UtilSBImagemEdicao;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.ComoEntidadeGenerica;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ComoEntidadeSimplesSomenteLeitura;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.entidade.basico.ComoEntidadeSimplesSomenteLeitura;
 
 import java.awt.image.BufferedImage;
 import java.util.HashMap;

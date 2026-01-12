@@ -46,7 +46,7 @@ public class ExecucaoTarefaAcaoDoSistemaAgendada extends ExecucaoTarefaAgendadaA
             Method metodo = UtilSBController.getMetodoByAcaoController(acao);
             if (pr != null) {
                 Class classeEntidade = MapaObjetosProjetoAtual.getClasseDoObjetoByNome(pr.getEntidadePrincial());
-                Object entidade = SBCore.getServicoRepositorio().getRegistroByID(null, classeEntidade, pr.getIdEntidadePrincipal());
+                Object entidade = SBCore.getServicoRepositorio().getEntidadeByID(null, classeEntidade, pr.getIdEntidadePrincipal());
 
                 metodo.invoke(null, entidade);
             } else {

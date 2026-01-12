@@ -6,7 +6,7 @@
 package com.super_bits.projeto;
 
 import com.super_bits.modulosSB.SBCore.modulos.Controller.Interfaces.permissoes.ItfAcaoFormulario;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.cep.ItfRegiao;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.entidade.basico.cep.ItfRegiao;
 import com.super_bits.modulosSB.SBCore.modulos.fabrica.ComoFabrica;
 import com.super_bits.projeto.controller.FabAcaoPrevisaoProjeto;
 
