@@ -221,7 +221,7 @@ public class Comando {
 
         String comandoParametrizado = comando;
         for (String nomep : parametros.keySet()) {
-            comandoParametrizado = comandoParametrizado.replace(nomep, (String) parametros.get(nomep));
+            comandoParametrizado = comandoParametrizado.replace(":" + nomep, (String) parametros.get(nomep));
         }
 
         if (tipoExecucao == TIPO_EXECUCAO.CRIAR_SCRIPTLNX) {
@@ -276,6 +276,7 @@ public class Comando {
     }
 
     public void setTipoRespostaEsperada(TIPO_RESPOSTA_ESPERADA tipoRespostaEsperada) {
+
         this.tipoRespostaEsperada = tipoRespostaEsperada;
     }
 

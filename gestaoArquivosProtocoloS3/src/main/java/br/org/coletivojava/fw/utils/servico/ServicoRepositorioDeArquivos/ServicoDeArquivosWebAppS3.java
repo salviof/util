@@ -161,15 +161,15 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
                     s3configurado = false;
                     dominioProxy = null;
                 } else {
-                    String chavePrivada = configModulo.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_CHAVE_SECRETA);
-                    String dominioProxyTemp = configModulo.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_DOMINIO_PROXY_S3);
-                    if (chavePrivada.contains(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_CHAVE_SECRETA.getValorPadrao())) {
+                    String chavePrivada = configModulo.getPropriedade(FabConfigArquivoDeEntidadeS3.S3_CHAVE_SECRETA);
+                    String dominioProxyTemp = configModulo.getPropriedade(FabConfigArquivoDeEntidadeS3.DOMINIO_PROXY_S3);
+                    if (chavePrivada == null || chavePrivada.contains(FabConfigArquivoDeEntidadeS3.S3_CHAVE_SECRETA.getValorPadrao())) {
                         conectadoComS3 = false;
                     } else {
                         conectadoComS3 = true;
                     }
                     s3configurado = !(chavePrivada != null && chavePrivada.contains("???"));
-                    temproxy = !(dominioProxyTemp != null && dominioProxyTemp.contains("???"));
+                    temproxy = !(dominioProxyTemp == null || dominioProxyTemp.contains("???"));
                     if (temproxy) {
                         dominioProxy = dominioProxyTemp;
                     } else {
@@ -314,7 +314,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
             if (conectadoComS3) {
                 if (hash != null) {
                     removerItemTemporario(pItem, pCampo, nomeArquivo, hash);
-                    return "https://" + configModulo.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_BUCKET) + ".s3.amazonaws.com/" + hash;
+                    return "https://" + configModulo.getPropriedade(FabConfigArquivoDeEntidadeS3.S3_BUCKET) + ".s3.amazonaws.com/" + hash;
                 } else {
 
                     String arquivoLocal = centralGenerica.getEndrLocalArquivoItem(pItem, nomeArquivo, pCampo);
@@ -378,7 +378,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
             String arquivoLocal = centralGenerica.getEndrLocalImagem(item, tipo, pSessao);
             if (hashArquivoArmazenado != null) {
                 removerArquivoImagemTemporario(item, tipo, pSessao, hashArquivoArmazenado);
-                return "https://" + configModulo.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_BUCKET) + ".s3.amazonaws.com/" + hashArquivoArmazenado;
+                return "https://" + configModulo.getPropriedade(FabConfigArquivoDeEntidadeS3.S3_BUCKET) + ".s3.amazonaws.com/" + hashArquivoArmazenado;
             } else {
 
                 File arquivo = new File(arquivoLocal);
@@ -557,9 +557,9 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
                     }
 
                     if (temproxy) {
-                        return "https://" + configModulo.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_DOMINIO_PROXY_S3) + "/" + hash;
+                        return "https://" + configModulo.getPropriedade(FabConfigArquivoDeEntidadeS3.DOMINIO_PROXY_S3) + "/" + hash;
                     } else {
-                        return "https://" + configModulo.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_BUCKET) + ".s3.amazonaws.com/" + hash;
+                        return "https://" + configModulo.getPropriedade(FabConfigArquivoDeEntidadeS3.S3_BUCKET) + ".s3.amazonaws.com/" + hash;
                     }
                 } catch (Throwable t) {
                     throw new UnsupportedOperationException("Baixar arquivo ainda não é suportado via acesso direto ao bucket");
@@ -727,7 +727,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
                 }
                 String nomeArquivo = obterNomeDoArquivoPeloHash(pCampo);
                 FabTipoArquivoConhecido tipo = FabTipoArquivoConhecido.getTipoArquivoByNomeArquivo(nomeArquivo);
-                String urlInicio = centralGenerica.getEndrRemotoRecursosItem(pCampo.getObjetoDoAtributo(), urlAbrir, FabTipoAcessoArquivo.VISUALIZAR, tipo);
+                String urlInicio = centralGenerica.getEndrRemotoRecursosItem(pCampo.getObjetoRaizDoAtributo(), urlAbrir, FabTipoAcessoArquivo.VISUALIZAR, tipo);
                 return urlInicio;
             } catch (Throwable t) {
                 SBCore.RelatarErro(FabErro.SOLICITAR_REPARO, "Erro obtendo Endereço remoto de campo instanciado", t);

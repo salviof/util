@@ -195,9 +195,9 @@ public class SalvarArquivoS3Hash extends Thread {
             } else {
 
                 try {
-                    if (!salvarArquivoS3(arquivo, nomeArquivo, configModuloArquivosEnts3.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_CHAVE_PUBLICA),
-                            configModuloArquivosEnts3.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_CHAVE_SECRETA),
-                            configModuloArquivosEnts3.getPropriedade(FabConfigArquivoDeEntidadeS3.ARQUIVOS_ENTIDADE_S3_BUCKET), identificadorHAshArquivo)) {
+                    if (!salvarArquivoS3(arquivo, nomeArquivo, configModuloArquivosEnts3.getPropriedade(FabConfigArquivoDeEntidadeS3.S3_CHAVE_PUBLICA),
+                            configModuloArquivosEnts3.getPropriedade(FabConfigArquivoDeEntidadeS3.S3_CHAVE_SECRETA),
+                            configModuloArquivosEnts3.getPropriedade(FabConfigArquivoDeEntidadeS3.S3_BUCKET), identificadorHAshArquivo)) {
                         throw new UnsupportedOperationException("Falha salvando arquivo no serviço S3");
                     }
                     if (arquivoHashAnterior == null) {

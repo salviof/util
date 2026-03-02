@@ -13,10 +13,10 @@ import com.super_bits.modulosSB.SBCore.ConfigGeral.arquivosConfiguracao.ItfFabCo
  */
 public enum FabConfigArquivoDeEntidadeS3 implements ItfFabConfigModulo {
 
-    ARQUIVOS_ENTIDADE_S3_CHAVE_SECRETA,
-    ARQUIVOS_ENTIDADE_S3_CHAVE_PUBLICA,
-    ARQUIVOS_ENTIDADE_S3_BUCKET,
-    ARQUIVOS_ENTIDADE_DOMINIO_PROXY_S3;
+    S3_CHAVE_SECRETA,
+    S3_CHAVE_PUBLICA,
+    S3_BUCKET,
+    DOMINIO_PROXY_S3;
 
     @Override
     public String getValorPadrao() {
