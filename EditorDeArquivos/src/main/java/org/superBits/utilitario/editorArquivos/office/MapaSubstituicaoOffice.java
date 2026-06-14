@@ -9,8 +9,6 @@ import com.super_bits.modulosSB.SBCore.UtilGeral.stringSubstituicao.MapaSubstitu
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.coletivojava.fw.api.tratamentoErros.FabErro;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.OpcPackage;
@@ -106,13 +104,11 @@ public abstract class MapaSubstituicaoOffice extends MapaSubstituicaoArquivo {
             pacote.save(arquivo);
 
         } catch (Docx4JException ex) {
-            Logger.getLogger(MapaSubstituicaoWordOld.class
-                    .getName()).log(Level.SEVERE, null, ex);
+
             SBCore.RelatarErro(FabErro.PARA_TUDO, "Falha processando " + Docx4JException.class.getSimpleName() + " " + arquivo.getAbsolutePath(), ex);
 
         } catch (Exception ex) {
-            Logger.getLogger(MapaSubstituicaoWordOld.class
-                    .getName()).log(Level.SEVERE, null, ex);
+
             SBCore.RelatarErro(FabErro.PARA_TUDO, "Ecessão processando " + arquivo.getAbsolutePath(), ex);
         }
 

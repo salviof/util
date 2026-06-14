@@ -27,7 +27,6 @@ import jxl.Sheet;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
-import jxl.write.biff.DateRecord;
 import org.coletivojava.fw.api.tratamentoErros.FabErro;
 
 /**

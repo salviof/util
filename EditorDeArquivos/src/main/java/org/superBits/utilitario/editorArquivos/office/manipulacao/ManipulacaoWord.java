@@ -1,17 +1,15 @@
 package org.superBits.utilitario.editorArquivos.office.manipulacao;
 
-import com.google.common.collect.Lists;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UTilSBCoreInputs;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCOutputs;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCStringBuscaTrecho;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilCRCStringNomeArquivosEDiretorios;
+import com.super_bits.modulosSB.SBCore.UtilGeral.stringSubstituicao.ItemListaComSubcampos;
 import com.super_bits.modulosSB.SBCore.UtilGeral.stringSubstituicao.MapaSubstituicaoArquivo;
+import com.super_bits.modulosSB.SBCore.UtilGeral.stringSubstituicao.UtilVariavelDeTemplate;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
@@ -92,19 +90,14 @@ public class ManipulacaoWord extends ManipulacaoPacoteOffice {
             case LISTAGEM:
 
                 Tbl tabela = getTextoSubstituivel().getObjEmTabela().getTabela();
-
-                String chaveLista = getMapa().getChaveiLstasByTextoencontrado(getTextoSubstituivel().getConteudoTexto());
-
-                Map<String, String> valores = getMapa().getValoresListas(chaveLista); //mapaSubstituicaoListas.get(chaveLista);
+                String chaveLista = UtilVariavelDeTemplate.gerarNomeLista(getTextoSubstituivel().getConteudoTexto());
+                List<ItemListaComSubcampos> estruturaTabela = getMapa().getListaOrdenada(chaveLista);
                 //List<Integer> lista = gerarLinhasSubLista(valores);
-                Map<Integer, List<String>> estruturaTabela = getMapa().getOrdemItensLista(chaveLista); // ordemMapaSubstituicaoListas.get(chaveLista);
+
                 if (estruturaTabela != null) {
 
-                    List<Integer> listaOrdenada = Lists.newArrayList(estruturaTabela.keySet());
-                    Collections.sort(listaOrdenada);
-
                     if (!controleListasSubstituidas.contains(chaveLista)) {
-                        for (Integer linha : listaOrdenada) {
+                        for (ItemListaComSubcampos linha : estruturaTabela) {
 
                             controleListasSubstituidas.add(chaveLista);
 
@@ -126,13 +119,11 @@ public class ManipulacaoWord extends ManipulacaoPacoteOffice {
                                             System.out.println("Valor Antigo="
                                                     + texto.getValue());
                                             String valorCompleto = texto.getValue();
-                                            String restante = UtilCRCStringBuscaTrecho.getStringAPartirDisto(valorCompleto, "[]");
-                                            String nomeLista = UtilCRCStringBuscaTrecho.getStringAteEncontrarIsto(valorCompleto, "[]");
-                                            String chaveValorNovo = chaveLista + "[" + linha + restante;
+                                            String nomeCampoDoItem = UtilVariavelDeTemplate.gerarNomeSubCampo(valorCompleto);
+                                            String nomeLista = UtilVariavelDeTemplate.adicionarColchetes(UtilCRCStringBuscaTrecho.getStringAteEncontrarIsto(valorCompleto, "[]"));
+                                            String chaveValorNovo = chaveLista + "[" + linha + "]" + nomeCampoDoItem;
                                             try {
-                                                Map<String, String> valoresDaLista = getMapa().getValoresListas(nomeLista);
-
-                                                String novoValor = valoresDaLista.get(chaveValorNovo);
+                                                String novoValor = linha.getSubCampos().get(nomeCampoDoItem);
                                                 texto.setValue(novoValor);
                                             } catch (Throwable t) {
                                                 SBCore.RelatarErro(FabErro.SOLICITAR_REPARO, "Falha substituindo " + chaveValorNovo, t);

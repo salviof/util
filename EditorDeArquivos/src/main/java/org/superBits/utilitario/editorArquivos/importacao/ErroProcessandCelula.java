@@ -4,13 +4,13 @@
  */
 package org.superBits.utilitario.editorArquivos.importacao;
 
-import com.super_bits.modulosSB.SBCore.modulos.TratamentoDeErros.ErroSBCoreFW;
+import com.super_bits.modulosSB.SBCore.modulos.TratamentoDeErros.ErroCRCCoreFW;
 
 /**
  *
  * @author salvio
  */
-public class ErroProcessandCelula extends ErroSBCoreFW {
+public class ErroProcessandCelula extends ErroCRCCoreFW {
 
     private int linha;
     private int coluna;
