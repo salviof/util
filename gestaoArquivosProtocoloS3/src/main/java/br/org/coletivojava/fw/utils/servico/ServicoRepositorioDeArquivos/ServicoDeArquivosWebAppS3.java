@@ -382,6 +382,11 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
             } else {
 
                 File arquivo = new File(arquivoLocal);
+                if (!arquivo.exists()) {
+                    arquivoLocal = centralGenerica.getEndrLocalArquivoItem(item, tipo.getNomeImagemPadrao(), "imagem");
+                    arquivo = new File(arquivoLocal);
+                }
+
                 if (arquivo.exists()) {
                     try {
                         if (s3configurado) {
@@ -553,6 +558,7 @@ public class ServicoDeArquivosWebAppS3 extends CentralDeArquivosAbstrata {
                     String hash = UtilSBServicoArqEntidadeS3.getHashDoArquivo(pItem.getClass().getSimpleName(), categoria, String.valueOf(pItem.getId()));
 
                     if (hash == null) {
+
                         throw new UnsupportedOperationException("Baixar arquivo ainda não é suportado via acesso direto ao bucket");
                     }
 
